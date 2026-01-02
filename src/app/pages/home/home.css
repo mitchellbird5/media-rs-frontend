@@ -1,0 +1,43 @@
+/* Make the container fill the whole viewport and use dark navy background */
+.home-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* vertical centering */
+    align-items: center;     /* horizontal centering */
+    gap: 2em;
+    height: 100vh;           /* full viewport height */
+    width: 100vw;            /* full viewport width */
+    margin: 0;               /* remove default margin */
+    background-color: #0f1b2b; /* bg-background from Tailwind config */
+}
+
+/* Optional: keep the "Choose option..." styling */
+.home-container > div:first-child {
+    text-align: center;
+    font-size: 2rem; /* slightly smaller than text-3xl */
+    color: #E5E7EB;  /* light gray text */
+}
+
+/* Flex container for buttons */
+.container {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+}
+
+/* Cards/buttons */
+.card {
+    padding: 2rem 3rem;
+    font-size: 1.25rem;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    background-color: #1e293b; /* dark slate for cards */
+    color: #E5E7EB;           /* light text */
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
