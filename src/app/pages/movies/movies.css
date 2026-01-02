@@ -1,0 +1,11 @@
+.movies-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* vertical centering */
+    align-items: center;     /* horizontal centering */
+    gap: 2em;
+    height: 100vh;           /* full viewport height */
+    width: 100vw;            /* full viewport width */
+    margin: 0;               /* remove default margin */
+    background-color: #0f1b2b; /* bg-background from Tailwind config */
+}

@@ -2,5 +2,28 @@
 
 @config "../tailwind.config.js";
 @import "tailwindcss";
+@import "./app/pages/home/home.css";
 
 body { font-family: 'Inter', sans-serif; } 
+
+/* Map Tailwind theme colors to CSS variables */
+:root {
+  /* Dark navy background */
+  --bg-background-default: #0f1b2b;
+  --bg-background-light: #152a3f;
+  --bg-background-dark: #0b121f;
+
+  /* Text colors */
+  --text-default: #E5E7EB;
+  --text-muted: #9CA3AF;
+
+  /* Primary accent */
+  --primary-default: #1E40AF;
+  --primary-light: #3B82F6;
+  --primary-dark: #1E3A8A;
+
+  /* Secondary accent */
+  --secondary-default: #F59E0B;
+  --secondary-light: #FCD34D;
+  --secondary-dark: #B45309;
+}
