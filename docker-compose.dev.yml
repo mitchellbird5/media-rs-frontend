@@ -1,0 +1,23 @@
+services:
+  media-rs-frontend-dev:
+    build:
+      context: .
+      target: development
+    container_name: media-rs-frontend-dev
+    image: media-rs-frontend-dev:latest
+    volumes:
+      - .:/app:delegated       # Mount source code for live reload
+      - /app/node_modules      # Prevent overwriting node_modules
+    environment:
+      API_URL: "http://media-rs-backend:8000"  # your backend service URL
+    ports:
+      - "4200:4200"            # Angular dev server port
+    command: >
+      sh -c "npx ng serve --host 0.0.0.0 --port 4200 --live-reload=true --hmr --poll=200"
+    networks:
+      - media-rs-network
+
+networks:
+  media-rs-network:
+    external: true
+    
