@@ -1,1 +1,24 @@
-<div className="text-2xl">Item Similarity Recommendation</div>
+<div class="item-similarity-recommendation-container">
+    <div class="title-info-container">
+        <div class="title">Item Similarity Recommendation</div>
+        <lucide-icon 
+            [img]="Info" 
+            class="info-icon"
+            (click)="showInfo = !showInfo"
+        ></lucide-icon>
+    </div>
+
+    <app-model-info 
+        *ngIf="showInfo"
+        [title]="info_title"
+        [description]="info_description"
+    />
+
+        <div class="">
+            <input 
+                [(ngModel)]="id" 
+                [placeholder]="'Enter a ' + medium" 
+                class="standard-input" 
+            />
+      </div>
+</div>  

@@ -31,14 +31,23 @@
             "stylePreprocessorOptions": {
               "includePaths": ["src"]
             },
-            "server": "src/main.server.ts",
-            "outputMode": "server",
-            "ssr": {
-              "entry": "src/server.ts"
-            }
+            "outputMode": "static"
           },
           "configurations": {
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            },
             "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "sourceMap": false,
+              "outputMode": "server",
+              "server": "src/main.server.ts",
+              "ssr": {
+                "entry": "src/server.ts"
+              },
               "budgets": [
                 {
                   "type": "initial",
@@ -52,23 +61,19 @@
                 }
               ],
               "outputHashing": "all"
-            },
-            "development": {
-              "optimization": false,
-              "extractLicenses": false,
-              "sourceMap": true
             }
           },
-          "defaultConfiguration": "production"
+          "defaultConfiguration": "development"
         },
         "serve": {
           "builder": "@angular/build:dev-server",
+          "options": {},
           "configurations": {
-            "production": {
-              "buildTarget": "media-rs-frontend:build:production"
-            },
             "development": {
               "buildTarget": "media-rs-frontend:build:development"
+            },
+            "production": {
+              "buildTarget": "media-rs-frontend:build:production"
             }
           },
           "defaultConfiguration": "development"

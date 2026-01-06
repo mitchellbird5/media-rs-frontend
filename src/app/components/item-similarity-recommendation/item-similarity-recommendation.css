@@ -1,0 +1,40 @@
+.item-similarity-recommendation-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-lg);
+    border: 1px solid var(--text-muted);
+    border-radius: var(--radius-lg);
+    background-color: var(--bg-background-light);
+}
+
+.title-info-container {
+    position: relative;       /* allows the icon to be positioned relative to the title */
+    width: 100%;              /* so the title can be centered in the container */
+    text-align: center;       /* centers the title text */
+}
+
+.title {
+    font-size: 1.5em;
+    display: inline-block;    /* shrink to fit content */
+}
+
+.info-icon {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) translateX(15rem); /* keep offset + centering */
+    transform-origin: center; /* ensures scaling happens from the center of the icon */
+    width: 20px;
+    height: 20px;
+    color: var(--text-muted);
+    transition: transform 0.2s ease, color 0.3s ease;
+}
+
+.info-icon:hover {
+    transform: translate(-50%, -50%) translateX(15rem) scale(1.05); /* combine offset + scale */
+    color: var(--secondary-default);
+    cursor: pointer;
+}

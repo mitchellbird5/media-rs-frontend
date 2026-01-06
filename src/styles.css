@@ -1,10 +1,22 @@
 /* You can add global styles to this file, and also import other style files */
 
-@config "../tailwind.config.js";
-@import "tailwindcss";
-@import "./app/pages/home/home.css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import './app/styles/input.css';
+@import './app/styles/popup.css';
+
 
 body { font-family: 'Inter', sans-serif; } 
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden; /* prevents horizontal scroll */
+}
 
 /* Map Tailwind theme colors to CSS variables */
 :root {
@@ -26,4 +38,37 @@ body { font-family: 'Inter', sans-serif; }
   --secondary-default: #F59E0B;
   --secondary-light: #FCD34D;
   --secondary-dark: #B45309;
+
+  --header-height: 64px;
+  --page-width: 80%; 
+
+  /* BORDER RADII */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --remove-button: 0.25em;
+
+  /* SPACING */
+  --spacing-xs: 4px;
+  --spacing-sm: 6px;
+  --spacing-md: 10px;
+  --spacing-lg: 20px;
+}
+
+html, body, app-root {
+  height: 100%;
+  margin: 0;
+}
+
+.layout-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.default-page {
+  flex: 1; /* fills remaining space after header */
+  background-color: var(--bg-background-default);
+  color: var(--text-default);
+  padding-top: var(--header-height);
 }

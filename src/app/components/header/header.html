@@ -1,0 +1,37 @@
+<header class="app-header">
+  <div class="header-container">
+
+    <!-- Logo / Brand -->
+    <a routerLink="/" class="header-brand">
+      <span class="brand-icon">🎬</span>
+      MediaRS
+    </a>
+
+    <!-- Desktop nav -->
+    <nav class="header-nav">
+      <a routerLink="/movies" routerLinkActive="active">Movies</a>
+      <a routerLink="/books" routerLinkActive="active">Books</a>
+      <a routerLink="/about" routerLinkActive="active">About</a>
+    </nav>
+
+    <!-- Actions -->
+    <div class="header-actions">
+      <button class="sign-in-btn">Sign in</button>
+
+      <!-- Mobile menu button -->
+      <button class="mobile-menu-btn" (click)="toggleMenu()">
+        ☰
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile menu -->
+  <div *ngIf="open" class="mobile-menu">
+    <nav class="mobile-nav">
+      <a routerLink="/movies" (click)="closeMenu()">Movies</a>
+      <a routerLink="/books" (click)="closeMenu()">Books</a>
+      <a routerLink="/about" (click)="closeMenu()">About</a>
+      <button class="mobile-sign-in-btn">Sign in</button>
+    </nav>
+  </div>
+</header>
