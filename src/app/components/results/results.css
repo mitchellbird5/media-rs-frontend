@@ -1,0 +1,15 @@
+.results-scroll-wrapper {
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.result-item {
+  display: inline-block;
+  margin-right: 1rem;
+  vertical-align: top;
+}
+
+.results-scroll-content {
+  display: flex;
+  gap: 1rem;
+}

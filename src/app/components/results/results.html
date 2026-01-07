@@ -1,0 +1,13 @@
+<div class="results-section">
+  <div class="results-scroll-wrapper">
+    <div class="results-scroll-content">
+      <!-- Loop through movies -->
+      <div *ngFor="let movie of results" class="result-item">
+        <app-result-card [result]="movie"></app-result-card>
+      </div>
+
+      <!-- Optional: keep ng-content if needed -->
+      <ng-content></ng-content>
+    </div>
+  </div>
+</div>

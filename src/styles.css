@@ -6,6 +6,7 @@
 
 @import './app/styles/input.css';
 @import './app/styles/popup.css';
+@import './app/styles/close_button.css';
 
 
 body { font-family: 'Inter', sans-serif; } 

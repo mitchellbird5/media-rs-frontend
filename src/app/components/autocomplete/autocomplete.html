@@ -1,0 +1,19 @@
+<div class="autocomplete-wrapper">
+  <input
+    type="text"
+    [(ngModel)]="query"
+    (input)="onInput()"
+    [placeholder]="placeholder"
+    class="standard-input w-full"
+  />
+
+  <div *ngIf="isOpen()" class="autocomplete-dropdown">
+    <div
+      *ngFor="let item of results()"
+      class="autocomplete-item"
+      (click)="select(item)"
+    >
+      {{ item }}
+    </div>
+  </div>
+</div>

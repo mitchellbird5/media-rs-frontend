@@ -1,6 +1,6 @@
 import { RouterModule } from '@angular/router';
 import { Component } from '@angular/core';
-import { ItemSimilarityRecommendation } from "../../components/item-similarity-recommendation/item-similarity-recommendation";
+import { ItemSimilarityRecommendation } from '../../components/recommend/item-similarity-recommendation/item-similarity-recommendation';
 
 @Component({
   selector: 'app-movies',

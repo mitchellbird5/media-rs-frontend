@@ -1,0 +1,51 @@
+<div class="item-similarity-recommendation-container">
+    <div class="title-info-container">
+        <div class="title">Item Similarity Recommendation</div>
+        <lucide-icon 
+            [img]="Info" 
+            class="info-icon"
+            (click)="showInfo = !showInfo"
+        ></lucide-icon>
+    </div>
+
+    <app-autocomplete
+      placeholder="Search movies..."
+      [fetchResults]="search"
+      (valueSelected)="onMovieSelected($event)"
+    />
+
+    <div class="number-of-recs-container">
+        <div 
+            class="number-of-recommendations-label"
+        >
+            Number of Recommendations:&nbsp;
+        </div>
+        <input 
+            [(ngModel)]="numRecommendations" 
+            [placeholder]="10" 
+            class="standard-input num-recs-input" 
+        />
+    </div>
+
+    <div class="search-button">
+        <div 
+            class="standard-button"
+            (click)="onRecommend(selectedMovie)"
+        >
+            Find Recommendations!
+        </div>
+    </div>
+
+    <app-results 
+        *ngIf="movies && movies.length > 0",
+        [results]="movies"
+    />
+
+</div>  
+
+<app-model-info 
+    *ngIf="showInfo"
+    [title]="info_title"
+    [description]="info_description"
+    (close)="showInfo = false"
+/>

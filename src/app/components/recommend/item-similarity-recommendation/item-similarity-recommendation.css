@@ -38,3 +38,33 @@
     color: var(--secondary-default);
     cursor: pointer;
 }
+
+.number-of-recs-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.num-recs-input {
+    width: 60px;
+}
+
+.number-of-recommendations-label {
+    margin-right: var(--spacing-sm);
+}
+
+.search-button {
+    padding: var(--spacing-sm) var(--spacing-lg);
+    background-color: var(--primary-default);
+    color: var(--text-default);
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    background-color: var(--primary-default);
+}
+
+.search-button:hover {
+    background-color: var(--primary-dark);
+}
