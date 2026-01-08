@@ -4,7 +4,9 @@
         <lucide-icon 
             [img]="Info" 
             class="info-icon"
-            (click)="showInfo = !showInfo"
+            appPopup
+            [popupTemplate]="popupCard"
+            [popupContext]="{ info_title: info_title, info_description: info_description }"
         ></lucide-icon>
     </div>
 
@@ -43,9 +45,16 @@
 
 </div>  
 
-<app-model-info 
-    *ngIf="showInfo"
-    [title]="info_title"
-    [description]="info_description"
-    (close)="showInfo = false"
-/>
+<ng-template 
+    #popupCard 
+    let-info_title="info_title" 
+    let-info_description="info_description"
+>
+    <div class="model-info-popup-title">
+        {{ info_title }}
+    </div>
+
+    <div class="model-info-popup-description">
+        {{ info_description }}
+    </div>
+</ng-template>

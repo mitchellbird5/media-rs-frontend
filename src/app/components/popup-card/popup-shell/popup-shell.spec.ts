@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ModelInfo } from './model-info';
+import { PopupShell } from './popup-shell';
 
-describe('ModelInfo', () => {
-  let component: ModelInfo;
-  let fixture: ComponentFixture<ModelInfo>;
+describe('PopupShell', () => {
+  let component: PopupShell;
+  let fixture: ComponentFixture<PopupShell>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ModelInfo]
+      imports: [PopupShell]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ModelInfo);
+    fixture = TestBed.createComponent(PopupShell);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

@@ -12,6 +12,7 @@ export const fetchItemSimilarityRecommendations = async (
     top_n:numberOfRecommendations.toString(),
   });
 
+  console.log('Fetching recommendations with query:', query.toString());
   const response = await fetch(`${BASE_URL}/recommend/content/?${query.toString()}`, {
     method: 'GET',
     headers: {
