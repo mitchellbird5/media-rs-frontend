@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, signal, effect } from '@angular/core';
+import { Component, Input, Output, EventEmitter, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -18,15 +18,20 @@ import { TextInput } from '../text-input/text-input';
 export class AutocompleteComponent {
   @Input() fetchResults!: (query: string) => Promise<string[]>;
 
+  @Input() query = '';
+  @Output() queryChange = new EventEmitter<string>();
+
   @Output() valueSelected = new EventEmitter<string>();
 
-  query = '';
   results = signal<string[]>([]);
   isOpen = signal(false);
   loading = signal(false);
 
-  async onInput() {
-    if (!this.query || this.query.length < 2) {
+  async onInput(value: string) {
+    this.query = value;
+    this.queryChange.emit(value);
+
+    if (!value || value.length < 2) {
       this.results.set([]);
       this.isOpen.set(false);
       return;
@@ -45,7 +50,12 @@ export class AutocompleteComponent {
 
   select(value: string) {
     this.query = value;
+    this.queryChange.emit(value);
     this.isOpen.set(false);
     this.valueSelected.emit(value);
+  }
+
+  closeDropdown() {
+    this.isOpen.set(false);
   }
 }

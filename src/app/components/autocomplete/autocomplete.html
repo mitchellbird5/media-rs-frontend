@@ -3,11 +3,11 @@
     [query]="query"
     [placeholder]="'Search...'"
     [width]="'400px'"
-    (queryChange)="query = $event; onInput()"
+    (queryChange)="onInput($event)"
   ></app-text-input>
 
   <!-- Dropdown only shows if query is not empty AND (loading OR results exist) -->
-  <div *ngIf="query && (loading() || results().length)" class="autocomplete-dropdown">
+  <div *ngIf="query && (loading() || results().length) && isOpen()" class="autocomplete-dropdown">
     
     <!-- Show loading message while fetching -->
     <div *ngIf="loading() && !results().length" class="autocomplete-item loading">
@@ -24,4 +24,6 @@
     </div>
 
   </div>
+
+
 </div>

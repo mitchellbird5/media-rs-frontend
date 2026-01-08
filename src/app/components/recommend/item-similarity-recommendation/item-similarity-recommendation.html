@@ -5,23 +5,56 @@
             [img]="Info" 
             class="info-icon"
             appPopup
-            [popupTemplate]="popupCard"
-            [popupContext]="{ info_title: info_title, info_description: info_description }"
+            [popupTemplate]="modelInfoPopup"
+            [popupContext]="{ 
+                info_title: info_title, 
+                info_description: info_description 
+            }"
         ></lucide-icon>
     </div>
 
     <div class="search-wrapper">
-    <app-autocomplete
-        placeholder="Search movies..."
-        [fetchResults]="search"
-        (valueSelected)="onMovieSelected($event)"
-        class="search-input"
-    ></app-autocomplete>
+        <app-autocomplete
+            [(query)]="searchQuery"
+            placeholder="Search movies..."
+            [fetchResults]="search"
+            (valueSelected)="onMovieSelected($event)"
+            class="search-input"
+        ></app-autocomplete>
 
-    <lucide-icon
-        [img]="Search"
-        class="search-icon"
-    ></lucide-icon>
+        <lucide-icon
+            #searchPopup
+            [img]="Search"
+            class="search-icon"
+            (mousedown)="onSearchClick()"
+            appPopup
+            [popupTemplate]="searchInfoPopup"
+            [popupContext]="{
+                info_title: 'Search Movies',
+                results: searchResults,
+                loading: loadingSearchResults
+            }"
+        ></lucide-icon>
+    </div>
+
+    <div 
+        *ngIf="selectedMovie"
+        class="selected-movie-display"
+    >
+        <div class="selected-movie-text-container">
+            Selected Movie: 
+            <div 
+                class="selected-movie-label"
+            >
+                {{ selectedMovie }}
+            </div>
+        </div>
+        <lucide-icon
+            [img]="Trash2"
+            size="18"
+            (click)="clearSelectedMovie()"
+            class="trash-icon"
+        ></lucide-icon>
     </div>
 
     <div class="number-of-recs-container">
@@ -54,7 +87,7 @@
 </div>  
 
 <ng-template 
-    #popupCard 
+    #modelInfoPopup 
     let-info_title="info_title" 
     let-info_description="info_description"
 >
@@ -64,5 +97,32 @@
 
     <div class="model-info-popup-description">
         {{ info_description }}
+    </div>
+</ng-template>
+
+<ng-template
+    #searchInfoPopup
+    let-info_title="info_title"
+    let-results="results"
+    let-loading="loading"
+>
+    <div class="model-info-popup-title">
+        {{ info_title }}
+    </div>
+
+    <div *ngIf="loading()" class="search-results-loading">
+        Loading…
+    </div>
+
+    <div *ngIf="!loading() && results()?.length === 0" class="search-results-empty">
+        No results found.
+    </div>
+
+    <div 
+        *ngFor="let movie of results()" 
+        (click)="onSearchSelect(movie)"
+        class="search-result"
+    >
+        {{ movie }}
     </div>
 </ng-template>
