@@ -10,11 +10,19 @@
         ></lucide-icon>
     </div>
 
+    <div class="search-wrapper">
     <app-autocomplete
-      placeholder="Search movies..."
-      [fetchResults]="search"
-      (valueSelected)="onMovieSelected($event)"
-    />
+        placeholder="Search movies..."
+        [fetchResults]="search"
+        (valueSelected)="onMovieSelected($event)"
+        class="search-input"
+    ></app-autocomplete>
+
+    <lucide-icon
+        [img]="Search"
+        class="search-icon"
+    ></lucide-icon>
+    </div>
 
     <div class="number-of-recs-container">
         <div 

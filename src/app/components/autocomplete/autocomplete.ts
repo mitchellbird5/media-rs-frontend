@@ -2,15 +2,20 @@ import { Component, Input, Output, EventEmitter, signal, effect } from '@angular
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
+import { TextInput } from '../text-input/text-input';
+
 @Component({
   selector: 'app-autocomplete',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [
+    CommonModule, 
+    FormsModule,
+    TextInput
+  ],
   templateUrl: './autocomplete.html',
   styleUrls: ['./autocomplete.css']
 })
 export class AutocompleteComponent {
-  @Input() placeholder = 'Search...';
   @Input() fetchResults!: (query: string) => Promise<string[]>;
 
   @Output() valueSelected = new EventEmitter<string>();

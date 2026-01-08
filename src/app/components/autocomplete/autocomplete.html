@@ -1,13 +1,20 @@
 <div class="autocomplete-wrapper">
-  <input
-    type="text"
-    [(ngModel)]="query"
-    (input)="onInput()"
-    [placeholder]="placeholder"
-    class="standard-input w-full"
-  />
+  <app-text-input
+    [query]="query"
+    [placeholder]="'Search...'"
+    [width]="'400px'"
+    (queryChange)="query = $event; onInput()"
+  ></app-text-input>
 
-  <div *ngIf="isOpen()" class="autocomplete-dropdown">
+  <!-- Dropdown only shows if query is not empty AND (loading OR results exist) -->
+  <div *ngIf="query && (loading() || results().length)" class="autocomplete-dropdown">
+    
+    <!-- Show loading message while fetching -->
+    <div *ngIf="loading() && !results().length" class="autocomplete-item loading">
+      Loading...
+    </div>
+
+    <!-- Show results once loaded -->
     <div
       *ngFor="let item of results()"
       class="autocomplete-item"
@@ -15,5 +22,6 @@
     >
       {{ item }}
     </div>
+
   </div>
 </div>

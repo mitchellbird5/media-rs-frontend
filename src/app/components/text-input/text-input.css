@@ -1,0 +1,33 @@
+
+.text-clear-container {
+  position: relative;      /* container for absolute icon */
+  display: inline-block;   /* shrink-wrap content if needed */
+  width: var(--input-width, 300px);            /* can be any width you want */
+}
+
+.text-clear-input {
+  width: 100%;             /* input fills container */
+  padding: 0.5rem 2rem 0.5rem 0.75rem; /* right padding leaves space for X */
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  font-size: 1rem;
+  box-sizing: border-box;  /* ensures width includes padding */
+}
+
+/* X icon inside the input */
+.clear-icon {
+  position: absolute;
+  right: 1.0rem;           /* distance from right edge */
+  transform: translateY(35%);
+  width: 1rem;             /* adjust size */
+  height: 1rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  pointer-events: auto;    /* ensure it’s clickable */
+  transition: color 0.2s ease;
+}
+
+.clear-icon:hover {
+  color: var(--secondary-default);
+  transform: scale(1.05) translateY(35%);
+}

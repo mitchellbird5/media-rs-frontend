@@ -1,0 +1,15 @@
+  <div class="text-clear-container" [style.--input-width]="width">
+    <input
+      type="text"
+      [value]="query"
+      (input)="onInputChange($event.target.value)"
+      [placeholder]="placeholder"
+      class="standard-input"
+    />
+
+    <lucide-icon 
+        [img]="X" 
+        class="clear-icon"
+        (click)="clear()"
+    ></lucide-icon>
+  </div>

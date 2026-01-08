@@ -27,12 +27,13 @@ export class ItemSimilarityRecommendation {
   @Input() medium!: string;
 
   showInfo: boolean = false;
+  loadingRecommendations: boolean = false;
   numRecommendations!: number;
   movies!: string[] | null;
   selectedMovie!: string;
-  readonly Info = Info;
-  loadingRecommendations: boolean = false;
   
+  readonly Info = Info;
+  readonly Search = Search;
 
   info_title: string = 'Item Similarity Recommendation'
   info_description: string = 'Recommend movies that are similar to the selected movie based on similarity of title, genre and tags using sentence transform (all-MiniLM-L6-v2) aka SBERT.'
