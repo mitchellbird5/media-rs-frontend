@@ -43,6 +43,8 @@ export class PopupDirective {
       this.popupContext = context; // keep signals intact
     }
 
+    this.popupContext.close = () => this.close();
+
     this.popupRef = createComponent(PopupShellComponent, {
       environmentInjector: this.appRef.injector,
     });

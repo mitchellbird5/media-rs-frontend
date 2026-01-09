@@ -1,13 +1,9 @@
-<div class="results-section">
-  <div class="results-scroll-wrapper">
-    <div class="results-scroll-content">
-      <!-- Loop through movies -->
-      <div *ngFor="let movie of results" class="result-item">
-        <app-result-card [result]="movie"></app-result-card>
-      </div>
-
-      <!-- Optional: keep ng-content if needed -->
-      <ng-content></ng-content>
-    </div>
-  </div>
+<div class="results-grid">
+  <ng-container *ngFor="let movie of results; let i = index">
+    <app-result-card
+      *ngIf="images[i]"        
+      [result]="movie"
+      [imageUrl]="getFullImageUrl(images[i]?.poster_path)"
+    ></app-result-card>
+  </ng-container>
 </div>

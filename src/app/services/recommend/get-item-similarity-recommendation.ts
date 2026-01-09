@@ -30,5 +30,8 @@ export const fetchItemSimilarityRecommendations = async (
   }
 
   const data: string[] = await response.json();
+
+  console.log('Received movie data:', data);
+
   return data;
 };

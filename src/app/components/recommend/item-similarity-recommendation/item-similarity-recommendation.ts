@@ -1,14 +1,27 @@
-import { Component, Input, ViewChild, signal } from '@angular/core';
+import { 
+  Component, 
+  Input, 
+  ViewChild, 
+  signal 
+} from '@angular/core';
 import { NgIf } from '@angular/common';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { LucideAngularModule, Info, Search, Trash2 } from 'lucide-angular';
+import { 
+  LucideAngularModule, 
+  Info, 
+  Search, 
+  Trash2 
+} from 'lucide-angular';
+
 import { PopupDirective } from '../../popup-card/popup-directive/popup-directive';
 import { Movie } from '../../../types/movies.types';
 import { Results } from '../../results/results';
 import { fetchItemSimilarityRecommendations } from '../../../services/recommend/get-item-similarity-recommendation';
 import { fetchMovieTitles } from '../../../services/movieSearch';
 import { AutocompleteComponent } from '../../autocomplete/autocomplete';
+import { ModelInfo } from '../../model-info/model-info';
+import { SearchResults } from '../../search-results/search-results';
 
 @Component({
   selector: 'app-item-similarity-recommendation',
@@ -20,7 +33,9 @@ import { AutocompleteComponent } from '../../autocomplete/autocomplete';
     NgIf,
     Results,
     AutocompleteComponent,
-    CommonModule
+    CommonModule,
+    ModelInfo,
+    SearchResults
   ],
   templateUrl: './item-similarity-recommendation.html',
   styleUrl: './item-similarity-recommendation.css',
@@ -31,7 +46,7 @@ export class ItemSimilarityRecommendation {
   searchQuery: string = '';
   selectedMovie!: string;
   movies!: string[] | null;
-  numRecommendations!: number;
+  numRecommendations: number = 10;
 
   loadingRecommendations = signal(false);
   searchResults = signal<string[]>([]);
@@ -45,8 +60,9 @@ export class ItemSimilarityRecommendation {
   info_description =
     'Recommend movies that are similar to the selected movie based on similarity of title, genre and tags using sentence transform (all-MiniLM-L6-v2) aka SBERT.';
 
-  @ViewChild('searchPopup', { read: PopupDirective }) searchPopup!: PopupDirective;
-    @ViewChild(AutocompleteComponent) autocomplete!: AutocompleteComponent;
+  @ViewChild(PopupDirective) searchResultsPopup!: PopupDirective;
+  @ViewChild(SearchResults) searchResultsComponent!: SearchResults;
+  @ViewChild(AutocompleteComponent) autocomplete!: AutocompleteComponent;
 
   search = async (query: string): Promise<string[]> => {
     const titles = await fetchMovieTitles(query, 5);
@@ -85,11 +101,10 @@ export class ItemSimilarityRecommendation {
     }
   }
 
-  onSearchSelect(movie: string) {
+  onSearchSelect = (movie: string) => {
     this.onMovieSelected(movie);
-    this.searchPopup?.close();
     this.searchQuery = '';
-  }
+  };
 
   
 }

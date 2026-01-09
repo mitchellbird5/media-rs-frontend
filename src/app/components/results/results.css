@@ -13,3 +13,12 @@
   display: flex;
   gap: 1rem;
 }
+
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+  padding: 1rem;
+  max-height: 80vh; /* vertical scroll */
+  overflow-y: auto;
+}

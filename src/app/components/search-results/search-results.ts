@@ -1,11 +1,34 @@
-import { Component } from '@angular/core';
+import { 
+  Component,
+  Input,
+  ViewChild,
+  TemplateRef,
+  Signal
+} from '@angular/core';
+import { NgIf } from '@angular/common';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-search-results',
-  imports: [],
+  imports: [
+    NgIf,
+    CommonModule
+  ],
   templateUrl: './search-results.html',
   styleUrl: './search-results.css',
 })
 export class SearchResults {
+  @Input() search_title!: string;
+  @Input() loadingSearchResults!: Signal<boolean>;
+  @Input() results!: Signal<string[]>;
+  @Input() onResultSelected!: (result: any) => any;
+  @Input() close!: () => void;
 
+  @ViewChild('searchResultsPopup', { static: true })
+  template!: TemplateRef<any>;
+
+  selectResult(result: string) {
+    this.onResultSelected(result);
+    this.close?.();
+  }
 }

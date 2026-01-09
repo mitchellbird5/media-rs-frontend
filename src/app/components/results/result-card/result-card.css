@@ -1,19 +1,25 @@
 .result-card {
-  border: 1px solid #ccc;
+  width: 100%;
+  aspect-ratio: 2/3; /* 200x300 ratio */
   border-radius: 8px;
-  padding: 1rem;
-  width: 200px;
-  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
-  background-color: var(--secondary-default);
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end; /* overlay at bottom */
+  color: white;
+  /* background-color: black; */
+}
+
+.overlay {
+  background: rgba(0, 0, 0, 0.5); /* semi-transparent overlay */
+  width: 100%;
+  padding: 0.5rem;
+  text-align: center;
 }
 
 .result-card-title {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: bold;
-  margin-bottom: 0.5rem;
-}
-
-.result-card-details {
-  font-size: 0.9rem;
-  color: var(--text-muted);
 }

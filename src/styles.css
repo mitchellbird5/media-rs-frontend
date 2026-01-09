@@ -73,3 +73,17 @@ html, body, app-root {
   color: var(--text-default);
   padding-top: var(--header-height);
 }
+
+
+.popup-title {
+  font-size: 1.6em;
+  font-weight: 600;
+  line-height: 1.3;
+  border-bottom: 1px solid var(--text-muted);
+  padding-bottom: var(--spacing-sm);
+  letter-spacing: 0.3px;
+}
+
+.popup-description {
+  font-size: 1em;
+}

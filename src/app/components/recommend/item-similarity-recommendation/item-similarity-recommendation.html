@@ -1,14 +1,15 @@
 <div class="item-similarity-recommendation-container">
     <div class="title-info-container">
         <div class="title">Item Similarity Recommendation</div>
+
         <lucide-icon 
             [img]="Info" 
             class="info-icon"
             appPopup
-            [popupTemplate]="modelInfoPopup"
-            [popupContext]="{ 
-                info_title: info_title, 
-                info_description: info_description 
+            [popupTemplate]="modelInfoPopup.template"
+            [popupContext]="{
+                info_title: info_title,
+                info_description: info_description
             }"
         ></lucide-icon>
     </div>
@@ -23,16 +24,16 @@
         ></app-autocomplete>
 
         <lucide-icon
-            #searchPopup
             [img]="Search"
             class="search-icon"
             (mousedown)="onSearchClick()"
             appPopup
-            [popupTemplate]="searchInfoPopup"
+            [popupTemplate]="searchResultsPopup.template"
             [popupContext]="{
-                info_title: 'Search Movies',
+                search_title: 'Searching movies...',
+                loadingSearchResults: loadingSearchResults,
                 results: searchResults,
-                loading: loadingSearchResults
+                onResultSelected: onSearchSelect
             }"
         ></lucide-icon>
     </div>
@@ -78,51 +79,12 @@
             Find Recommendations!
         </div>
     </div>
-
-    <app-results 
-        *ngIf="movies && movies.length > 0",
-        [results]="movies"
-    />
-
 </div>  
 
-<ng-template 
-    #modelInfoPopup 
-    let-info_title="info_title" 
-    let-info_description="info_description"
->
-    <div class="model-info-popup-title">
-        {{ info_title }}
-    </div>
+<app-results 
+    *ngIf="movies && movies.length > 0",
+    [results]="movies"
+/>
 
-    <div class="model-info-popup-description">
-        {{ info_description }}
-    </div>
-</ng-template>
-
-<ng-template
-    #searchInfoPopup
-    let-info_title="info_title"
-    let-results="results"
-    let-loading="loading"
->
-    <div class="model-info-popup-title">
-        {{ info_title }}
-    </div>
-
-    <div *ngIf="loading()" class="search-results-loading">
-        Loading…
-    </div>
-
-    <div *ngIf="!loading() && results()?.length === 0" class="search-results-empty">
-        No results found.
-    </div>
-
-    <div 
-        *ngFor="let movie of results()" 
-        (click)="onSearchSelect(movie)"
-        class="search-result"
-    >
-        {{ movie }}
-    </div>
-</ng-template>
+<app-model-info #modelInfoPopup/>
+<app-search-results #searchResultsPopup/>

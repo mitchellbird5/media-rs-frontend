@@ -7,6 +7,12 @@ interface movieResult {
   movieId: number;
 }
 
+export interface MovieImage {
+  title: string;
+  poster_path: string | null;
+  backdrop_path: string | null;
+}
+
 export const fetchMovies = async (
   title: string,
   limit: number
@@ -51,4 +57,34 @@ export const fetchMovieTitles = async (
 ): Promise<string[]> => {
   const movies = await fetchMovies(title, limit);
   return movies.map((movie) => movie.title);
+};
+
+
+
+export const fetchMovieImages = async (
+  titles: string[]
+): Promise<MovieImage[]> => {
+  const params = new URLSearchParams(
+    titles.map((title) => ["titles", title] as [string, string])
+  );
+
+  const url = `${BASE_URL}/movies/images/?${params.toString()}`;
+  console.log('Fetching movies with query:', url);
+
+  const response = await fetch(url, { headers: { Accept: "application/json" } });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(`API request failed: ${JSON.stringify(errorData)}`);
+  }
+
+  const data = await response.json();
+
+  if (!Array.isArray(data)) {
+    throw new Error(`Unexpected API response: ${JSON.stringify(data)}`);
+  }
+
+  console.log("Received movie images:", data);
+
+  return data as MovieImage[];
 };
