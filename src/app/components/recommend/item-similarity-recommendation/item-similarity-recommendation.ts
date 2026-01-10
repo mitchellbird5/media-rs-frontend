@@ -71,7 +71,7 @@ export class ItemSimilarityRecommendation {
 
   info_title = 'Item Similarity Recommendation';
   info_description =
-    `Recommend items that are similar to the selected items based on similarity of content using sentence transform (all-MiniLM-L6-v2) aka SBERT.`;
+    `Recommend items that are similar to the selected items, or the given description, based on similarity of content using sentence transformers (all-MiniLM-L6-v2) aka SBERT.`;
 
   @ViewChild(PopupDirective) searchResultsPopup!: PopupDirective;
   @ViewChild(SearchResults) searchResultsComponent!: SearchResults;

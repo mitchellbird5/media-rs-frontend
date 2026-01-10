@@ -17,7 +17,7 @@
     <div class="search-wrapper">
         <app-autocomplete
             [(query)]="searchQuery"
-            [placeholder]="`Enter ${medium} or description`"
+            [placeholder]="`Enter ${medium} or description...`"
             [fetchResults]="search"
             (valueSelected)="onItemSelected($event)"
             class="search-input"

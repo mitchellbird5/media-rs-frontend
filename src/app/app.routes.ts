@@ -4,6 +4,8 @@ import { Home } from './pages/home/home';
 import { SelectMethod } from './pages/select-method/select-method';
 import { ItemSimilarityRecommendation } from './components/recommend/item-similarity-recommendation/item-similarity-recommendation';
 import { ItemItemCFRecommendation } from './components/recommend/item-item-cf-recommendation/item-item-cf-recommendation';
+import { UserUserCFRecommendation } from './components/recommend/user-user-cf-recommendation/user-user-cf-recommendation';
+
 
 export const routes: Routes = [
   {
@@ -13,7 +15,8 @@ export const routes: Routes = [
       { path: '', component: Home },
       { path: 'select-method/:medium', component: SelectMethod },
       { path: 'item-similarity/:medium', component: ItemSimilarityRecommendation },
-      { path: 'item-item-cf/:medium', component: ItemItemCFRecommendation }
+      { path: 'item-item-cf/:medium', component: ItemItemCFRecommendation },
+      { path: 'user-user-cf/:medium', component: UserUserCFRecommendation },
     ]
   }
 ];

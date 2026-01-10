@@ -1,0 +1,27 @@
+<ng-template #addRatingPopup let-name="name" let-close="close">
+  <div class="popup-title">Add rating</div>
+
+  <div class="enter-rating-container">
+    <div class="item-name">
+      {{ name }}
+    </div>
+
+    <input
+      type="number"
+      class="rating-input"
+      min="0"
+      max="5"
+      step="0.5"
+      [(ngModel)]="rating"
+      (keydown.enter)="submit(); close()"
+    />
+  </div>
+
+  <button
+    class="confirm-button"
+    (click)="submit(); close()"
+    [disabled]="rating < 0 || rating > 5"
+  >
+    Confirm
+  </button>
+</ng-template>
