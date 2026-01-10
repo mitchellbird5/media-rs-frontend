@@ -1,5 +1,17 @@
-<div class="result-card" [style.background-image]="imageUrl ? 'url(' + imageUrl + ')' : 'none'">
-  <!-- <div class="overlay">
-    <div class="result-card-title">{{ result }}</div>
-  </div> -->
+<div
+  class="result-card"
+  [style.background-image]="'url(' + getFullImageUrl(movie.poster_path) + ')'"
+  [style.animation-delay]="animationDelay"
+  appPopup
+  [popupTemplate]="detailPopup.template"
+  [popupContext]="{ movie: movie }"
+>
+  <div class="hover-overlay">
+    <div class="hover-text">
+      <div class="genres">{{ genresDisplay }}</div>
+      <div class="runtime">{{ runtimeDisplay }}</div>
+    </div>
+  </div>
 </div>
+
+<app-detail-popup #detailPopup />

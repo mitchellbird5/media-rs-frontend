@@ -1,12 +1,12 @@
-<div class="home-container bg-background-dark"> 
+<div class="home-container"> 
 
-    <div class="flex text-center justify-center text-3xl text-text-default">
+    <div class="home-title">
         Choose option...
     </div>
     
-    <div class="container"> 
-        <a class="card" routerLink="/movies">Movies</a>
-        <a class="card" routerLink="/books">Books</a>
-        <a class="card" routerLink="/music">Music</a>
+    <div class="home-links"> 
+        <a class="card" [routerLink]="['/select-method', 'movie']">Movies</a>
+        <a class="card" [routerLink]="['/select-method', 'book']">Books</a>
+        <a class="card" [routerLink]="['/select-method', 'music']">Music</a>
     </div> 
 </div>

@@ -1,44 +1,114 @@
-import { Component, Input } from "@angular/core";
-import { CommonModule } from "@angular/common";
+import { 
+  Component, 
+  Input, 
+  effect, 
+  signal, 
+  Output,
+  EventEmitter
+} from "@angular/core";
+import { CommonModule, NgIf } from "@angular/common";
 import { ResultCard } from "./result-card/result-card";
-import { fetchMovieImages, MovieImage } from "../../services/movieSearch";
+import { fetchMovieData, MovieData } from "../../services/movieSearch";
 
 @Component({
   selector: "app-results",
   standalone: true,
-  imports: [CommonModule, ResultCard],
+  imports: [
+    CommonModule, 
+    ResultCard, 
+    NgIf
+  ],
   templateUrl: "./results.html",
   styleUrls: ["./results.css"],
 })
 export class Results {
-  images: (MovieImage | undefined)[] = []; // one image per movie
+  /** Titles to search for */
+  readonly resultsSignal = signal<string[]>([]);
+  
+  /** All movie data returned from backend, aligned to results order */
+  readonly moviesSignal = signal<MovieData[]>([]);
+  
+  /** Ready state for loading */
+  readonly ready = signal(false);
 
-  private _results: string[] = [];
-  @Input()
+  @Output() rendered = new EventEmitter<boolean>();
+
+  @Input({ required: true })
   set results(value: string[]) {
-    this._results = value || [];
-    if (this._results.length > 0) {
-      this.fetchAndSetImages(this._results);
-    } else {
-      this.images = [];
+    this.ready.set(false);
+    this.resultsSignal.set(value ?? []);
+  }
+
+  constructor() {
+    // Reactively load movie data whenever titles change
+    effect(() => {
+      const results = this.resultsSignal();
+      if (!results.length) {
+        this.moviesSignal.set([]);
+        this.setReady(false);
+        return;
+      }
+      this.loadMovieData(results);
+    });
+  }
+
+  /** Load full movie data from backend */
+  private async loadMovieData(results: string[]) {
+    try {
+      this.setReady(false);
+
+      // Fetch movie data for all titles
+      const allData: MovieData[] = await fetchMovieData(results);
+
+      // Keep the same order as requested titles
+      const orderedData = results.map(
+        title => allData.find(movie => movie.title && title.startsWith(movie.title)) ?? {
+          title,
+          tmdb_id: undefined,
+          imdb_id: undefined,
+          poster_path: null,
+          backdrop_path: null,
+          genres: {},
+          overview: null,
+          runtime: null,
+          popularity: null,
+          release_date: null,
+          tagline: null,
+          vote_average: null,
+        } as MovieData
+      );
+
+      this.moviesSignal.set(orderedData);
+      this.setReady(true);
+    } catch (err) {
+      console.error("Failed to load movie data", err);
+      // fallback: empty MovieData for each requested title
+      this.moviesSignal.set(results.map(title => ({
+        title,
+        tmdb_id: undefined,
+        imdb_id: undefined,
+        poster_path: null,
+        backdrop_path: null,
+        genres: {},
+        overview: null,
+        runtime: null,
+        popularity: null,
+        release_date: null,
+        tagline: null,
+        vote_average: null,
+      })));
+      this.setReady(true);
     }
   }
-  get results() {
-    return this._results;
+
+  /** Set ready and emit rendered event */
+  private setReady(value: boolean) {
+    this.ready.set(value);
+    this.rendered.emit(value);
   }
 
-  async fetchAndSetImages(results: string[]) {
-    // Fetch all images at once (backend now supports multiple)
-    const imagesForAll = await fetchMovieImages(results);
-
-    // Ensure ordering matches input results
-    this.images = results.map(
-      (title) => imagesForAll.find((img) => img.title === title) || undefined
-    );
-  }
-
+  /** Helper for full image URL */
   getFullImageUrl(file_path?: string | null) {
-    console.log(file_path)
     return file_path ? `https://image.tmdb.org/t/p/w500${file_path}` : '';
   }
 }

@@ -1,9 +1,9 @@
-<div class="results-grid">
-  <ng-container *ngFor="let movie of results; let i = index">
+<ng-container *ngIf="ready()">
+  <div class="results-grid">
     <app-result-card
-      *ngIf="images[i]"        
-      [result]="movie"
-      [imageUrl]="getFullImageUrl(images[i]?.poster_path)"
+      *ngFor="let movie of moviesSignal(); let i = index"
+      [movie]="movie"
+      [animationDelay]="i * 0.05 + 's'"
     ></app-result-card>
-  </ng-container>
-</div>
+  </div>
+</ng-container>

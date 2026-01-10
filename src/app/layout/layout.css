@@ -1,0 +1,36 @@
+/* Full viewport wrapper */
+.layout-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* full height */
+  background-color: var(--bg-background-default); /* full-page background */
+  color: var(--text-default);
+}
+
+/* Default page content area */
+.default-page {
+  flex: 1;               /* fills remaining space after header */
+  width: 100%;           /* take full width of wrapper */
+  display: flex;
+  justify-content: center; /* center the inner page-content */
+  padding-top: var(--header-height);
+  padding-bottom: 2em;    /* optional bottom padding */
+}
+
+/* Constrain actual content width */
+.page-content {
+  width: 100%;
+  max-width: var(--page-width); /* limits width */
+  padding: 1em;                 /* breathing room */
+  box-sizing: border-box;
+}
+
+/* Optional: ensure no horizontal scroll */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100%;
+  overflow-x: hidden;
+  background-color: var(--bg-background-default);
+}

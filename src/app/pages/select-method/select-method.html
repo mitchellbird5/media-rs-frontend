@@ -1,0 +1,30 @@
+<div class="select-method-container">
+
+  <a 
+    class="select-method-text" 
+    [routerLink]="['/item-similarity', medium]"
+  >
+    I want recommendations similar to a particular {{medium}}.
+  </a>
+
+  <a 
+    class="select-method-text" 
+    [routerLink]="['/item-item-cf', medium]"
+  >
+    I want recommendations of movies that people who liked a particular {{medium}} also liked.
+  </a>
+
+  <a 
+    class="select-method-text" 
+    [routerLink]="['/user-user-cf', medium]"
+  >
+    I want recommendations based on what users with similar tastes to me have liked.
+  </a>
+
+  <a 
+    class="select-method-text" 
+    [routerLink]="['/hybrid', medium]"
+  >
+    I want recommendations that are similar to a particular {{medium}} and also popular with users who have similar tastes.
+  </a>
+</div>

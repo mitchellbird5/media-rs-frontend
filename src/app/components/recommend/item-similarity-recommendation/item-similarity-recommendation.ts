@@ -11,11 +11,12 @@ import {
   LucideAngularModule, 
   Info, 
   Search, 
-  Trash2 
+  Trash2,
+  Loader 
 } from 'lucide-angular';
+import { ActivatedRoute  } from '@angular/router';
 
 import { PopupDirective } from '../../popup-card/popup-directive/popup-directive';
-import { Movie } from '../../../types/movies.types';
 import { Results } from '../../results/results';
 import { fetchItemSimilarityRecommendations } from '../../../services/recommend/get-item-similarity-recommendation';
 import { fetchMovieTitles } from '../../../services/movieSearch';
@@ -41,24 +42,32 @@ import { SearchResults } from '../../search-results/search-results';
   styleUrl: './item-similarity-recommendation.css',
 })
 export class ItemSimilarityRecommendation {
-  @Input() medium!: string;
+  medium!: string;
+
+  constructor(private route: ActivatedRoute) {}
+
+  ngOnInit() {
+    this.medium = this.route.snapshot.paramMap.get('medium')!;
+  }
 
   searchQuery: string = '';
-  selectedMovie!: string;
-  movies!: string[] | null;
+  selectedItem!: string;
   numRecommendations: number = 10;
 
   loadingRecommendations = signal(false);
+  recommendationsReady = signal(true);  // initially true for the sake of spinner logic
   searchResults = signal<string[]>([]);
   loadingSearchResults = signal(false);
+  items = signal<string[]>([]);
 
   readonly Info = Info;
   readonly Search = Search;
   readonly Trash2 = Trash2;
+  readonly Loader = Loader;
 
   info_title = 'Item Similarity Recommendation';
   info_description =
-    'Recommend movies that are similar to the selected movie based on similarity of title, genre and tags using sentence transform (all-MiniLM-L6-v2) aka SBERT.';
+    `Recommend items that are similar to the selected items based on similarity of content using sentence transform (all-MiniLM-L6-v2) aka SBERT.`;
 
   @ViewChild(PopupDirective) searchResultsPopup!: PopupDirective;
   @ViewChild(SearchResults) searchResultsComponent!: SearchResults;
@@ -71,17 +80,27 @@ export class ItemSimilarityRecommendation {
 
   async onRecommend(title: string) {
     this.loadingRecommendations.set(true);
-    this.movies = await fetchItemSimilarityRecommendations(title, 10);
-    this.loadingRecommendations.set(false);
+
+    try {
+      const recommendeditems =
+        await fetchItemSimilarityRecommendations(
+          title,
+          this.numRecommendations
+        );
+
+      this.items.set(recommendeditems ?? []);
+    } finally {
+      this.loadingRecommendations.set(false);
+    }
   }
 
-  onMovieSelected(movie: string) {
-    this.selectedMovie = movie;
+  onItemSelected(item: string) {
+    this.selectedItem = item;
   }
 
-  clearSelectedMovie() {
-    this.selectedMovie = '';
-    this.movies = null;
+  clearSelectedItem() {
+    this.selectedItem = '';
+    this.items.set([]);
     this.searchResults.set([]);
   }
 
@@ -101,10 +120,16 @@ export class ItemSimilarityRecommendation {
     }
   }
 
-  onSearchSelect = (movie: string) => {
-    this.onMovieSelected(movie);
+  onSearchSelect = (item: string) => {
+    this.onItemSelected(item);
     this.searchQuery = '';
   };
 
-  
+  onNumRecommendationsChange(value: number) {
+    this.numRecommendations = value;
+  }
+
+  onResultsRendered(ready: boolean) {
+    this.recommendationsReady.set(ready);
+  }
 }

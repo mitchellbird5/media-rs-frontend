@@ -19,7 +19,7 @@
             [(query)]="searchQuery"
             placeholder="Search movies..."
             [fetchResults]="search"
-            (valueSelected)="onMovieSelected($event)"
+            (valueSelected)="onItemSelected($event)"
             class="search-input"
         ></app-autocomplete>
 
@@ -39,21 +39,21 @@
     </div>
 
     <div 
-        *ngIf="selectedMovie"
-        class="selected-movie-display"
+        *ngIf="selectedItem"
+        class="selected-item-display"
     >
-        <div class="selected-movie-text-container">
-            Selected Movie: 
+        <div class="selected-item-text-container">
+            Selected {{medium}}: 
             <div 
-                class="selected-movie-label"
+                class="selected-item-label"
             >
-                {{ selectedMovie }}
+                {{ selectedItem }}
             </div>
         </div>
         <lucide-icon
             [img]="Trash2"
             size="18"
-            (click)="clearSelectedMovie()"
+            (click)="clearSelectedItem()"
             class="trash-icon"
         ></lucide-icon>
     </div>
@@ -65,25 +65,42 @@
             Number of Recommendations:&nbsp;
         </div>
         <input 
+            type="number"
             [(ngModel)]="numRecommendations" 
+            (ngModelChange)="onNumRecommendationsChange($event)"
             [placeholder]="10" 
+            min="1"
+            max="50"
+            step="1"
             class="standard-input num-recs-input" 
         />
     </div>
 
-    <div class="search-button">
-        <div 
-            class="standard-button"
-            (click)="onRecommend(selectedMovie)"
+    <div class="search-button-container">
+        <div class="search-button">
+            <div 
+                class="standard-button"
+                (click)="onRecommend(selectedItem)"
+            >
+                Find Recommendations!
+            </div>
+        </div>
+        <div
+            *ngIf="!recommendationsReady()"
+            class="loading-icon"
         >
-            Find Recommendations!
+            <lucide-icon
+            [img]="Loader"
+            class="spinner"
+            />
         </div>
     </div>
 </div>  
 
 <app-results 
-    *ngIf="movies && movies.length > 0",
-    [results]="movies"
+    *ngIf="items().length > 0"
+    [results]="items()"
+    (rendered)="onResultsRendered($event)"
 />
 
 <app-model-info #modelInfoPopup/>
