@@ -17,6 +17,7 @@ import { TextInput } from '../text-input/text-input';
 })
 export class AutocompleteComponent {
   @Input() fetchResults!: (query: string) => Promise<string[]>;
+  @Input() placeholder: string = 'Search...';
 
   @Input() query = '';
   @Output() queryChange = new EventEmitter<string>();

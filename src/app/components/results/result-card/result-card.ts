@@ -29,6 +29,10 @@ export class ResultCard implements OnChanges {
     return this.movie?.runtime ? `${this.movie.runtime} min` : '';
   }
 
+  get titleDisplay(): string {
+    return this.movie?.title ? this.movie.title.replace(/\s*\(\d{4}\)$/, "") : '';
+  }
+
   getFullImageUrl(file_path?: string | null) {
     return file_path ? `https://image.tmdb.org/t/p/w500${file_path}` : '';
   }

@@ -17,7 +17,7 @@
     <div class="search-wrapper">
         <app-autocomplete
             [(query)]="searchQuery"
-            placeholder="Search movies..."
+            [placeholder]="`Enter ${medium} or a description`"
             [fetchResults]="search"
             (valueSelected)="onItemSelected($event)"
             class="search-input"
@@ -80,7 +80,7 @@
         <div class="search-button">
             <div 
                 class="standard-button"
-                (click)="onRecommend(selectedItem)"
+                (click)="onRecommend()"
             >
                 Find Recommendations!
             </div>

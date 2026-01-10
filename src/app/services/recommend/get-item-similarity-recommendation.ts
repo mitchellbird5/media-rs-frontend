@@ -32,3 +32,34 @@ export const fetchItemSimilarityRecommendations = async (
 
   return data;
 };
+
+export const fetchItemSimilarityDescriptionRecommendations = async (
+  description: string,
+  numberOfRecommendations: number
+): Promise<string[] | null> => {
+
+  const query = new URLSearchParams({
+    description: description,
+    top_n: numberOfRecommendations.toString(),
+  });
+
+  const response = await fetch(`${BASE_URL}/recommend/content-description/?${query.toString()}`, {
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json',
+      // Add auth header if your API requires it
+      // 'Authorization': `Bearer ${TOKEN}`,
+    },
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(
+      `API request failed with status ${response.status}: ${JSON.stringify(errorData)}`
+    );
+  }
+
+  const data: string[] = await response.json();
+
+  return data;
+};

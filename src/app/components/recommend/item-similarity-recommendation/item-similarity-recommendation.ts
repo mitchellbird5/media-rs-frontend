@@ -18,7 +18,10 @@ import { ActivatedRoute  } from '@angular/router';
 
 import { PopupDirective } from '../../popup-card/popup-directive/popup-directive';
 import { Results } from '../../results/results';
-import { fetchItemSimilarityRecommendations } from '../../../services/recommend/get-item-similarity-recommendation';
+import { 
+  fetchItemSimilarityRecommendations,
+  fetchItemSimilarityDescriptionRecommendations 
+} from '../../../services/recommend/get-item-similarity-recommendation';
 import { fetchMovieTitles } from '../../../services/movieSearch';
 import { AutocompleteComponent } from '../../autocomplete/autocomplete';
 import { ModelInfo } from '../../model-info/model-info';
@@ -78,17 +81,24 @@ export class ItemSimilarityRecommendation {
     return titles;
   }
 
-  async onRecommend(title: string) {
+  async onRecommend() {
     this.loadingRecommendations.set(true);
 
-    try {
-      const recommendeditems =
-        await fetchItemSimilarityRecommendations(
-          title,
-          this.numRecommendations
-        );
+    // Declare variables in the outer scope
+    let query: string; // use proper type if needed
+    let method: (query: string, num: number) => Promise<string[] | null>; // type your function properly
 
-      this.items.set(recommendeditems ?? []);
+    if (!this.selectedItem) {
+      query = this.searchQuery;
+      method = fetchItemSimilarityDescriptionRecommendations;
+    } else {
+      query = this.selectedItem;
+      method = fetchItemSimilarityRecommendations;
+    }
+
+    try {
+      const recommendedItems = await method(query, this.numRecommendations);
+      this.items.set(recommendedItems ?? []);
     } finally {
       this.loadingRecommendations.set(false);
     }

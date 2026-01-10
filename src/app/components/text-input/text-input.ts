@@ -13,7 +13,7 @@ import { LucideAngularModule, X } from 'lucide-angular';
   styleUrls: ['./text-input.css'],
 })
 export class TextInput {
-  @Input() placeholder = 'Search...';
+  @Input() placeholder: string = 'Search...';
   @Input() query: string = '';
   @Input() width: string = '300px';
 
