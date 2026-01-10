@@ -2,7 +2,7 @@ import { getBaseUrl } from "../baseUrl";
 
 const BASE_URL = getBaseUrl();
 
-export const fetchItemSimilarityRecommendations = async (
+export const fetchItemItemCFRecommendations = async (
   title: string,
   numberOfRecommendations: number
 ): Promise<string[] | null> => {
@@ -12,7 +12,8 @@ export const fetchItemSimilarityRecommendations = async (
     top_n:numberOfRecommendations.toString(),
   });
 
-  const response = await fetch(`${BASE_URL}/recommend/content/?${query.toString()}`, {
+  console.log('Fetching recommendations with query:', query.toString());
+  const response = await fetch(`${BASE_URL}/recommend/item-cf/?${query.toString()}`, {
     method: 'GET',
     headers: {
       'Accept': 'application/json',
@@ -29,6 +30,8 @@ export const fetchItemSimilarityRecommendations = async (
   }
 
   const data: string[] = await response.json();
+
+  console.log('Received movie data:', data);
 
   return data;
 };

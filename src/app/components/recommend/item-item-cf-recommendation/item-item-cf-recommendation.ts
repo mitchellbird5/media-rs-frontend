@@ -1,0 +1,135 @@
+import { 
+  Component, 
+  Input, 
+  ViewChild, 
+  signal 
+} from '@angular/core';
+import { NgIf } from '@angular/common';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { 
+  LucideAngularModule, 
+  Info, 
+  Search, 
+  Trash2,
+  Loader 
+} from 'lucide-angular';
+import { ActivatedRoute  } from '@angular/router';
+
+import { PopupDirective } from '../../popup-card/popup-directive/popup-directive';
+import { Results } from '../../results/results';
+import { fetchItemItemCFRecommendations } from '../../../services/recommend/get-item-item-cf-recommendation';
+import { fetchMovieTitles } from '../../../services/movieSearch';
+import { AutocompleteComponent } from '../../autocomplete/autocomplete';
+import { ModelInfo } from '../../model-info/model-info';
+import { SearchResults } from '../../search-results/search-results';
+
+@Component({
+  selector: 'app-item-item-cf-recommendation',
+  standalone: true,
+  imports: [
+    FormsModule,
+    LucideAngularModule,
+    PopupDirective,
+    NgIf,
+    Results,
+    AutocompleteComponent,
+    CommonModule,
+    ModelInfo,
+    SearchResults
+  ],
+  templateUrl: './item-item-cf-recommendation.html',
+  styleUrl: './item-item-cf-recommendation.css',
+})
+export class ItemItemCFRecommendation {
+  medium!: string;
+
+  constructor(private route: ActivatedRoute) {}
+
+  ngOnInit() {
+    this.medium = this.route.snapshot.paramMap.get('medium')!;
+  }
+
+  searchQuery: string = '';
+  selectedItem!: string;
+  numRecommendations: number = 10;
+
+  loadingRecommendations = signal(false);
+  recommendationsReady = signal(true);  // initially true for the sake of spinner logic
+  searchResults = signal<string[]>([]);
+  loadingSearchResults = signal(false);
+  items = signal<string[]>([]);
+
+  readonly Info = Info;
+  readonly Search = Search;
+  readonly Trash2 = Trash2;
+  readonly Loader = Loader;
+
+  info_title = 'Item-Item Collaborative Filtering Recommendation';
+  info_description =
+    `Recommend items that are commonly rated high by users who also enjoyed this particular item.`;
+
+  @ViewChild(PopupDirective) searchResultsPopup!: PopupDirective;
+  @ViewChild(SearchResults) searchResultsComponent!: SearchResults;
+  @ViewChild(AutocompleteComponent) autocomplete!: AutocompleteComponent;
+
+  search = async (query: string): Promise<string[]> => {
+    const titles = await fetchMovieTitles(query, 5);
+    return titles;
+  }
+
+  async onRecommend(title: string) {
+    this.loadingRecommendations.set(true);
+
+    try {
+      const recommendeditems =
+        await fetchItemItemCFRecommendations(
+          title,
+          this.numRecommendations
+        );
+
+      this.items.set(recommendeditems ?? []);
+    } finally {
+      this.loadingRecommendations.set(false);
+    }
+  }
+
+  onItemSelected(item: string) {
+    this.selectedItem = item;
+  }
+
+  clearSelectedItem() {
+    this.selectedItem = '';
+    this.items.set([]);
+    this.searchResults.set([]);
+  }
+
+  async onSearchClick() {
+    if (!this.searchQuery) return;
+
+    this.autocomplete?.closeDropdown();
+
+    this.loadingSearchResults.set(true);
+    this.searchResults.set([]);
+
+    try {
+      const results = await fetchMovieTitles(this.searchQuery, 50);
+      this.searchResults.set(results);
+    } finally {
+      this.loadingSearchResults.set(false);
+    }
+  }
+
+  onSearchSelect = (item: string) => {
+    this.onItemSelected(item);
+    this.searchQuery = '';
+  };
+
+  onNumRecommendationsChange(value: number) {
+    this.numRecommendations = value;
+  }
+
+  onResultsRendered(ready: boolean) {
+    this.recommendationsReady.set(ready);
+  }
+}
