@@ -77,10 +77,16 @@
     </div>
 
     <div class="search-button-container">
-        <div class="search-button">
+        <div class="button-wrapper">
             <div 
-                class="standard-button"
-                (click)="onRecommend(selectedItem)"
+                class="search-button" 
+                [routerLink]="['/select-method', medium]"
+            >
+                Change Method
+            </div>
+            <div 
+                class="search-button"
+                (click)="onRecommend()"
             >
                 Find Recommendations!
             </div>

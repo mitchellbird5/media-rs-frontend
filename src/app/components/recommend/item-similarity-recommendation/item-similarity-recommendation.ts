@@ -14,7 +14,7 @@ import {
   Trash2,
   Loader 
 } from 'lucide-angular';
-import { ActivatedRoute  } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 
 import { PopupDirective } from '../../popup-card/popup-directive/popup-directive';
 import { Results } from '../../results/results';
@@ -39,7 +39,8 @@ import { SearchResults } from '../../search-results/search-results';
     AutocompleteComponent,
     CommonModule,
     ModelInfo,
-    SearchResults
+    SearchResults,
+    RouterModule
   ],
   templateUrl: './item-similarity-recommendation.html',
   styleUrl: './item-similarity-recommendation.css',

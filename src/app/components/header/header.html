@@ -9,8 +9,9 @@
 
     <!-- Desktop nav -->
     <nav class="header-nav">
-      <a routerLink="/movies" routerLinkActive="active">Movies</a>
-      <a routerLink="/books" routerLinkActive="active">Books</a>
+      <a [routerLink]="['/select-method', 'movie']">Movies</a>
+      <a [routerLink]="['/select-method', 'book']">Books</a>
+      <a [routerLink]="['/select-method', 'music']">Music</a>
       <a routerLink="/about" routerLinkActive="active">About</a>
     </nav>
 
@@ -28,9 +29,9 @@
   <!-- Mobile menu -->
   <div *ngIf="open" class="mobile-menu">
     <nav class="mobile-nav">
-      <a routerLink="/movies" (click)="closeMenu()">Movies</a>
-      <a routerLink="/books" (click)="closeMenu()">Books</a>
-      <a routerLink="/about" (click)="closeMenu()">About</a>
+      <a (click)="closeMenu()" [routerLink]="['/select-method', 'movie']">Movies</a>
+      <a (click)="closeMenu()" [routerLink]="['/select-method', 'book']">Books</a>
+      <a (click)="closeMenu()" [routerLink]="['/select-method', 'music']">Music</a>
       <button class="mobile-sign-in-btn">Sign in</button>
     </nav>
   </div>

@@ -14,7 +14,7 @@ import {
   Trash2,
   Loader 
 } from 'lucide-angular';
-import { ActivatedRoute  } from '@angular/router';
+import { ActivatedRoute, RouterModule  } from '@angular/router';
 
 import { PopupDirective } from '../../popup-card/popup-directive/popup-directive';
 import { Results } from '../../results/results';
@@ -36,7 +36,8 @@ import { SearchResults } from '../../search-results/search-results';
     AutocompleteComponent,
     CommonModule,
     ModelInfo,
-    SearchResults
+    SearchResults,
+    RouterModule
   ],
   templateUrl: './item-item-cf-recommendation.html',
   styleUrl: './item-item-cf-recommendation.css',
@@ -78,13 +79,13 @@ export class ItemItemCFRecommendation {
     return titles;
   }
 
-  async onRecommend(title: string) {
+  async onRecommend() {
     this.loadingRecommendations.set(true);
 
     try {
       const recommendeditems =
         await fetchItemItemCFRecommendations(
-          title,
+          this.selectedItem,
           this.numRecommendations
         );
 
