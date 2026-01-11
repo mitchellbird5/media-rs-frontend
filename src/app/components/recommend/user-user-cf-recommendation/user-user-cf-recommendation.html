@@ -26,7 +26,7 @@
         <lucide-icon
             [img]="Search"
             class="search-icon"
-            (mousedown)="onSearchClick()"
+            (mousedown)="onSearchClick(searchQuery)"
             appPopup
             [popupTemplate]="searchResultsPopup.template"
             [popupContext]="{
@@ -73,12 +73,12 @@
                     ratings: ratings,
                     medium: medium,
                     search: search,
-                    onItemSelected: onItemSelected,
-                    onSearchClick: onSearchClick,
-                    onSearchSelect: onSearchSelect,
+                    onItemSelected: onItemSelected.bind(this),
+                    onSearchClick: onSearchClick.bind(this),
+                    onSearchSelect: onSearchSelect.bind(this),
                     loadingSearchResults: loadingSearchResults,
                     searchResults: searchResults
-                }" 
+                }"
             >
                 Edit ratings
             </div>

@@ -8,7 +8,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 10;
   animation: fadeIn 0.2s ease-in-out;
 }
 
@@ -19,7 +18,7 @@
   max-width: 800px;
   width: 90%;
   max-height: 80vh;
-  overflow: visible;
+  overflow-y: auto;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
   animation: fadeIn 0.2s ease-in-out;
   position: relative;

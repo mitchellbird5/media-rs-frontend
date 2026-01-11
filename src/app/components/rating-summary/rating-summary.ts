@@ -35,16 +35,16 @@ import { PopupDirective } from '../popup-card/popup-directive/popup-directive';
   styleUrl: './rating-summary.css',
 })
 export class RatingSummary {
-  @Input() ratings: Rating[] = [];
+  @Input() ratings!: WritableSignal<Rating[]>;
   @Input() medium!: string;
   @Input() search!: (query: string) => Promise<string[]>;
   @Input() onItemSelected!: (item: string) => void;
-  @Input() onSearchClick!: () => void;
+  @Input() onSearchClick!: (query: WritableSignal<string>) => void;
   @Input() onSearchSelect!: (item: string) => void;
   @Input() loadingSearchResults!: Signal<boolean>;
   @Input() searchResults!: Signal<string[]>;
 
-  searchQuery: WritableSignal<string> = signal('');
+  query: WritableSignal<string> = signal('');
 
   readonly Search = Search;
 
@@ -54,4 +54,5 @@ export class RatingSummary {
   trackByName(_: number, rating: Rating) {
     return rating.name;
   }
+  
 }

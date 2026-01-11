@@ -59,10 +59,11 @@ export class UserUserCFRecommendation {
 
   searchQuery: WritableSignal<string> = signal('');
   selectedItem!: string;
-  ratings: Rating[] = [];
   ratingInput: string = '';
   numRecommendations: number = 10;
   numSimilarUsers: number = 25;
+
+  ratings: WritableSignal<Rating[]> = signal([]);
 
   loadingRecommendations = signal(false);
   recommendationsReady = signal(true);  // initially true for the sake of spinner logic
@@ -96,7 +97,7 @@ export class UserUserCFRecommendation {
 
     try {
       const recommendedItems = await fetchUserUserCFRecommendations(
-        this.ratings, 
+        this.ratings(), 
         this.numRecommendations,
         this.numSimilarUsers
       );
@@ -122,14 +123,14 @@ export class UserUserCFRecommendation {
     this.searchResults.set([]);
   }
 
-  async onSearchClick() {
-    if (!this.searchQuery) return;
+  async onSearchClick(query: WritableSignal<string>) {
+    if (!query) return;
 
     this.loadingSearchResults.set(true);
     this.searchResults.set([]);
 
     try {
-      const results = await fetchMovieTitles(this.searchQuery(), 50);
+      const results = await fetchMovieTitles(query(), 50);
       this.searchResults.set(results);
     } finally {
       this.loadingSearchResults.set(false);
@@ -150,7 +151,7 @@ export class UserUserCFRecommendation {
   }
 
   addRating(name: string, score: number) {
-    this.ratings.push({name: name, value: score} as Rating);
+    this.ratings.update(r => [...r, { name, value: score }]);
   }
 
   onRatingInput(value: number) {

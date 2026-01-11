@@ -31,6 +31,8 @@ export class AutocompleteComponent {
   @Input() placeholder: string = 'Search...';
   @Input() width: string = '400px';
   @Input() query: WritableSignal<string> = signal('');
+  @Input() zIndex: number = 5
+  
   @Output() valueSelected = new EventEmitter<string>();
 
   results = signal<string[]>([]);
@@ -45,8 +47,10 @@ export class AutocompleteComponent {
     this.dropdownEl = document.createElement('div');
     this.dropdownEl.className = 'autocomplete-dropdown';
     this.dropdownEl.style.position = 'fixed';
-    this.dropdownEl.style.zIndex = '20000';
+    this.dropdownEl.style.zIndex = `${this.zIndex}`;
     document.body.appendChild(this.dropdownEl);
+
+    console.log('Autocomplete z-index =', this.zIndex);
   }
 
   ngOnDestroy() {
