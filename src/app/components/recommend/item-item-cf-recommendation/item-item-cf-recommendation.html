@@ -16,7 +16,7 @@
 
     <div class="search-wrapper">
         <app-autocomplete
-            [(query)]="searchQuery"
+            [query]="searchQuery"
             placeholder="Search movies..."
             [fetchResults]="search"
             (valueSelected)="onItemSelected($event)"

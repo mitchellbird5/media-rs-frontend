@@ -2,7 +2,8 @@ import {
   Component, 
   Input, 
   ViewChild, 
-  signal 
+  signal,
+  WritableSignal 
 } from '@angular/core';
 import { NgIf } from '@angular/common';
 import { CommonModule } from '@angular/common';
@@ -54,7 +55,7 @@ export class ItemSimilarityRecommendation {
     this.medium = this.route.snapshot.paramMap.get('medium')!;
   }
 
-  searchQuery: string = '';
+  searchQuery: WritableSignal<string> = signal('');
   selectedItem!: string;
   numRecommendations: number = 10;
 
@@ -90,7 +91,7 @@ export class ItemSimilarityRecommendation {
     let method: (query: string, num: number) => Promise<string[] | null>; // type your function properly
 
     if (!this.selectedItem) {
-      query = this.searchQuery;
+      query = this.searchQuery();
       method = fetchItemSimilarityDescriptionRecommendations;
     } else {
       query = this.selectedItem;
@@ -124,7 +125,7 @@ export class ItemSimilarityRecommendation {
     this.searchResults.set([]);
 
     try {
-      const results = await fetchMovieTitles(this.searchQuery, 50);
+      const results = await fetchMovieTitles(this.searchQuery(), 50);
       this.searchResults.set(results);
     } finally {
       this.loadingSearchResults.set(false);
@@ -133,7 +134,7 @@ export class ItemSimilarityRecommendation {
 
   onSearchSelect = (item: string) => {
     this.onItemSelected(item);
-    this.searchQuery = '';
+    this.searchQuery.set('');
   };
 
   onNumRecommendationsChange(value: number) {

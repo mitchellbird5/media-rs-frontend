@@ -1,8 +1,11 @@
+:host {
+  display: inline-block;
+  width: var(--input-width, 300px);
+}
 
 .text-clear-container {
-  position: relative;      /* container for absolute icon */
-  display: inline-block;   /* shrink-wrap content if needed */
-  width: var(--input-width, 300px);            /* can be any width you want */
+  position: relative;
+  width: 100%;
 }
 
 .text-clear-input {

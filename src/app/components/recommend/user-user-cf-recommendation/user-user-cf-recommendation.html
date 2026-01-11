@@ -16,7 +16,7 @@
 
     <div class="search-wrapper">
         <app-autocomplete
-            [(query)]="searchQuery"
+            [query]="searchQuery"
             [placeholder]="`Search for ${medium}s to rate...`"
             [fetchResults]="search"
             (valueSelected)="onItemSelected($event)"
@@ -69,7 +69,16 @@
                 class="edit-button"
                 appPopup
                 [popupTemplate]="ratingSummaryPopup.template"
-                [popupContext]="{ratings: ratings}" 
+                [popupContext]="{
+                    ratings: ratings,
+                    medium: medium,
+                    search: search,
+                    onItemSelected: onItemSelected,
+                    onSearchClick: onSearchClick,
+                    onSearchSelect: onSearchSelect,
+                    loadingSearchResults: loadingSearchResults,
+                    searchResults: searchResults
+                }" 
             >
                 Edit ratings
             </div>

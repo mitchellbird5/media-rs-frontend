@@ -8,18 +8,18 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 9999;
+  z-index: 10;
   animation: fadeIn 0.2s ease-in-out;
 }
 
 .popup-card {
-  background: var(--bg-background-default);
+  background: var(--bg-background-light);
   color: var(--text-default);
   border-radius: var(--radius-md);
   max-width: 800px;
   width: 90%;
   max-height: 80vh;
-  overflow-y: auto;
+  overflow: visible;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
   animation: fadeIn 0.2s ease-in-out;
   position: relative;

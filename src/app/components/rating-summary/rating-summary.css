@@ -29,3 +29,26 @@
   transition: border-color 0.2s ease, background 0.3s ease;
   align-content: center;
 }
+
+.search-wrapper {
+  position: relative;     
+  display: inline-block;    
+  text-align: left;        
+}
+
+.search-icon {
+  position: absolute;
+  right: 0;            
+  top: 50%;                  
+  transform: translateY(-60%); 
+  width: 20px;
+  height: 20px;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.search-icon:hover {
+  color: var(--secondary-default);
+  transform: translateY(-60%) scale(1.05);
+}

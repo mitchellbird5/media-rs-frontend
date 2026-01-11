@@ -3,7 +3,8 @@ import {
   Input, 
   ViewChild, 
   signal,
-  TemplateRef 
+  TemplateRef,
+  WritableSignal 
 } from '@angular/core';
 import { NgIf } from '@angular/common';
 import { CommonModule } from '@angular/common';
@@ -41,7 +42,6 @@ import { RatingSummary } from '../../rating-summary/rating-summary';
     ModelInfo,
     SearchResults,
     RouterModule,
-    TextInput,
     RatingPopup,
     RatingSummary
   ],
@@ -57,7 +57,7 @@ export class UserUserCFRecommendation {
     this.medium = this.route.snapshot.paramMap.get('medium')!;
   }
 
-  searchQuery: string = '';
+  searchQuery: WritableSignal<string> = signal('');
   selectedItem!: string;
   ratings: Rating[] = [];
   ratingInput: string = '';
@@ -79,8 +79,6 @@ export class UserUserCFRecommendation {
   info_title = 'User-User Collaborative Filtering Recommendation';
   info_description =
     `Recommend items that are similar to the selected items, or the given description, based on similarity of content using sentence transformers (all-MiniLM-L6-v2) aka SBERT.`;
-
-  @ViewChild(AutocompleteComponent) autocomplete!: AutocompleteComponent;
 
   @ViewChild('ratingPopupTrigger', { read: PopupDirective })
   ratingPopupTrigger!: PopupDirective;
@@ -127,13 +125,11 @@ export class UserUserCFRecommendation {
   async onSearchClick() {
     if (!this.searchQuery) return;
 
-    this.autocomplete?.closeDropdown();
-
     this.loadingSearchResults.set(true);
     this.searchResults.set([]);
 
     try {
-      const results = await fetchMovieTitles(this.searchQuery, 50);
+      const results = await fetchMovieTitles(this.searchQuery(), 50);
       this.searchResults.set(results);
     } finally {
       this.loadingSearchResults.set(false);
@@ -142,7 +138,7 @@ export class UserUserCFRecommendation {
 
   onSearchSelect = (item: string) => {
     this.onItemSelected(item);
-    this.searchQuery = '';
+    this.searchQuery.set('');
   };
 
   onNumRecommendationsChange(value: number) {

@@ -2,7 +2,8 @@ import {
   Component, 
   Input, 
   ViewChild, 
-  signal 
+  signal,
+  WritableSignal 
 } from '@angular/core';
 import { NgIf } from '@angular/common';
 import { CommonModule } from '@angular/common';
@@ -51,7 +52,7 @@ export class ItemItemCFRecommendation {
     this.medium = this.route.snapshot.paramMap.get('medium')!;
   }
 
-  searchQuery: string = '';
+  searchQuery: WritableSignal<string> = signal('');
   selectedItem!: string;
   numRecommendations: number = 10;
 
@@ -114,7 +115,7 @@ export class ItemItemCFRecommendation {
     this.searchResults.set([]);
 
     try {
-      const results = await fetchMovieTitles(this.searchQuery, 50);
+      const results = await fetchMovieTitles(this.searchQuery(), 50);
       this.searchResults.set(results);
     } finally {
       this.loadingSearchResults.set(false);
@@ -123,7 +124,7 @@ export class ItemItemCFRecommendation {
 
   onSearchSelect = (item: string) => {
     this.onItemSelected(item);
-    this.searchQuery = '';
+    this.searchQuery.set('');
   };
 
   onNumRecommendationsChange(value: number) {
