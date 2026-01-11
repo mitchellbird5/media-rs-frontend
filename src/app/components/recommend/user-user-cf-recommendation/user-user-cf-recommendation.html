@@ -49,7 +49,25 @@
             type="number"
             [(ngModel)]="numRecommendations" 
             (ngModelChange)="onNumRecommendationsChange($event)"
-            [placeholder]="10" 
+            [placeholder]="`${numRecommendations}`" 
+            min="1"
+            max="50"
+            step="1"
+            class="standard-input num-recs-input" 
+        />
+    </div>
+
+    <div class="number-of-recs-container">
+        <div 
+            class="number-of-recommendations-label"
+        >
+            Number of Similar Users:&nbsp;
+        </div>
+        <input 
+            type="number"
+            [(ngModel)]="numSimilarUsers" 
+            (ngModelChange)="onNumRecommendationsChange($event)"
+            [placeholder]="`${numSimilarUsers}`" 
             min="1"
             max="50"
             step="1"
@@ -118,10 +136,11 @@
 />
 
 <span
+  #ratingPopupTrigger
   appPopup
   [popupTemplate]="ratingPopup.template"
   [popupContext]="{
     name: selectedItem
   }"
-  #ratingPopupTrigger
+  [zIndex]="1050"
 ></span>

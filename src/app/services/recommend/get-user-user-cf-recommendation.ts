@@ -10,23 +10,25 @@ export interface Rating {
 export const fetchUserUserCFRecommendations = async (
   ratings: Rating[],
   numberOfRecommendations: number,
-  numberOfSimularUsers: number
+  numberOfSimilarUsers: number
 ): Promise<string[] | null> => {
 
-  const query = new URLSearchParams({
-    ratings: JSON.stringify(ratings),
-    top_n: numberOfRecommendations.toString(),
-    k_similar_users: numberOfSimularUsers.toString()
-  });
+  const payload = {
+    ratings,
+    top_n: numberOfRecommendations,
+    k_similar_users: numberOfSimilarUsers,
+  };
 
-  console.log('Fetching recommendations with query:', query.toString());
-  const response = await fetch(`${BASE_URL}/recommend/user-cf/?${query.toString()}`, {
-    method: 'GET',
+  console.log('Fetching recommendations with payload:', payload);
+
+  const response = await fetch(`${BASE_URL}/recommend/user-cf/`, {
+    method: 'POST',
     headers: {
+      'Content-Type': 'application/json',
       'Accept': 'application/json',
-      // Add auth header if your API requires it
-      // 'Authorization': `Bearer ${TOKEN}`,
+      // 'Authorization': `Bearer ${TOKEN}`, // if needed
     },
+    body: JSON.stringify(payload),
   });
 
   if (!response.ok) {
@@ -38,7 +40,7 @@ export const fetchUserUserCFRecommendations = async (
 
   const data: string[] = await response.json();
 
-  console.log('Received movie data:', data);
+  console.log('Received recommendations:', data);
 
   return data;
 };

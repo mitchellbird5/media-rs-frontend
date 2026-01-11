@@ -46,13 +46,29 @@ export class RatingSummary {
 
   query: WritableSignal<string> = signal('');
 
+  private onItemSelectedFn?: (item: string) => void;
+  closeAutocompleteTrigger = signal(0);
+
   readonly Search = Search;
 
   @ViewChild('ratingSummaryPopup', { static: true })
   template!: TemplateRef<any>;
 
+  @ViewChild('popupAutocomplete', { static: true })
+  popupAutocomplete!: AutocompleteComponent;
+
   trackByName(_: number, rating: Rating) {
     return rating.name;
+  }
+
+  handleSelect = (item: string) => {
+    this.closeAutocompleteTrigger.update(v => v + 1);
+    this.onItemSelectedFn?.(item);
+    this.query.set('');
+  };
+
+  registerOnItemSelected(fn: (item: string) => void) {
+    this.onItemSelectedFn = fn;
   }
   
 }

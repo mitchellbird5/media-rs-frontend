@@ -8,7 +8,10 @@ import {
   ElementRef,
   Signal,
   WritableSignal,
-  effect 
+  effect,
+  inject,
+  Injector,
+  DestroyRef 
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -32,6 +35,7 @@ export class AutocompleteComponent {
   @Input() width: string = '400px';
   @Input() query: WritableSignal<string> = signal('');
   @Input() zIndex: number = 5
+  @Input() forceCloseSignal?: Signal<number>;
   
   @Output() valueSelected = new EventEmitter<string>();
 
@@ -39,31 +43,39 @@ export class AutocompleteComponent {
   isOpen = signal(false);
   loading = signal(false);
 
-  private dropdownEl!: HTMLDivElement;
+  private dropdownEl?: HTMLDivElement;
 
   constructor(private host: ElementRef) {}
 
-  ngOnInit() {
-    this.dropdownEl = document.createElement('div');
-    this.dropdownEl.className = 'autocomplete-dropdown';
-    this.dropdownEl.style.position = 'fixed';
-    this.dropdownEl.style.zIndex = `${this.zIndex}`;
-    document.body.appendChild(this.dropdownEl);
+  private lastForceClose = 0;
+  private injector = inject(Injector);
 
-    console.log('Autocomplete z-index =', this.zIndex);
-  }
+  private _forceCloseEffect = effect(
+    () => {
+      if (!this.forceCloseSignal) return;
+
+      const v = this.forceCloseSignal();
+      if (v !== this.lastForceClose) {
+        this.lastForceClose = v;
+        this.closeDropdown();
+      }
+    },
+    { injector: this.injector }
+  );
 
   ngOnDestroy() {
-    document.body.removeChild(this.dropdownEl);
+    // if (this.dropdownEl && this.dropdownEl.parentElement) {
+    //   this.dropdownEl.parentElement.removeChild(this.dropdownEl);
+    //   this.dropdownEl = undefined;
+    // }
+    this.closeDropdown();
   }
 
   async onInput(value: string) {
     this.query.set(value);
 
     if (!value || value.length < 2) {
-      this.results.set([]);
-      this.isOpen.set(false);
-      this.updateDropdown();
+      this.closeDropdown();
       return;
     }
 
@@ -72,35 +84,62 @@ export class AutocompleteComponent {
     try {
       const data = await this.fetchResults(this.query());
       this.results.set(data);
-      this.isOpen.set(data.length > 0);
+
+      if (!data.length) {
+        this.closeDropdown();
+        return;
+      }
+
+      this.isOpen.set(true);
+
+      // Create dropdown only if it doesn’t exist
+      if (!this.dropdownEl) {
+        this.dropdownEl = document.createElement('div');
+        this.dropdownEl.className = 'autocomplete-dropdown';
+        this.dropdownEl.style.position = 'fixed';
+        this.dropdownEl.style.zIndex = `${this.zIndex}`;
+        document.body.appendChild(this.dropdownEl);
+      }
+
       this.updateDropdown();
     } finally {
       this.loading.set(false);
     }
   }
 
+
   select(value: string) {
     this.query.set(value);
-    this.isOpen.set(false);
-    this.updateDropdown();
     this.valueSelected.emit(value);
+
+    // Close dropdown completely
+    this.closeDropdown();
   }
+
 
   closeDropdown() {
+    if (!this.dropdownEl) return;
+
+    if (this.dropdownEl.parentElement) {
+      this.dropdownEl.parentElement.removeChild(this.dropdownEl);
+    }
+    this.dropdownEl = undefined;
     this.isOpen.set(false);
-    this.updateDropdown();
   }
 
+
   private updateDropdown() {
+    if (!this.dropdownEl) return;
+
     if (!this.isOpen() || !this.results().length) {
       this.dropdownEl.style.display = 'none';
       const inputEl = this.host.nativeElement.querySelector('input') as HTMLInputElement;
-      if (inputEl) inputEl.value = this.query(); // force input to sync with signal
+      if (inputEl) inputEl.value = this.query(); 
       return;
     }
 
     const inputEl = this.host.nativeElement.querySelector('input') as HTMLInputElement;
-    if (inputEl) inputEl.value = this.query(); // force input to sync
+    if (inputEl) inputEl.value = this.query(); 
 
     const rect = inputEl.getBoundingClientRect();
 
@@ -118,4 +157,5 @@ export class AutocompleteComponent {
       this.dropdownEl.appendChild(div);
     }
   }
+
 }

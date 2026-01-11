@@ -31,8 +31,4 @@ export class PopupShellComponent {
   readonly X = X;
 
   @Input() overlayZIndex: number = 1000;
-
-  ngOnInit() {
-    console.log('Popup overlay z-index =', this.overlayZIndex);
-  }
 }

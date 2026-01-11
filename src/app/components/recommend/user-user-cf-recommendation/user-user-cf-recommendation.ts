@@ -87,6 +87,9 @@ export class UserUserCFRecommendation {
   @ViewChild('ratingSummaryPopupTrigger', { read: PopupDirective })
   ratingSummaryPopupTrigger!: PopupDirective;
 
+  @ViewChild(AutocompleteComponent)
+  searchAutocomplete!: AutocompleteComponent;
+
   search = async (query: string): Promise<string[]> => {
     const titles = await fetchMovieTitles(query, 5);
     return titles;
@@ -109,6 +112,7 @@ export class UserUserCFRecommendation {
 
   onItemSelected(item: string) {
     this.selectedItem = item;
+    this.searchAutocomplete?.closeDropdown();
 
     queueMicrotask(() => {
       this.ratingPopupTrigger.open({
@@ -140,6 +144,7 @@ export class UserUserCFRecommendation {
   onSearchSelect = (item: string) => {
     this.onItemSelected(item);
     this.searchQuery.set('');
+    this.searchAutocomplete?.closeDropdown();
   };
 
   onNumRecommendationsChange(value: number) {
