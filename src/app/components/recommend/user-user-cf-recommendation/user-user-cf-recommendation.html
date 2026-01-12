@@ -1,6 +1,6 @@
 <div class="item-similarity-recommendation-container">
     <div class="title-info-container">
-        <div class="title">Item-Item Collaborative Filtering Recommendation</div>
+        <div class="title">User-User Collaborative Filtering Recommendation</div>
 
         <lucide-icon 
             [img]="Info" 
@@ -17,7 +17,7 @@
     <div class="search-wrapper">
         <app-autocomplete
             [query]="searchQuery"
-            placeholder="Search movies..."
+            [placeholder]="`Search for ${medium}s to rate...`"
             [fetchResults]="search"
             (valueSelected)="onItemSelected($event)"
             class="search-input"
@@ -26,7 +26,7 @@
         <lucide-icon
             [img]="Search"
             class="search-icon"
-            (mousedown)="onSearchClick()"
+            (mousedown)="onSearchClick(searchQuery)"
             appPopup
             [popupTemplate]="searchResultsPopup.template"
             [popupContext]="{
@@ -38,25 +38,6 @@
         ></lucide-icon>
     </div>
 
-    <div 
-        *ngIf="selectedItem"
-        class="selected-item-display"
-    >
-        <div class="selected-item-text-container">
-            Selected {{medium}}: 
-            <div 
-                class="selected-item-label"
-            >
-                {{ selectedItem }}
-            </div>
-        </div>
-        <lucide-icon
-            [img]="Trash2"
-            size="18"
-            (click)="clearSelectedItem()"
-            class="trash-icon"
-        ></lucide-icon>
-    </div>
 
     <div class="number-of-recs-container">
         <div 
@@ -68,7 +49,25 @@
             type="number"
             [(ngModel)]="numRecommendations" 
             (ngModelChange)="onNumRecommendationsChange($event)"
-            [placeholder]="10" 
+            [placeholder]="`${numRecommendations}`" 
+            min="1"
+            max="50"
+            step="1"
+            class="standard-input num-recs-input" 
+        />
+    </div>
+
+    <div class="number-of-recs-container">
+        <div 
+            class="number-of-recommendations-label"
+        >
+            Number of Similar Users:&nbsp;
+        </div>
+        <input 
+            type="number"
+            [(ngModel)]="numSimilarUsers" 
+            (ngModelChange)="onNumRecommendationsChange($event)"
+            [placeholder]="`${numSimilarUsers}`" 
             min="1"
             max="50"
             step="1"
@@ -79,10 +78,27 @@
     <div class="search-button-container">
         <div class="button-wrapper">
             <div 
-                class="search-button" 
+                class="edit-button" 
                 [routerLink]="['/select-method', medium]"
             >
                 Change Method
+            </div>
+            <div 
+                class="edit-button"
+                appPopup
+                [popupTemplate]="ratingSummaryPopup.template"
+                [popupContext]="{
+                    ratings: ratings,
+                    medium: medium,
+                    search: search,
+                    onItemSelected: onItemSelected.bind(this),
+                    onSearchClick: onSearchClick.bind(this),
+                    onSearchSelect: onSearchSelect.bind(this),
+                    loadingSearchResults: loadingSearchResults,
+                    searchResults: searchResults
+                }"
+            >
+                Edit ratings
             </div>
             <div 
                 class="search-button"
@@ -111,3 +127,20 @@
 
 <app-model-info #modelInfoPopup/>
 <app-search-results #searchResultsPopup/>
+<app-rating-summary #ratingSummaryPopup/>
+
+<app-rating-popup
+  #ratingPopup
+  [name]="selectedItem"
+  [onRatingInput]="onRatingInput.bind(this)"
+/>
+
+<span
+  #ratingPopupTrigger
+  appPopup
+  [popupTemplate]="ratingPopup.template"
+  [popupContext]="{
+    name: selectedItem
+  }"
+  [zIndex]="1050"
+></span>

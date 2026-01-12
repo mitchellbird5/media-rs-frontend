@@ -12,7 +12,6 @@ export const fetchItemItemCFRecommendations = async (
     top_n:numberOfRecommendations.toString(),
   });
 
-  console.log('Fetching recommendations with query:', query.toString());
   const response = await fetch(`${BASE_URL}/recommend/item-cf/?${query.toString()}`, {
     method: 'GET',
     headers: {
@@ -30,8 +29,6 @@ export const fetchItemItemCFRecommendations = async (
   }
 
   const data: string[] = await response.json();
-
-  console.log('Received movie data:', data);
 
   return data;
 };

@@ -23,6 +23,7 @@ import { PopupShellComponent } from '../popup-shell/popup-shell';
 export class PopupDirective {
   @Input() popupTemplate!: TemplateRef<any>;
   @Input() popupContext: any = {};
+  @Input() zIndex: number = 1000;
 
   private popupRef?: ComponentRef<PopupShellComponent>;
   private viewRef?: EmbeddedViewRef<any>;
@@ -49,6 +50,7 @@ export class PopupDirective {
       environmentInjector: this.appRef.injector,
     });
 
+    this.popupRef.instance.overlayZIndex = this.zIndex;
     this.popupRef.instance.close.subscribe(() => this.close());
 
     // pass popupContext directly without unwrapping signals

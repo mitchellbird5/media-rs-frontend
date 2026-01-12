@@ -2,28 +2,7 @@
   <app-text-input
     [query]="query"
     [placeholder]="placeholder"
-    [width]="'400px'"
+    [width]="width"
     (queryChange)="onInput($event)"
   ></app-text-input>
-
-  <!-- Dropdown only shows if query is not empty AND (loading OR results exist) -->
-  <div *ngIf="query && (loading() || results().length) && isOpen()" class="autocomplete-dropdown">
-    
-    <!-- Show loading message while fetching -->
-    <div *ngIf="loading() && !results().length" class="autocomplete-item loading">
-      Loading...
-    </div>
-
-    <!-- Show results once loaded -->
-    <div
-      *ngFor="let item of results()"
-      class="autocomplete-item"
-      (click)="select(item)"
-    >
-      {{ item }}
-    </div>
-
-  </div>
-
-
 </div>
