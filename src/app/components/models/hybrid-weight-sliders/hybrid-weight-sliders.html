@@ -1,0 +1,23 @@
+<div class="hybrid-container" [style.width]="width">
+  <app-slider
+    label="Alpha (content-based weight)"
+    [min]="0"
+    [max]="1"
+    [step]="0.01"
+    [value]="alpha"
+    (valueChange)="onAlphaChange($event)"
+  />
+
+  <app-slider
+    label="Beta (item-item collaborative weight)"
+    [min]="0"
+    [max]="1"
+    [step]="0.01"
+    [value]="beta"
+    (valueChange)="onBetaChange($event)"
+  />
+
+  <div class="constraint">
+    Remaining weight (user-user collaborative weight): {{ remaining() | number:'1.2-2' }}
+  </div>
+</div>

@@ -28,6 +28,7 @@ html, body {
   --bg-background-default: #0f1b2b;
   --bg-background-light: #152a3f;
   --bg-background-dark: #0b121f;
+  --bg-background-default2: rgba(255, 255, 255, 0.03);
 
   /* Text colors */
   --text-default: #E5E7EB;

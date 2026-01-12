@@ -1,9 +1,10 @@
 import { 
   Component, 
   Input, 
+  Output,
   ViewChild, 
   signal,
-  TemplateRef,
+  EventEmitter,
   WritableSignal 
 } from '@angular/core';
 import { NgIf } from '@angular/common';
@@ -18,7 +19,6 @@ import {
 } from 'lucide-angular';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 
-import { TextInput } from '../../text-input/text-input';
 import { PopupDirective } from '../../popup-card/popup-directive/popup-directive';
 import { Results } from '../../results/results';
 import { Rating, fetchUserUserCFRecommendations } from '../../../services/recommend/get-user-user-cf-recommendation'; 
@@ -28,9 +28,12 @@ import { ModelInfo } from '../../model-info/model-info';
 import { SearchResults } from '../../search-results/search-results';
 import { RatingPopup } from '../../rating-popup/rating-popup';
 import { RatingSummary } from '../../rating-summary/rating-summary';
+import { SliderComponent } from '../../slider/slider';
+
+import { RecommendFn } from '../../../types/movies.types';
 
 @Component({
-  selector: 'app-user-user-cf-recommendation',
+  selector: 'app-user-user-cf',
   imports: [
     FormsModule,
     LucideAngularModule,
@@ -43,25 +46,32 @@ import { RatingSummary } from '../../rating-summary/rating-summary';
     SearchResults,
     RouterModule,
     RatingPopup,
-    RatingSummary
+    RatingSummary,
+    SliderComponent
   ],
-  templateUrl: './user-user-cf-recommendation.html',
-  styleUrl: './user-user-cf-recommendation.css',
+  templateUrl: './user-user-cf.html',
+  styleUrl: './user-user-cf.css',
 })
-export class UserUserCFRecommendation {
-  medium!: string;
+export class UserUserCF {
+  @Input() medium!: string;
+  @Input() width: string = '400px';
+  @Input() numRecommendations!: number;
+
+  @Output() recommendFnReady = new EventEmitter<RecommendFn>();
+  @Output() resultsReady = new EventEmitter<string[]>();
+  @Output() numSimilarUsersChange = new EventEmitter<number>();
+  @Output() ratingsChange = new EventEmitter<Rating[]>();
 
   constructor(private route: ActivatedRoute) {}
 
   ngOnInit() {
-    this.medium = this.route.snapshot.paramMap.get('medium')!;
+    this.recommendFnReady.emit(this.recommend);
   }
 
   searchQuery: WritableSignal<string> = signal('');
-  selectedItem!: string;
+  selectedItem: string | null = null;
   ratingInput: string = '';
-  numRecommendations: number = 10;
-  numSimilarUsers: number = 25;
+  numSimilarUsers: WritableSignal<number> = signal(25);
 
   ratings: WritableSignal<Rating[]> = signal([]);
 
@@ -79,7 +89,7 @@ export class UserUserCFRecommendation {
 
   info_title = 'User-User Collaborative Filtering Recommendation';
   info_description =
-    `Recommend items that are similar to the selected items, or the given description, based on similarity of content using sentence transformers (all-MiniLM-L6-v2) aka SBERT.`;
+    `Recommend items that other users with similar likes rated highly.`;
 
   @ViewChild('ratingPopupTrigger', { read: PopupDirective })
   ratingPopupTrigger!: PopupDirective;
@@ -93,21 +103,6 @@ export class UserUserCFRecommendation {
   search = async (query: string): Promise<string[]> => {
     const titles = await fetchMovieTitles(query, 5);
     return titles;
-  }
-
-  async onRecommend() {
-    this.loadingRecommendations.set(true);
-
-    try {
-      const recommendedItems = await fetchUserUserCFRecommendations(
-        this.ratings(), 
-        this.numRecommendations,
-        this.numSimilarUsers
-      );
-      this.items.set(recommendedItems ?? []);
-    } finally {
-      this.loadingRecommendations.set(false);
-    }
   }
 
   onItemSelected(item: string) {
@@ -151,12 +146,19 @@ export class UserUserCFRecommendation {
     this.numRecommendations = value;
   }
 
+  onNumSimilarUsersChange(value: number) {
+    this.numSimilarUsers.set(value);
+    this.numSimilarUsersChange.emit(value);
+  }
+
+
   onResultsRendered(ready: boolean) {
     this.recommendationsReady.set(ready);
   }
 
   addRating(name: string, score: number) {
     this.ratings.update(r => [...r, { name, value: score }]);
+    this.ratingsChange.emit(this.ratings());
   }
 
   onRatingInput(value: number) {
@@ -169,6 +171,16 @@ export class UserUserCFRecommendation {
 
   get showAddRatingPopup(): boolean {
     return !!this.selectedItem;
-}
+  }
+
+  private recommend: RecommendFn = async () => {
+    const results = await fetchUserUserCFRecommendations(
+      this.ratings(), 
+      this.numRecommendations,
+      this.numSimilarUsers()
+    );
+
+    this.resultsReady.emit(results ?? []);
+  }
 
 }

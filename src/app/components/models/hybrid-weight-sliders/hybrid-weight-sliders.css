@@ -1,0 +1,14 @@
+.hybrid-container {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 12px;
+  border-radius: 10px;
+}
+
+.constraint {
+  font-size: 13px;
+  /* color: #9ca3af; */
+  color: var(--text-muted);
+  text-align: right;
+}

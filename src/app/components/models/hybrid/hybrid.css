@@ -1,0 +1,46 @@
+.inputs-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  align-items: center; /* centers all children horizontally */
+}
+
+.model-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1em;
+  background: var(--bg-background-default2);
+  border: 1px solid var(--text-muted);
+  border-radius: var(--radius-md);
+}
+
+.title-info-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;          /* space between title and icon */
+}
+
+/* Title */
+.title {
+  font-size: 1.5em;
+  font-weight: 600;
+}
+
+.subtitle {
+  font-size: 1.5em;
+  font-weight: 600;
+}
+
+.info-icon {
+  width: 20px;
+  height: 20px;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.info-icon:hover {
+  color: var(--secondary-default);
+  transform: scale(1.05);
+}

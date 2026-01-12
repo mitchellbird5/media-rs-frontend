@@ -7,13 +7,20 @@ export interface Rating {
   value: number;
 }
 
-export const fetchUserUserCFRecommendations = async (
+export const fetchHybridRecommendations = async (
+  title: string | null,
   ratings: Rating[],
+  alpha: number,
+  beta: number,
   numberOfRecommendations: number,
-  numberOfSimilarUsers: number
+  numberOfSimilarUsers: number,
 ): Promise<string[] | null> => {
+  if (!title) return null;
 
   const payload = {
+    movie_title: title,
+    alpha: alpha,
+    beta: beta,
     ratings: ratings,
     top_n: numberOfRecommendations,
     k_similar_users: numberOfSimilarUsers,
@@ -21,7 +28,7 @@ export const fetchUserUserCFRecommendations = async (
 
   console.log('Fetching recommendations with payload:', payload);
 
-  const response = await fetch(`${BASE_URL}/recommend/user-cf/`, {
+  const response = await fetch(`${BASE_URL}/recommend/hybrid/`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

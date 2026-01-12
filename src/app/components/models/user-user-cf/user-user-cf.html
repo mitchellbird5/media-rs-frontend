@@ -1,0 +1,94 @@
+<div class="inputs-container">
+    <div class="title-info-container">
+        <div class="title">User-User Collaborative Filtering Recommendation</div>
+
+        <lucide-icon 
+            [img]="Info" 
+            class="info-icon"
+            appPopup
+            [popupTemplate]="modelInfoPopup.template"
+            [popupContext]="{
+                info_title: info_title,
+                info_description: info_description
+            }"
+        ></lucide-icon>
+    </div>
+
+    <div class="search-wrapper">
+        <app-autocomplete
+            [query]="searchQuery"
+            [placeholder]="`Search for ${medium}s to rate...`"
+            [fetchResults]="search"
+            [width]="width"
+            (valueSelected)="onItemSelected($event)"
+        ></app-autocomplete>
+
+        <lucide-icon
+            [img]="Search"
+            class="search-icon"
+            (mousedown)="onSearchClick(searchQuery)"
+            appPopup
+            [popupTemplate]="searchResultsPopup.template"
+            [popupContext]="{
+                search_title: 'Searching movies...',
+                loadingSearchResults: loadingSearchResults,
+                results: searchResults,
+                onResultSelected: onSearchSelect
+            }"
+        ></lucide-icon>
+    </div>
+
+    <div 
+        class="edit-button"
+        appPopup
+        [popupTemplate]="ratingSummaryPopup.template"
+        [popupContext]="{
+            ratings: ratings,
+            medium: medium,
+            search: search,
+            onItemSelected: onItemSelected.bind(this),
+            onSearchClick: onSearchClick.bind(this),
+            onSearchSelect: onSearchSelect.bind(this),
+            loadingSearchResults: loadingSearchResults,
+            searchResults: searchResults
+        }"
+    >
+        Edit ratings
+    </div>
+
+    <app-slider
+        label="Number of Users"
+        [min]="1"
+        [max]="50"
+        [step]="1"
+        [value]="numSimilarUsers"
+        [width]="width"
+        (valueChange)="onNumSimilarUsersChange($event)"
+    />
+</div>  
+
+<app-results 
+    *ngIf="items().length > 0"
+    [results]="items()"
+    (rendered)="onResultsRendered($event)"
+/>
+
+<app-model-info #modelInfoPopup/>
+<app-search-results #searchResultsPopup/>
+<app-rating-summary #ratingSummaryPopup/>
+
+<app-rating-popup
+  #ratingPopup
+  [name]="selectedItem ?? ''"
+  [onRatingInput]="onRatingInput.bind(this)"
+/>
+
+<span
+  #ratingPopupTrigger
+  appPopup
+  [popupTemplate]="ratingPopup.template"
+  [popupContext]="{
+    name: selectedItem
+  }"
+  [zIndex]="1050"
+></span>

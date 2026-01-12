@@ -3,7 +3,8 @@ import {
   Input, 
   ViewChild, 
   signal,
-  WritableSignal 
+  Output,
+  EventEmitter 
 } from '@angular/core';
 import { NgIf } from '@angular/common';
 import { CommonModule } from '@angular/common';
@@ -25,47 +26,50 @@ import { AutocompleteComponent } from '../../autocomplete/autocomplete';
 import { ModelInfo } from '../../model-info/model-info';
 import { SearchResults } from '../../search-results/search-results';
 
+import { RecommendFn } from '../../../types/movies.types';
+
 @Component({
-  selector: 'app-item-item-cf-recommendation',
+  selector: 'app-item-item-cf',
   standalone: true,
   imports: [
     FormsModule,
     LucideAngularModule,
     PopupDirective,
     NgIf,
-    Results,
     AutocompleteComponent,
     CommonModule,
     ModelInfo,
     SearchResults,
     RouterModule
   ],
-  templateUrl: './item-item-cf-recommendation.html',
-  styleUrl: './item-item-cf-recommendation.css',
+  templateUrl: './item-item-cf.html',
+  styleUrl: './item-item-cf.css',
 })
-export class ItemItemCFRecommendation {
-  medium!: string;
+export class ItemItemCF {
+  @Input() medium!: string;
+  @Input() width: string = '400px';
+  @Input() numRecommendations!: number;
+
+  selectedItem: string | null = null;
+  searchQuery = signal('');
+
+  @Output() selectedItemChange = new EventEmitter<string | null>();
+  @Output() recommendFnReady = new EventEmitter<RecommendFn>();
+  @Output() resultsReady = new EventEmitter<string[]>();
 
   constructor(private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.medium = this.route.snapshot.paramMap.get('medium')!;
+    this.recommendFnReady.emit(this.recommend);
   }
 
-  searchQuery: WritableSignal<string> = signal('');
-  selectedItem!: string;
-  numRecommendations: number = 10;
-
-  loadingRecommendations = signal(false);
-  recommendationsReady = signal(true);  // initially true for the sake of spinner logic
   searchResults = signal<string[]>([]);
   loadingSearchResults = signal(false);
-  items = signal<string[]>([]);
 
   readonly Info = Info;
   readonly Search = Search;
   readonly Trash2 = Trash2;
-  readonly Loader = Loader;
 
   info_title = 'Item-Item Collaborative Filtering Recommendation';
   info_description =
@@ -80,30 +84,15 @@ export class ItemItemCFRecommendation {
     return titles;
   }
 
-  async onRecommend() {
-    this.loadingRecommendations.set(true);
-
-    try {
-      const recommendeditems =
-        await fetchItemItemCFRecommendations(
-          this.selectedItem,
-          this.numRecommendations
-        );
-
-      this.items.set(recommendeditems ?? []);
-    } finally {
-      this.loadingRecommendations.set(false);
-    }
-  }
-
   onItemSelected(item: string) {
     this.selectedItem = item;
+    this.selectedItemChange.emit(item);
   }
 
   clearSelectedItem() {
-    this.selectedItem = '';
-    this.items.set([]);
-    this.searchResults.set([]);
+    this.selectedItem = null;
+    this.searchQuery.set('');
+    this.selectedItemChange.emit(null);
   }
 
   async onSearchClick() {
@@ -127,11 +116,17 @@ export class ItemItemCFRecommendation {
     this.searchQuery.set('');
   };
 
-  onNumRecommendationsChange(value: number) {
-    this.numRecommendations = value;
-  }
+  private recommend: RecommendFn = async () => {
 
-  onResultsRendered(ready: boolean) {
-    this.recommendationsReady.set(ready);
+  if (!this.selectedItem) return;
+
+  const results =
+    await fetchItemItemCFRecommendations(
+      this.selectedItem,
+      this.numRecommendations
+    );
+
+  this.resultsReady.emit(results ?? []);
+
   }
 }

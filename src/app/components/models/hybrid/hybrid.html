@@ -1,0 +1,60 @@
+<div class="inputs-container">
+    
+    <div class="title-info-container">
+        <div class="title">Hybrid Filtering Recommendation</div>
+
+        <lucide-icon 
+            [img]="Info" 
+            class="info-icon"
+            appPopup
+            [popupTemplate]="modelInfoPopup.template"
+            [popupContext]="{
+                info_title: info_title,
+                info_description: info_description
+            }"
+        ></lucide-icon>
+    </div>
+
+    <div class="model-container">
+        <app-item-item-cf
+            [medium]="medium"
+            [numRecommendations]="numRecommendations"
+            [width]="width"
+            (selectedItemChange)="onUpdateSelectedItem($event)"
+        />
+    </div>
+
+    <div class="model-container">
+        <app-user-user-cf
+            [medium]="medium"
+            [numRecommendations]="numRecommendations"
+            [width]="width"
+            (numSimilarUsersChange)="onNumSimilarUsersChange($event)"
+            (ratingsChange)="onRatingsChange($event)"
+        />
+    </div>
+
+    <div class="model-container">
+        <div class="title-info-container">
+            <div class="subtitle">Model Weights</div>
+
+            <lucide-icon 
+                [img]="Info" 
+                class="info-icon"
+                appPopup
+                [popupTemplate]="modelInfoPopup.template"
+                [popupContext]="{
+                    info_title: 'Model Weights',
+                    info_description: 'Weightings to use for results from different models.'
+                }"
+            ></lucide-icon>
+        </div>
+
+        <app-hybrid-weight-sliders
+            [width]="width"
+            (valuesChange)="onHybridWeightsChange($event)"
+        ></app-hybrid-weight-sliders>
+    </div>
+</div>  
+
+<app-model-info #modelInfoPopup/>

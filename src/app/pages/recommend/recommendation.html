@@ -1,0 +1,49 @@
+<div class="recommendation-container">
+    <app-item-similarity
+        *ngIf="model==='item-similarity'"
+        [medium]="medium"
+        [numRecommendations]="numRecommendations()"
+        (recommendFnReady)="onRecommendFnReady($event)"
+        (resultsReady)="results.set($event)"
+    />
+
+    <app-item-item-cf
+        *ngIf="model==='item-item-cf'"
+        [medium]="medium"
+        [numRecommendations]="numRecommendations()"
+        (recommendFnReady)="onRecommendFnReady($event)"
+        (resultsReady)="results.set($event)"
+    />
+
+    <app-user-user-cf
+        *ngIf="model==='user-user-cf'"
+        [medium]="medium"
+        [numRecommendations]="numRecommendations()"
+        (recommendFnReady)="onRecommendFnReady($event)"
+        (resultsReady)="results.set($event)"
+    />
+
+    <app-hybrid
+        *ngIf="model==='hybrid'"
+        [medium]="medium"
+        [numRecommendations]="numRecommendations()"
+        [width]="width"
+        (recommendFnReady)="onRecommendFnReady($event)"
+        (resultsReady)="results.set($event)"
+    />
+
+    <app-search-parameters
+        [medium]="medium"
+        [width]="width"
+        [recommendationsReady]="recommendationsReady()"
+        [recommendFn]="recommendFn"
+        (numRecommendationsChange)="numRecommendations.set($event)"
+    />
+
+</div>  
+
+<app-results 
+    *ngIf="results().length > 0"
+    [results]="results()"
+    (rendered)="onResultsRendered($event)"
+/>

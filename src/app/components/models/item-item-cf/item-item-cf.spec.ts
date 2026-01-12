@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UserUserCFRecommendation } from './user-user-cf-recommendation';
+import { ItemItemCFRecommendation } from './item-item-cf';
 
-describe('UserUserCFRecommendation', () => {
-  let component: UserUserCFRecommendation;
-  let fixture: ComponentFixture<UserUserCFRecommendation>;
+describe('ItemItemCfRecommendation', () => {
+  let component: ItemItemCFRecommendation;
+  let fixture: ComponentFixture<ItemItemCFRecommendation>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [UserUserCFRecommendation]
+      imports: [ItemItemCFRecommendation]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(UserUserCFRecommendation);
+    fixture = TestBed.createComponent(ItemItemCFRecommendation);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

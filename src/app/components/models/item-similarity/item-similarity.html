@@ -1,0 +1,65 @@
+<div class="inputs-container">
+    <div class="title-info-container">
+    <div class="title">Item Similarity Recommendation</div>
+
+    <lucide-icon 
+        [img]="Info" 
+        class="info-icon"
+        appPopup
+        [popupTemplate]="modelInfoPopup.template"
+        [popupContext]="{
+            info_title: info_title,
+            info_description: info_description
+        }"
+    ></lucide-icon>
+    </div>
+
+    <div class="search-container">
+        <div class="search-wrapper">
+            <app-autocomplete
+                [query]="searchQuery"
+                [placeholder]="`Enter ${medium} or description...`"
+                [fetchResults]="search"
+                [width]="width"
+                (valueSelected)="onItemSelected($event)"
+            ></app-autocomplete>
+
+            <lucide-icon
+                [img]="Search"
+                class="search-icon"
+                (mousedown)="onSearchClick()"
+                appPopup
+                [popupTemplate]="searchResultsPopup.template"
+                [popupContext]="{
+                    search_title: 'Searching movies...',
+                    loadingSearchResults: loadingSearchResults,
+                    results: searchResults,
+                    onResultSelected: onSearchSelect
+                }"
+            ></lucide-icon>
+        </div>
+    </div>
+
+    <div 
+    *ngIf="selectedItem"
+    class="selected-item-display"
+    >
+    <div class="selected-item-text-container">
+        Selected {{medium}}: 
+        <div 
+            class="selected-item-label"
+        >
+            {{ selectedItem }}
+        </div>
+    </div>
+    <lucide-icon
+        [img]="Trash2"
+        size="18"
+        (click)="clearSelectedItem()"
+        class="trash-icon"
+    ></lucide-icon>
+    </div>
+</div>
+
+<app-model-info #modelInfoPopup/>
+<app-search-results #searchResultsPopup/>
