@@ -2,15 +2,18 @@ import {
   Component, 
   Input,
   ViewChild,
-  TemplateRef 
+  TemplateRef,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+
+import { SliderComponent } from '../slider/slider';
 
 @Component({
   selector: 'app-rating-popup',
   standalone: true,
   imports: [
-    FormsModule
+    FormsModule,
+    SliderComponent
   ],
   templateUrl: './rating-popup.html',
   styleUrl: './rating-popup.css',
@@ -19,7 +22,7 @@ export class RatingPopup {
   @Input() name!: string;
   @Input() onRatingInput!: (v: number) => void;
 
-  rating = 0;
+  rating: number = 0;
 
   @ViewChild('addRatingPopup', { static: true })
   template!: TemplateRef<any>;
@@ -27,6 +30,7 @@ export class RatingPopup {
   submit() {
     if (this.rating >= 0 && this.rating <= 5) {
       this.onRatingInput(this.rating);
+      this.rating = 0; // Reset after submit
     }
   }
 }

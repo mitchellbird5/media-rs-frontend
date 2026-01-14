@@ -50,25 +50,25 @@ export class SearchBar {
   @ViewChild(AutocompleteComponent) autocomplete!: AutocompleteComponent;
 
   async onSearchIconClick() {
+    this.autocomplete.closeDropdown();
     if (!this.searchQuery) return;
+
     this.loadingSearchResults.set(true);
-    try {
-      const results = await this.search(this.searchQuery())
+
+    this.searchResultsPopup?.popupContext.refresh?.();
+
+    const results = await this.search(this.searchQuery());
+
+    queueMicrotask(() => {
       this.searchResults.set(results);
-    } finally {
       this.loadingSearchResults.set(false);
-    }
+      this.searchResultsPopup?.popupContext.refresh?.();
+    });
   }
 
   onSelected(item: string) {
-    if (!item) return;
+    this.searchQuery.set('')
     this.selectedItemChange.emit(item);
-  }
-
-  selectAutocomplete(item: string) {
-    this.loadingSearchResults.set(true);
-    this.onSelected(item);
-    this.autocomplete.closeDropdown();
     this.searchResults.set([]);
   }
 }

@@ -1,28 +1,16 @@
-<app-search-bar 
-  [searchQuery]="searchQuery"
-  [search]="search",
-  [width]="width",
-  [placeholder]="placeholder"
-  [popupTitle]="`Searching {$medium}s...`"
-  (selectedItemChange)="onItemSelected($event)"
-/>
+<div class="model-container">
+  <app-search-bar 
+    [searchQuery]="searchQuery"
+    [search]="search",
+    [width]="width",
+    [placeholder]="placeholder"
+    [popupTitle]="`Searching ${medium}s...`"
+    (selectedItemChange)="onItemSelected($event)"
+  />
 
-<div 
-  *ngIf="selectedItem"
-  class="selected-item-display"
->
-  <div class="selected-item-text-container">
-    Selected {{medium}}: 
-    <div 
-      class="selected-item-label"
-    >
-      {{ selectedItem() }}
-    </div>
-  </div>
-  <lucide-icon
-    [img]="Trash2"
-    size="18"
-    (click)="clearSelectedItem()"
-    class="trash-icon"
-  ></lucide-icon>
+  <app-selected-item 
+    [label]="`Selected ${medium}:`"
+    [selectedItem]="selectedItem"
+    [clearSelectedItem]="clearSelectedItem"
+  />
 </div>

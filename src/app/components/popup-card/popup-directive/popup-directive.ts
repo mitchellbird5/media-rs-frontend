@@ -45,6 +45,7 @@ export class PopupDirective {
     }
 
     this.popupContext.close = () => this.close();
+    this.popupContext.refresh = () => this.viewRef?.detectChanges();
 
     this.popupRef = createComponent(PopupShellComponent, {
       environmentInjector: this.appRef.injector,

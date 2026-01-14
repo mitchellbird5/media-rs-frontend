@@ -17,6 +17,7 @@ import { ActivatedRoute, RouterModule  } from '@angular/router';
 
 import { fetchMovieTitles } from '../../../../services/movieSearch';
 import { SearchBar } from '../../../search-bar/search-bar';
+import { SelectedItem } from '../../../selected-item/selected-item';
 
 
 @Component({
@@ -27,13 +28,11 @@ import { SearchBar } from '../../../search-bar/search-bar';
     LucideAngularModule,
     CommonModule,
     RouterModule,
-    SearchBar
+    SearchBar,
+    SelectedItem
   ],
   templateUrl: './item-item-cf-inputs.html',
-  styleUrls: [
-    '../../../../styles/selected-item.css',
-    '../../../../styles/model.css'
-  ], 
+  styleUrls: ['../../../../styles/model.css'], 
 })
 export class ItemItemCFInputs {
   @Input() medium!: string;
@@ -44,6 +43,7 @@ export class ItemItemCFInputs {
   searchQuery: WritableSignal<string> = signal('');
 
   @Output() selectedItemChange = new EventEmitter<string | null>();
+  @Output() resultsChange = new EventEmitter<string[]>();
 
   constructor(private route: ActivatedRoute) {}
 
@@ -57,15 +57,15 @@ export class ItemItemCFInputs {
     return titles;
   }
 
-  onItemSelected(item: string) {
+  onItemSelected(item: string | null) {
     this.selectedItem.set(item);
     this.selectedItemChange.emit(item);
   }
 
   clearSelectedItem() {
-    this.selectedItem.set(null);
+    this.onItemSelected(null);
     this.searchQuery.set('');
-    this.selectedItemChange.emit(null);
+    this.resultsChange.emit([]);
   }
 
   onSearchSelect = (item: string) => {

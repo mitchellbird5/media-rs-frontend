@@ -31,7 +31,7 @@ import { SearchBar } from '../search-bar/search-bar';
   styleUrl: './rating-summary.css',
 })
 export class RatingSummary {
-  @Input() ratings!: Rating[];
+  @Input() ratings!: WritableSignal<Rating[]>;
   @Input() medium!: string;
   @Input() width: string = '400px';
   @Input() placeholder: string = 'Search...';
@@ -41,12 +41,7 @@ export class RatingSummary {
   query: WritableSignal<string> = signal('');
   searchResults: WritableSignal<string[]> = signal([]);
 
-  @Output() queryChange = new EventEmitter<string>();
-
-  private onItemSelectedFn?: (item: string) => void;
   closeAutocompleteTrigger = signal(0);
-
-  readonly Search = Search;
 
   @ViewChild('ratingSummaryPopup', { static: true })
   template!: TemplateRef<any>;
@@ -55,15 +50,10 @@ export class RatingSummary {
     return rating.name;
   }
 
-  handleSelect = (item: string) => {
-    this.onItemSelected(item);
-    this.closeAutocompleteTrigger.update(v => v + 1);
-    this.onItemSelectedFn?.(item);
-    this.query.set('');
-  };
-
-  registerOnItemSelected(fn: (item: string) => void) {
-    this.onItemSelectedFn = fn;
+  updateRating(name: string, value: number) {
+    queueMicrotask(() => {
+      this.ratings.update(r => r.map(r => r.name === name ? { ...r, value } : r));
+    });
   }
   
 }

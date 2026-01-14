@@ -5,7 +5,6 @@
         [numRecommendations]="numRecommendations()"
         [width]="width"
         (recommendFnReady)="onRecommendFnReady($event)"
-        (resultsChange)="results.set($event)"
         (resultsChange)="onResultsChange($event)"
     />
 
@@ -15,7 +14,7 @@
         [numRecommendations]="numRecommendations()"
         [width]="width"
         (recommendFnReady)="onRecommendFnReady($event)"
-        (resultsReady)="results.set($event)"
+        (resultsChange)="onResultsChange($event)"
     />
 
     <app-user-user-cf

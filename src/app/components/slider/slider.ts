@@ -3,8 +3,6 @@ import {
   Input,
   Output,
   EventEmitter,
-  signal,
-  WritableSignal
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -16,21 +14,21 @@ import { CommonModule } from '@angular/common';
   styleUrl: './slider.css'
 })
 export class SliderComponent {
-  @Input() label = '';
-  @Input() min = 0;
-  @Input() max = 1;
-  @Input() step = 0.01;
+  @Input() label: string = '';
+  @Input() min: number = 0;
+  @Input() max: number = 1;
+  @Input() step: number = 0.01;
 
   /** width can be px, %, rem, etc */
   @Input() width: string = '100%';
 
-  @Input() value!: WritableSignal<number>;
+  @Input() value!: number;
 
   @Output() valueChange = new EventEmitter<number>();
 
   onInput(event: Event) {
     const newValue = +(event.target as HTMLInputElement).value;
-    this.value.set(newValue);
+    this.value = newValue;
     this.valueChange.emit(newValue);
   }
 }

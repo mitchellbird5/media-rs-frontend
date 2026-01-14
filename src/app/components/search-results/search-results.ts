@@ -23,6 +23,7 @@ export class SearchResults {
   @Input() results!: WritableSignal<string[]>;
   @Input() onResultSelected!: (result: string) => void;
   @Input() close!: () => void;
+  @Input() refresh!: () => void;
 
   @ViewChild('searchResultsPopup', { static: true })
   template!: TemplateRef<any>;

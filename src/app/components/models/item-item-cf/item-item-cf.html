@@ -19,8 +19,9 @@
     <app-item-item-cf-inputs 
         [medium]="medium"
         [width]="width"
-        [placeholder]="`Search {$medium}s...`"
+        [placeholder]="`Search ${medium}s...`"
         (selectedItemChange)="onItemSelected($event)"
+        (resultsChange)="onResultsChange($event)"
     />
 </div>  
 

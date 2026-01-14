@@ -27,7 +27,10 @@ import { SliderComponent } from '../../slider/slider';
     CommonModule
   ],
   templateUrl: './search-parameters.html',
-  styleUrl: './search-parameters.css',
+  styleUrls: [
+    './search-parameters.css',
+    '../../../styles/button.css'
+  ],
 })
 export class SearchParameters {
   @Input() onRecommend!: () => void;

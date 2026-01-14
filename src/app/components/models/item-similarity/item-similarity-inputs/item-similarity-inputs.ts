@@ -4,8 +4,7 @@ import {
   Output,
   WritableSignal,
   signal,
-  EventEmitter,
-  ViewEncapsulation 
+  EventEmitter
 } from '@angular/core';
 import { ActivatedRoute, RouterModule  } from '@angular/router';
 import { 
@@ -17,6 +16,7 @@ import { CommonModule } from '@angular/common';
 
 import { fetchMovieTitles } from '../../../../services/movieSearch';
 import { SearchBar } from '../../../search-bar/search-bar';
+import { SelectedItem } from '../../../selected-item/selected-item';
 
 @Component({
   selector: 'app-item-similarity-inputs',
@@ -25,10 +25,11 @@ import { SearchBar } from '../../../search-bar/search-bar';
     CommonModule,
     LucideAngularModule,
     RouterModule,
-    SearchBar
+    SearchBar,
+    SelectedItem
   ],
   templateUrl: './item-similarity-inputs.html',
-  styleUrls: ['../../../../styles/selected-item.css'], 
+  styleUrls: ['../../../../styles/model.css'], 
 })
 export class ItemSimilarityInputs {
   @Input() medium!: string;

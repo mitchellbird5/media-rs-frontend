@@ -27,7 +27,7 @@
   color: var(--text-muted);
   cursor: pointer;
   pointer-events: auto;    /* ensure it’s clickable */
-  transition: color 0.2s ease;
+  transition: color 0.2s ease, transform 0.2s ease;
 }
 
 .clear-icon:hover {

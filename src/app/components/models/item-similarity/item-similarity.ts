@@ -42,7 +42,6 @@ import { RecommendFn } from '../../../types/movies.types';
 })
 export class ItemSimilarity {
   @Input() medium!: string;
-  @Input() model!: string;
   @Input() width: string = '400px';
   @Input() numRecommendations!: number;
 

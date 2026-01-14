@@ -24,6 +24,7 @@ import { AutocompleteComponent } from '../../../autocomplete/autocomplete';
 
 @Component({
   selector: 'app-user-user-cf-inputs',
+  standalone: true,
   imports: [
     LucideAngularModule,
     SearchBar,
@@ -33,7 +34,10 @@ import { AutocompleteComponent } from '../../../autocomplete/autocomplete';
     RatingPopup
   ],
   templateUrl: './user-user-cf-inputs.html',
-  styleUrl: './user-user-cf-inputs.css',
+  styleUrls: [
+    '../../../../styles/button.css',
+    '../../../../styles/model.css'
+  ], 
 })
 export class UserUserCFInputs {
   @Input() medium!: string;
@@ -73,10 +77,14 @@ export class UserUserCFInputs {
     this.selectedItem.set(item);
     this.searchAutocomplete?.closeDropdown();
 
+    // Open RatingPopup with the selected item
     queueMicrotask(() => {
-      this.ratingPopupTrigger.open({
-        name: this.selectedItem
-      });
+      if (this.ratingPopupTrigger) {
+        this.ratingPopupTrigger.open({
+          name: this.selectedItem(),
+          onRatingInput: (value: number) => this.onRatingInput(value)
+        });
+      }
     });
   }
 
@@ -87,7 +95,7 @@ export class UserUserCFInputs {
   };
 
   get showAddRatingPopup(): boolean {
-    return !!this.selectedItem;
+    return !!this.selectedItem();
   }
 
   onNumSimilarUsersUpdate(users: number) {

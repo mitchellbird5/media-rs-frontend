@@ -5,16 +5,15 @@
   let-search="search"
   let-handleSelect="handleSelect"
 >
-  {{ registerOnItemSelected(handleSelect) }}
 
   <div class="popup-title">Ratings</div>
 
   <app-search-bar 
     [searchQuery]="query"
-    [search]="search",
-    [width]="width",
+    [search]="search"
+    [width]="width"
     [placeholder]="placeholder"
-    [popupTitle]="`Searching {$medium}s...`"
+    [popupTitle]="`Searching ${medium}s...`"
     [autocompleteZIndex]="1005"
     [searchResultPopupZIndex]="1010"
     [autocompleteForceCloseSignal]="closeAutocompleteTrigger"
@@ -33,7 +32,8 @@
       <input
         type="number"
         class="rating-input"
-        [(ngModel)]="rating.value"
+        [ngModel]="rating.value"
+        (ngModelChange)="updateRating(rating.name, $event)"
         min="0"
         max="5"
         step="0.5"

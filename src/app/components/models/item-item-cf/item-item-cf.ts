@@ -44,7 +44,7 @@ export class ItemItemCF {
   selectedItem: WritableSignal<string | null> = signal(null);
 
   @Output() recommendFnReady = new EventEmitter<RecommendFn>();
-  @Output() resultsReady = new EventEmitter<string[]>();
+  @Output() resultsChange = new EventEmitter<string[]>();
 
   constructor(private route: ActivatedRoute) {}
 
@@ -62,6 +62,10 @@ export class ItemItemCF {
     this.selectedItem.set(item);
   }
 
+  onResultsChange(results: string[]) {
+    this.resultsChange.emit(results);
+  }
+
   private recommend: RecommendFn = async () => {
     const query = this.selectedItem()
     if (!query) return;
@@ -71,7 +75,7 @@ export class ItemItemCF {
         this.numRecommendations
       );
 
-    this.resultsReady.emit(results ?? []);
+    this.onResultsChange(results ?? []);
 
   }
 }

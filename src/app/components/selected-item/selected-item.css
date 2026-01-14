@@ -1,9 +1,3 @@
-:host {
-  display: flex;
-  flex-direction: column;
-  gap: 1em;
-}
-
 .selected-item-container {
   display: flex;
   flex-direction: column;
@@ -29,6 +23,7 @@
 }
 
 .trash-icon {
+  transform: translateY(10%);
   color: var(--text-muted);
   cursor: pointer;
   transition: color 0.2s ease, transform 0.2s ease;
@@ -36,7 +31,7 @@
 
 .trash-icon:hover {
   color: var(--secondary-default);
-  transform: scale(1.05);
+  transform: translateY(10%) scale(1.05);
 }
 
 .inputs-container {
