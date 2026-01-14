@@ -1,0 +1,52 @@
+<app-search-bar 
+  [searchQuery]="searchQuery"
+  [search]="search",
+  [width]="width",
+  [placeholder]="placeholder"
+  [popupTitle]="`Searching {$medium}s...`"
+  (selectedItemChange)="onItemSelected($event)"
+/>
+
+<div 
+  class="edit-button"
+  appPopup
+  [popupTemplate]="ratingSummaryPopup.template"
+  [popupContext]="{
+    ratings: ratings,
+    medium: medium,
+    search: search,
+    width: width,
+    placeholder: `Search {$medium}s...`,
+    onItemSelected: onSearchSelect.bind(this)
+}"
+>
+    Edit ratings
+</div>
+
+<app-slider
+  label="Number of Users"
+  [min]="1"
+  [max]="50"
+  [step]="1"
+  [value]="numSimilarUsers"
+  [width]="width"
+  (valueChange)="onNumSimilarUsersUpdate($event)"
+/>
+
+<app-rating-summary #ratingSummaryPopup/>
+
+<app-rating-popup
+  #ratingPopup
+  [name]="selectedItem() ?? ''"
+  [onRatingInput]="onRatingInput.bind(this)"
+/>
+
+<span
+  #ratingPopupTrigger
+  appPopup
+  [popupTemplate]="ratingPopup.template"
+  [popupContext]="{
+    name: selectedItem
+  }"
+  [zIndex]="1050"
+></span>

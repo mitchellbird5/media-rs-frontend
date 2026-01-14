@@ -1,4 +1,4 @@
-<div class="inputs-container">
+<div class="model-container">
     
     <div class="title-info-container">
         <div class="title">Hybrid Filtering Recommendation</div>
@@ -16,18 +16,18 @@
     </div>
 
     <div class="model-container">
-        <app-item-item-cf
+        <app-item-item-cf-inputs
             [medium]="medium"
-            [numRecommendations]="numRecommendations"
+            [placeholder]="`Search {medium}s...`"
             [width]="width"
             (selectedItemChange)="onUpdateSelectedItem($event)"
         />
     </div>
 
     <div class="model-container">
-        <app-user-user-cf
+        <app-user-user-cf-inputs
             [medium]="medium"
-            [numRecommendations]="numRecommendations"
+            [placeholder]="`Search {medium}s... to rate`"
             [width]="width"
             (numSimilarUsersChange)="onNumSimilarUsersChange($event)"
             (ratingsChange)="onRatingsChange($event)"

@@ -1,0 +1,32 @@
+<app-search-bar 
+  [searchQuery]="searchQuery"
+  [search]="search"
+  [width]="width"
+  [placeholder]="placeholder"
+  [popupTitle]="`Searching {$medium}s...`"
+  (searchQueryChange)="onQueryUpdate($event)"
+  (selectedItemChange)="onItemSelected($event)"
+/>
+
+<div 
+  class="selected-item-text-container"
+>
+  <div 
+    class="selected-item-display"
+  >
+    <div class="selected-item-text-container">
+      Selected {{medium}}: 
+      <div 
+        class="selected-item-label"
+      >
+        {{ selectedItem() }}
+      </div>
+    </div>
+    <lucide-icon
+      [img]="Trash2"
+      size="18"
+      (click)="clearSelectedItem()"
+      class="trash-icon"
+    ></lucide-icon>
+  </div>
+</div>

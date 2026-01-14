@@ -1,6 +1,8 @@
-<div class="inputs-container">
+<div class="model-container">
     <div class="title-info-container">
-        <div class="title">Item-Item Collaborative Filtering Recommendation</div>
+        <div class="title">
+            Item-Item Collaborative Filtering Recommendation
+        </div>
 
         <lucide-icon 
             [img]="Info" 
@@ -14,52 +16,12 @@
         ></lucide-icon>
     </div>
 
-    <div class="search-container">
-        <div class="search-wrapper">
-            <app-autocomplete
-            [query]="searchQuery"
-            placeholder="Search movies..."
-            [fetchResults]="search"
-            [width]="width"
-            (valueSelected)="onItemSelected($event)"
-            ></app-autocomplete>
-
-            <lucide-icon
-            [img]="Search"
-            class="search-icon"
-            (mousedown)="onSearchClick()"
-            appPopup
-            [popupTemplate]="searchResultsPopup.template"
-            [popupContext]="{
-                search_title: 'Searching movies...',
-                loadingSearchResults: loadingSearchResults,
-                results: searchResults,
-                onResultSelected: onSearchSelect
-            }"
-            ></lucide-icon>
-        </div>
-    </div>
-
-    <div 
-        *ngIf="selectedItem"
-        class="selected-item-display"
-    >
-        <div class="selected-item-text-container">
-            Selected {{medium}}: 
-            <div 
-                class="selected-item-label"
-            >
-                {{ selectedItem }}
-            </div>
-        </div>
-        <lucide-icon
-            [img]="Trash2"
-            size="18"
-            (click)="clearSelectedItem()"
-            class="trash-icon"
-        ></lucide-icon>
-    </div>
+    <app-item-item-cf-inputs 
+        [medium]="medium"
+        [width]="width"
+        [placeholder]="`Search {$medium}s...`"
+        (selectedItemChange)="onItemSelected($event)"
+    />
 </div>  
 
 <app-model-info #modelInfoPopup/>
-<app-search-results #searchResultsPopup/>

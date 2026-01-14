@@ -2,27 +2,22 @@ import {
   Component,
   Input, 
   Output,
-  ViewChild, 
   signal,
   EventEmitter,
   WritableSignal
 } from '@angular/core';
-import { NgIf } from '@angular/common';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { 
   LucideAngularModule, 
   Info, 
-  Search, 
-  Trash2,
 } from 'lucide-angular';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 
 import { PopupDirective } from '../../popup-card/popup-directive/popup-directive';
-import { fetchMovieTitles } from '../../../services/movieSearch';
-import { AutocompleteComponent } from '../../autocomplete/autocomplete';
 import { ModelInfo } from '../../model-info/model-info';
 import { SearchResults } from '../../search-results/search-results';
+import { ItemItemCFInputs } from '../item-item-cf/item-item-cf-inputs/item-item-cf-inputs';
 
 import { 
   fetchItemSimilarityRecommendations,
@@ -37,15 +32,13 @@ import { RecommendFn } from '../../../types/movies.types';
     FormsModule,
     LucideAngularModule,
     PopupDirective,
-    NgIf,
-    AutocompleteComponent,
     CommonModule,
     ModelInfo,
-    SearchResults,
     RouterModule,
+    ItemItemCFInputs
   ],
   templateUrl: './item-similarity.html',
-  styleUrl: './item-similarity.css',
+  styleUrls: ['../../../styles/model.css'],
 })
 export class ItemSimilarity {
   @Input() medium!: string;
@@ -53,7 +46,7 @@ export class ItemSimilarity {
   @Input() width: string = '400px';
   @Input() numRecommendations!: number;
 
-  selectedItem: string | null = null;
+  selectedItem: WritableSignal<string | null> = signal(null);
   searchQuery: WritableSignal<string> = signal('');
 
   @Output() recommendFnReady = new EventEmitter<RecommendFn>();
@@ -62,66 +55,31 @@ export class ItemSimilarity {
   constructor(private route: ActivatedRoute) {}
 
   ngOnInit() {
-    this.recommendFnReady.emit(this.recommend);
+    Promise.resolve().then(() => {
+      this.recommendFnReady.emit(this.recommend);
+    });
   }
-
-  searchResults = signal<string[]>([]);
-  loadingSearchResults = signal(false);
   
-
   readonly Info = Info;
-  readonly Search = Search;
-  readonly Trash2 = Trash2;
 
   info_title = 'Item Similarity Recommendation';
   info_description =
     `Recommend items that are similar to the selected items, or the given description, based on similarity of content using sentence transformers (all-MiniLM-L6-v2) aka SBERT.`;
 
-  @ViewChild(PopupDirective) searchResultsPopup!: PopupDirective;
-  @ViewChild(SearchResults) searchResultsComponent!: SearchResults;
-  @ViewChild(AutocompleteComponent) autocomplete!: AutocompleteComponent;
-
-  search = async (query: string): Promise<string[]> => {
-    const titles = await fetchMovieTitles(query, 5);
-    return titles;
+  onItemSelected(item: string | null) {
+    this.selectedItem.set(item);
   }
 
-  onItemSelected(item: string) {
-    this.selectedItem = item;
+  onQueryChange(query: string) {
+    this.searchQuery.set(query)
   }
-
-  clearSelectedItem() {
-    this.selectedItem = null;
-    this.searchQuery.set('');
-  }
-
-  async onSearchClick() {
-    if (!this.searchQuery) return;
-
-    this.autocomplete?.closeDropdown();
-
-    this.loadingSearchResults.set(true);
-    this.searchResults.set([]);
-
-    try {
-      const results = await fetchMovieTitles(this.searchQuery(), 50);
-      this.searchResults.set(results);
-    } finally {
-      this.loadingSearchResults.set(false);
-    }
-  }
-
-  onSearchSelect = (item: string) => {
-    this.onItemSelected(item);
-    this.searchQuery.set('');
-  };
 
   private recommend: RecommendFn = async () => {
-    const query = this.selectedItem ?? this.searchQuery();
+    const query = this.selectedItem() ?? this.searchQuery();
 
     if (!query) return;
 
-    const method = this.selectedItem
+    const method = this.selectedItem()
       ? fetchItemSimilarityRecommendations
       : fetchItemSimilarityDescriptionRecommendations;
 

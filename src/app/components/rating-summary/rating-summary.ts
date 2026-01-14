@@ -17,9 +17,7 @@ import {
 } from 'lucide-angular';
 
 import { Rating } from '../../services/recommend/get-user-user-cf-recommendation';
-import { AutocompleteComponent } from '../autocomplete/autocomplete';
-import { SearchResults } from '../search-results/search-results';
-import { PopupDirective } from '../popup-card/popup-directive/popup-directive';
+import { SearchBar } from '../search-bar/search-bar';
 
 @Component({
   selector: 'app-rating-summary',
@@ -27,24 +25,23 @@ import { PopupDirective } from '../popup-card/popup-directive/popup-directive';
     CommonModule,
     FormsModule,
     LucideAngularModule,
-    AutocompleteComponent,
-    SearchResults,
-    PopupDirective
+    SearchBar
   ],
   templateUrl: './rating-summary.html',
   styleUrl: './rating-summary.css',
 })
 export class RatingSummary {
-  @Input() ratings!: WritableSignal<Rating[]>;
+  @Input() ratings!: Rating[];
   @Input() medium!: string;
+  @Input() width: string = '400px';
+  @Input() placeholder: string = 'Search...';
   @Input() search!: (query: string) => Promise<string[]>;
   @Input() onItemSelected!: (item: string) => void;
-  @Input() onSearchClick!: (query: WritableSignal<string>) => void;
-  @Input() onSearchSelect!: (item: string) => void;
-  @Input() loadingSearchResults!: Signal<boolean>;
-  @Input() searchResults!: Signal<string[]>;
 
   query: WritableSignal<string> = signal('');
+  searchResults: WritableSignal<string[]> = signal([]);
+
+  @Output() queryChange = new EventEmitter<string>();
 
   private onItemSelectedFn?: (item: string) => void;
   closeAutocompleteTrigger = signal(0);
@@ -54,14 +51,12 @@ export class RatingSummary {
   @ViewChild('ratingSummaryPopup', { static: true })
   template!: TemplateRef<any>;
 
-  @ViewChild('popupAutocomplete', { static: true })
-  popupAutocomplete!: AutocompleteComponent;
-
   trackByName(_: number, rating: Rating) {
     return rating.name;
   }
 
   handleSelect = (item: string) => {
+    this.onItemSelected(item);
     this.closeAutocompleteTrigger.update(v => v + 1);
     this.onItemSelectedFn?.(item);
     this.query.set('');

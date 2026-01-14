@@ -1,0 +1,40 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.selected-item-display {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  align-self: center;
+}
+
+.selected-item-text-container {
+  display: flex;
+  align-items: center;
+  gap: 0.2em;
+}
+
+.selected-item-label {
+  font-weight: 800;
+  color: var(--secondary-default);
+}
+
+.trash-icon {
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.trash-icon:hover {
+  color: var(--secondary-default);
+  transform: scale(1.05);
+}
+
+.inputs-container {
+  display: flex;
+  flex-direction: column;
+  gap: 3em;
+}

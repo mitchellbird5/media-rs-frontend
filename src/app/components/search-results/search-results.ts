@@ -19,9 +19,9 @@ import { CommonModule } from '@angular/common';
 })
 export class SearchResults {
   @Input() search_title!: string;
-  @Input() loadingSearchResults!: Signal<boolean>;
-  @Input() results!: Signal<string[]>;
-  @Input() onResultSelected!: (result: any) => any;
+  @Input() loadingSearchResults!: boolean;
+  @Input() results!: string[];
+  @Input() onResultSelected!: (result: string) => void;
   @Input() close!: () => void;
 
   @ViewChild('searchResultsPopup', { static: true })

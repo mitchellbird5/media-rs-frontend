@@ -5,16 +5,6 @@
   width: auto;
 }
 
-/* Input styles */
-.autocomplete-input {
-  width: 100%;
-  padding: 0.5rem 0.75rem;
-  border: 1px solid #d1d5db;
-  border-radius: 0.375rem;
-  font-size: 1rem;
-  box-sizing: border-box;
-}
-
 /* Dropdown overlays content */
 .autocomplete-dropdown {
   position: absolute;      /* must be absolute */

@@ -71,16 +71,6 @@ html, body, app-root {
   min-height: 100vh;
 }
 
-.default-page {
-  flex: 1; /* fills remaining space after header */
-  background-color: var(--bg-background-default);
-  color: var(--text-default);
-  padding-top: var(--header-height);
-  width: var(--page-width);
-  align-self: center;
-}
-
-
 .popup-title {
   font-size: 1.6em;
   font-weight: 600;

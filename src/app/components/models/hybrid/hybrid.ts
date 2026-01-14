@@ -15,8 +15,8 @@ import { ModelInfo } from '../../model-info/model-info';
 import { Rating } from '../../../services/recommend/get-user-user-cf-recommendation';
 import { fetchHybridRecommendations } from '../../../services/recommend/get-hybrid-recommendation';
 import { HybridWeightSlidersComponent } from '../hybrid-weight-sliders/hybrid-weight-sliders';
-import { ItemItemCF } from '../item-item-cf/item-item-cf';
-import { UserUserCF } from '../user-user-cf/user-user-cf';
+import { ItemItemCFInputs } from '../item-item-cf/item-item-cf-inputs/item-item-cf-inputs';
+import { UserUserCFInputs } from '../user-user-cf/user-user-cf-inputs/user-user-cf-inputs';
 import { PopupDirective } from '../../popup-card/popup-directive/popup-directive';
 
 import { RecommendFn } from '../../../types/movies.types';
@@ -29,13 +29,13 @@ import { RecommendFn } from '../../../types/movies.types';
     CommonModule,
     RouterModule,
     HybridWeightSlidersComponent,
-    ItemItemCF,
-    UserUserCF,
+    ItemItemCFInputs,
+    UserUserCFInputs,
     PopupDirective,
     ModelInfo
   ],
   templateUrl: './hybrid.html',
-  styleUrl: './hybrid.css',
+  styleUrls: ['../../../styles/model.css'],
 })
 export class Hybrid {
   @Input() medium!: string;

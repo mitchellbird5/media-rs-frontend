@@ -3,6 +3,7 @@
         *ngIf="model==='item-similarity'"
         [medium]="medium"
         [numRecommendations]="numRecommendations()"
+        [width]="width"
         (recommendFnReady)="onRecommendFnReady($event)"
         (resultsReady)="results.set($event)"
     />
@@ -11,6 +12,7 @@
         *ngIf="model==='item-item-cf'"
         [medium]="medium"
         [numRecommendations]="numRecommendations()"
+        [width]="width"
         (recommendFnReady)="onRecommendFnReady($event)"
         (resultsReady)="results.set($event)"
     />
@@ -19,6 +21,7 @@
         *ngIf="model==='user-user-cf'"
         [medium]="medium"
         [numRecommendations]="numRecommendations()"
+        [width]="width"
         (recommendFnReady)="onRecommendFnReady($event)"
         (resultsReady)="results.set($event)"
     />

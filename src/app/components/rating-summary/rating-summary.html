@@ -3,42 +3,23 @@
   let-ratings="ratings"
   let-medium="medium"
   let-search="search"
-  let-onItemSelected="onItemSelected"
-  let-onSearchClick="onSearchClick"
-  let-loadingSearchResults="loadingSearchResults"
-  let-searchResults="searchResults"
+  let-handleSelect="handleSelect"
 >
-  {{ registerOnItemSelected(onItemSelected) }}
+  {{ registerOnItemSelected(handleSelect) }}
 
   <div class="popup-title">Ratings</div>
 
-  <div class="search-wrapper">
-    <app-autocomplete
-        #popupAutocomplete
-        [query]="query"
-        [placeholder]="`Search for ${medium}s to rate...`"
-        [width]="'760px'"
-        [fetchResults]="search"
-        [zIndex]="1005"
-        [forceCloseSignal]="closeAutocompleteTrigger"
-        (valueSelected)="handleSelect($event)"
-    ></app-autocomplete>
-
-    <lucide-icon
-        [img]="Search"
-        class="search-icon"
-        (mousedown)="onSearchClick(query)"
-        appPopup
-        [popupTemplate]="searchResultsPopup.template"
-        [popupContext]="{
-            search_title: 'Searching movies...',
-            loadingSearchResults: loadingSearchResults,
-            results: searchResults,
-            onResultSelected: handleSelect
-        }"
-        [zIndex]="1010"
-    ></lucide-icon>
-  </div>
+  <app-search-bar 
+    [searchQuery]="query"
+    [search]="search",
+    [width]="width",
+    [placeholder]="placeholder"
+    [popupTitle]="`Searching {$medium}s...`"
+    [autocompleteZIndex]="1005"
+    [searchResultPopupZIndex]="1010"
+    [autocompleteForceCloseSignal]="closeAutocompleteTrigger"
+    (selectedItemChange)="handleSelect($event)"
+  />
 
   <div
     *ngFor="let rating of ratings(); trackBy: trackByName"
@@ -60,5 +41,3 @@
     </div>
   </div>
 </ng-template>
-
-<app-search-results #searchResultsPopup/>

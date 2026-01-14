@@ -2,10 +2,8 @@ import {
   Component, 
   Input, 
   Output, 
-  EventEmitter, 
-  Signal, 
-  WritableSignal, 
-  signal 
+  EventEmitter,
+  WritableSignal
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { LucideAngularModule, X } from 'lucide-angular';
@@ -25,8 +23,8 @@ import { LucideAngularModule, X } from 'lucide-angular';
 })
 export class TextInput {
   @Input() placeholder: string = 'Search...';
-  @Input() query: WritableSignal<string> = signal('');
   @Input() width: string = '300px';
+  @Input({ required: true }) query!: WritableSignal<string>;
 
   @Output() queryChange = new EventEmitter<string>();
 

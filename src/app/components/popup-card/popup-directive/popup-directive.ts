@@ -80,7 +80,7 @@ export class PopupDirective {
   }
 
   private isSignal(value: any): value is Signal<any> {
-    return typeof value === 'function' && 'set' in value;
+    return value && typeof value === 'function' && 'set' in value;
   }
 
   close() {

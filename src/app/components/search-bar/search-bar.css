@@ -1,0 +1,32 @@
+/* This prevents it from being default inline element breaking flexbox layout */ 
+:host {
+  display: block;
+  width: 100%;
+}
+
+.search-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.search-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* Search icon */
+.search-icon {
+  transform: translateY(-10%);
+  width: 20px;
+  height: 20px;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.search-icon:hover {
+  color: var(--secondary-default);
+  transform: translateY(-10%) scale(1.05);
+}

@@ -30,18 +30,18 @@ import { TextInput } from '../text-input/text-input';
   styleUrls: ['./autocomplete.css']
 })
 export class AutocompleteComponent {
+  @Input({ required: true }) query!: WritableSignal<string>;
   @Input() fetchResults!: (query: string) => Promise<string[]>;
   @Input() placeholder: string = 'Search...';
   @Input() width: string = '400px';
-  @Input() query: WritableSignal<string> = signal('');
   @Input() zIndex: number = 5
   @Input() forceCloseSignal?: Signal<number>;
   
   @Output() valueSelected = new EventEmitter<string>();
 
-  results = signal<string[]>([]);
-  isOpen = signal(false);
-  loading = signal(false);
+  results: WritableSignal<string[]> = signal<string[]>([]);
+  isOpen: WritableSignal<boolean> = signal(false);
+  loading: WritableSignal<boolean> = signal(false);
 
   private dropdownEl?: HTMLDivElement;
 
@@ -109,8 +109,9 @@ export class AutocompleteComponent {
 
 
   select(value: string) {
-    this.query.set(value);
+    if (!value) return;
     this.valueSelected.emit(value);
+    this.query.set('');
 
     // Close dropdown completely
     this.closeDropdown();
