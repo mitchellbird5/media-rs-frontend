@@ -3,18 +3,19 @@
   [search]="search"
   [width]="width"
   [placeholder]="placeholder"
-  [popupTitle]="`Searching {$medium}s...`"
+  [popupTitle]="`Searching ${medium}s...`"
   (searchQueryChange)="onQueryUpdate($event)"
   (selectedItemChange)="onItemSelected($event)"
 />
 
 <div 
-  class="selected-item-text-container"
+  *ngIf="selectedItem()"
+  class="selected-item-container"
 >
   <div 
     class="selected-item-display"
   >
-    <div class="selected-item-text-container">
+    <div class="selected-item-text">
       Selected {{medium}}: 
       <div 
         class="selected-item-label"

@@ -33,12 +33,12 @@ export class SearchParameters {
   @Input() onRecommend!: () => void;
   @Input() width: string = '400px'
   @Input() medium!: string;
-  @Input() recommendationsReady!: boolean; 
+  @Input() recommendationsReady!: WritableSignal<boolean>; 
   @Input() recommendFn: () => Promise<void> = async () => {};
 
   numRecommendations: WritableSignal<number> = signal(10);
-  @Output() numRecommendationsChange = new EventEmitter<number>();
 
+  @Output() numRecommendationsChange = new EventEmitter<number>();
   @Output() recommend = new EventEmitter<void>();
 
   readonly Loader = Loader;
@@ -47,5 +47,4 @@ export class SearchParameters {
     this.numRecommendations.set(value);
     this.numRecommendationsChange.emit(value);
   }
-
 }

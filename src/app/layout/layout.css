@@ -17,7 +17,7 @@
   padding-bottom: 2em;   
   background-color: var(--bg-background-default);
   color: var(--text-default);
-  width: var(--page-width);
+  /* width: var(--page-width); */
   align-self: center;
 }
 

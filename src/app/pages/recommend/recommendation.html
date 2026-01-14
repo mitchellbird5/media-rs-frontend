@@ -5,7 +5,8 @@
         [numRecommendations]="numRecommendations()"
         [width]="width"
         (recommendFnReady)="onRecommendFnReady($event)"
-        (resultsReady)="results.set($event)"
+        (resultsChange)="results.set($event)"
+        (resultsChange)="onResultsChange($event)"
     />
 
     <app-item-item-cf
@@ -38,7 +39,7 @@
     <app-search-parameters
         [medium]="medium"
         [width]="width"
-        [recommendationsReady]="recommendationsReady()"
+        [recommendationsReady]="recommendationsReady"
         [recommendFn]="recommendFn"
         (numRecommendationsChange)="numRecommendations.set($event)"
     />
@@ -48,5 +49,5 @@
 <app-results 
     *ngIf="results().length > 0"
     [results]="results()"
-    (rendered)="onResultsRendered($event)"
+    (rendered)="recommendationsReady.set($event)"
 />

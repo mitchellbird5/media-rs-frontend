@@ -4,6 +4,12 @@
   gap: 1em;
 }
 
+.selected-item-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
 .selected-item-display {
   display: flex;
   align-items: center;
@@ -11,7 +17,7 @@
   align-self: center;
 }
 
-.selected-item-text-container {
+.selected-item-text {
   display: flex;
   align-items: center;
   gap: 0.2em;

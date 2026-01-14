@@ -17,7 +17,7 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 import { PopupDirective } from '../../popup-card/popup-directive/popup-directive';
 import { ModelInfo } from '../../model-info/model-info';
 import { SearchResults } from '../../search-results/search-results';
-import { ItemItemCFInputs } from '../item-item-cf/item-item-cf-inputs/item-item-cf-inputs';
+import { ItemSimilarityInputs } from './item-similarity-inputs/item-similarity-inputs';
 
 import { 
   fetchItemSimilarityRecommendations,
@@ -35,7 +35,7 @@ import { RecommendFn } from '../../../types/movies.types';
     CommonModule,
     ModelInfo,
     RouterModule,
-    ItemItemCFInputs
+    ItemSimilarityInputs
   ],
   templateUrl: './item-similarity.html',
   styleUrls: ['../../../styles/model.css'],
@@ -50,7 +50,7 @@ export class ItemSimilarity {
   searchQuery: WritableSignal<string> = signal('');
 
   @Output() recommendFnReady = new EventEmitter<RecommendFn>();
-  @Output() resultsReady = new EventEmitter<string[]>();
+  @Output() resultsChange = new EventEmitter<string[]>();
 
   constructor(private route: ActivatedRoute) {}
 
@@ -74,18 +74,24 @@ export class ItemSimilarity {
     this.searchQuery.set(query)
   }
 
+  onResultsChange(results: string[]) {
+    this.resultsChange.emit(results);
+  }
+
   private recommend: RecommendFn = async () => {
     const query = this.selectedItem() ?? this.searchQuery();
+    console.log('query', query)
 
-    if (!query) return;
+    if (!query) {
+      return;
+    } 
 
     const method = this.selectedItem()
       ? fetchItemSimilarityRecommendations
       : fetchItemSimilarityDescriptionRecommendations;
 
     const results = await method(query, this.numRecommendations);
-
-    this.resultsReady.emit(results ?? []);
+    this.onResultsChange(results ?? []);
   };
 
 }

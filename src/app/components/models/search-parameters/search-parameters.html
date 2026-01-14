@@ -27,12 +27,11 @@
             </div>
         </div>
         <div
-            *ngIf="!recommendationsReady"
-            class="loading-icon"
+            *ngIf="!recommendationsReady()"
         >
             <lucide-icon
-            [img]="Loader"
-            class="spinner"
+                [img]="Loader"
+                class="spinner"
             />
         </div>
     </div>

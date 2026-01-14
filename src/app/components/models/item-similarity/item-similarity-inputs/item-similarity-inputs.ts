@@ -38,12 +38,9 @@ export class ItemSimilarityInputs {
   selectedItem: WritableSignal<string | null> = signal(null);
   searchQuery: WritableSignal<string> = signal('');
 
-  ngOnInit() {
-    console.log("selected item", this.selectedItem())
-  }
-
   @Output() selectedItemChange = new EventEmitter<string | null>();
   @Output() searchQueryChange = new EventEmitter<string>();
+  @Output() resultsChange = new EventEmitter<string[]>();
 
   constructor(private route: ActivatedRoute) {}
 
@@ -59,7 +56,6 @@ export class ItemSimilarityInputs {
   }
 
   onItemSelected(item: string | null) {
-    console.log('onItemSelected called with:', JSON.stringify(item));
     this.selectedItem.set(item);
     this.selectedItemChange.emit(item);
   }
@@ -72,6 +68,7 @@ export class ItemSimilarityInputs {
   clearSelectedItem() {
     this.onItemSelected(null);
     this.onQueryUpdate('');
+    this.resultsChange.emit([]);
   }
 
   onSearchSelect = (item: string) => {

@@ -45,10 +45,10 @@ export class Recommendation {
 
   results: WritableSignal<string[]> = signal([]);
   numRecommendations: WritableSignal<number> = signal(10);
+  renderResults: WritableSignal<boolean> = signal(false);
   recommendFn!: RecommendFn;
 
   recommendationsReady = signal(true);
-  loadingRecommendations = signal(true);
 
   constructor(private route: ActivatedRoute) {}
 
@@ -61,16 +61,7 @@ export class Recommendation {
     this.results.set(newResults);
   }
 
-  onResultsRendered(ready: boolean) {
-    this.recommendationsReady.set(ready);
-  }
-
-  onNumRecommendationsSelected (value: number) {
-    this.numRecommendations.set(value);
-  }
-
   onRecommendFnReady(fn: RecommendFn) {
     this.recommendFn = fn;
   }
-
 }

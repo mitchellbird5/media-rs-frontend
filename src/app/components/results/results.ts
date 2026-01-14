@@ -4,7 +4,9 @@ import {
   effect, 
   signal, 
   Output,
-  EventEmitter
+  EventEmitter,
+  ViewChildren,
+  QueryList
 } from "@angular/core";
 import { CommonModule, NgIf } from "@angular/common";
 import { ResultCard } from "./result-card/result-card";
@@ -22,16 +24,14 @@ import { fetchMovieData, MovieData } from "../../services/movieSearch";
   styleUrls: ["./results.css"],
 })
 export class Results {
-  /** Titles to search for */
   readonly resultsSignal = signal<string[]>([]);
-  
-  /** All movie data returned from backend, aligned to results order */
   readonly moviesSignal = signal<MovieData[]>([]);
   
-  /** Ready state for loading */
   readonly ready = signal(false);
 
   @Output() rendered = new EventEmitter<boolean>();
+
+  @ViewChildren(ResultCard) resultCards!: QueryList<ResultCard>;
 
   @Input({ required: true })
   set results(value: string[]) {

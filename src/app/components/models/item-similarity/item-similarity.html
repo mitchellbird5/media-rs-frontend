@@ -14,11 +14,12 @@
         ></lucide-icon>
     </div>
     
-    <app-item-item-cf-inputs
+    <app-item-similarity-inputs
         [medium]="medium"
         [width]="width"
         [placeholder]="`Search ${medium}s...`"
         (selectedItemChange)="onItemSelected($event)"
+        (resultsChange)="onResultsChange($event)"
     />
 </div>
 
