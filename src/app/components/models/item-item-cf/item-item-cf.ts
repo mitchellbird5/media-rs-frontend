@@ -44,12 +44,15 @@ export class ItemItemCF {
   selectedItem: WritableSignal<string | null> = signal(null);
 
   @Output() recommendFnReady = new EventEmitter<RecommendFn>();
+  @Output() loading = new EventEmitter<boolean>();
   @Output() resultsChange = new EventEmitter<string[]>();
 
   constructor(private route: ActivatedRoute) {}
 
   ngOnInit() {
-    this.recommendFnReady.emit(this.recommend);
+    Promise.resolve().then(() => {
+      this.recommendFnReady.emit(this.recommend);
+    });
   }
 
   readonly Info = Info;
@@ -67,6 +70,7 @@ export class ItemItemCF {
   }
 
   private recommend: RecommendFn = async () => {
+    this.loading.emit(true);
     const query = this.selectedItem()
     if (!query) return;
     const results =
@@ -76,6 +80,6 @@ export class ItemItemCF {
       );
 
     this.onResultsChange(results ?? []);
-
+    this.loading.emit(false);
   }
 }

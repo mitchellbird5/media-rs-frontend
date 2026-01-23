@@ -1,4 +1,5 @@
 import { getBaseUrl } from "../baseUrl";
+import { EmbeddingMethod } from "../../types/model.types";
 
 const BASE_URL = getBaseUrl();
 
@@ -10,13 +11,15 @@ export interface Rating {
 export const fetchUserUserCFRecommendations = async (
   ratings: Rating[],
   numberOfRecommendations: number,
-  numberOfSimilarUsers: number
+  numberOfSimilarUsers: number,
+  embeddingMethod: EmbeddingMethod
 ): Promise<string[] | null> => {
 
   const payload = {
     ratings: ratings,
     top_n: numberOfRecommendations,
     k_similar_users: numberOfSimilarUsers,
+    embedding_method: embeddingMethod
   };
 
   console.log('Fetching recommendations with payload:', payload);

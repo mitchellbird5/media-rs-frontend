@@ -1,9 +1,11 @@
 <ng-template
   #ratingSummaryPopup
   let-ratings="ratings"
+  let-ratingsChange="ratingsChange"
   let-medium="medium"
   let-search="search"
   let-handleSelect="handleSelect"
+  let-refresh="refresh"
 >
 
   <div class="popup-title">Ratings</div>
@@ -17,7 +19,8 @@
     [autocompleteZIndex]="1005"
     [searchResultPopupZIndex]="1010"
     [autocompleteForceCloseSignal]="closeAutocompleteTrigger"
-    (selectedItemChange)="handleSelect($event)"
+    (selectedItemChange)="handleSelect($event); this.clearSearch(); refresh()"
+    (cleared)="clearSearch(); refresh()"
   />
 
   <div
@@ -29,15 +32,23 @@
         {{ rating.name }}
       </div>
 
-      <input
-        type="number"
-        class="rating-input"
-        [ngModel]="rating.value"
-        (ngModelChange)="updateRating(rating.name, $event)"
-        min="0"
-        max="5"
-        step="0.5"
-      />
+      <div class="rating-container">
+        <app-slider 
+          [label]="'Rating'"
+          [min]="0",
+          [max]="5",
+          [step]="0.5"
+          [value]=rating.value
+          (valueChange)="updateRating(ratings, ratingsChange, rating.name, $event); refresh()"
+        />
+
+        <lucide-icon
+          [img]="Trash2"
+          size="22"
+          (click)="removeRating(ratings, ratingsChange, rating.name); refresh()"
+          class="trash-icon clear-icon"
+        ></lucide-icon>
+      </div>
     </div>
   </div>
 </ng-template>

@@ -28,6 +28,18 @@
   background-color: var(--secondary-dark);
 }
 
+.trash-icon {
+  transform: translateY(10%);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.trash-icon:hover {
+  color: var(--secondary-default);
+  transform: translateY(10%) scale(1.05);
+}
+
 .close-btn {
   font-size: 1em;
   line-height: 1;

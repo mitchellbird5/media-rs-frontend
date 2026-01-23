@@ -8,7 +8,7 @@ import {
   Input
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SliderComponent } from '../../slider/slider';
+import { SliderComponent } from '../../../../slider/slider';
 @Component({
   selector: 'app-hybrid-weight-sliders',
   standalone: true,

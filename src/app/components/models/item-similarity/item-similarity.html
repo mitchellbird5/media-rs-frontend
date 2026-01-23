@@ -21,6 +21,10 @@
         (selectedItemChange)="onItemSelected($event)"
         (resultsChange)="onResultsChange($event)"
     />
+
+    <app-embedding-option 
+        (embeddingSelected)="onSelectEmbedding($event)"
+    />
 </div>
 
 <app-model-info #modelInfoPopup/>

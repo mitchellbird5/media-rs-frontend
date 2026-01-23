@@ -19,6 +19,11 @@
   font-weight: 600;
 }
 
+.subtitle {
+  font-size: 1.2em;
+  font-weight: 600;
+}
+
 /* Info icon */
 .info-icon {
   transform: translateY(-10%);

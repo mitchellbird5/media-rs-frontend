@@ -11,6 +11,6 @@
   <app-selected-item 
     [label]="`Selected ${medium}:`"
     [selectedItem]="selectedItem"
-    [clearSelectedItem]="clearSelectedItem"
+    [clearSelectedItem]="clearSelectedItem.bind(this)"
   />
 </div>

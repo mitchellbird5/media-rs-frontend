@@ -4,8 +4,9 @@
         [medium]="medium"
         [numRecommendations]="numRecommendations()"
         [width]="width"
-        (recommendFnReady)="onRecommendFnReady($event)"
-        (resultsChange)="onResultsChange($event)"
+        (recommendFnReady)="recommendFn.set($event)"
+        (resultsChange)="results.set($event)"
+        (loading)="loading.set($event)"
     />
 
     <app-item-item-cf
@@ -13,8 +14,9 @@
         [medium]="medium"
         [numRecommendations]="numRecommendations()"
         [width]="width"
-        (recommendFnReady)="onRecommendFnReady($event)"
-        (resultsChange)="onResultsChange($event)"
+        (recommendFnReady)="recommendFn.set($event)"
+        (resultsChange)="results.set($event)"
+        (loading)="loading.set($event)"
     />
 
     <app-user-user-cf
@@ -22,8 +24,9 @@
         [medium]="medium"
         [numRecommendations]="numRecommendations()"
         [width]="width"
-        (recommendFnReady)="onRecommendFnReady($event)"
+        (recommendFnReady)="recommendFn.set($event)"
         (resultsReady)="results.set($event)"
+        (loading)="loading.set($event)"
     />
 
     <app-hybrid
@@ -31,22 +34,23 @@
         [medium]="medium"
         [numRecommendations]="numRecommendations()"
         [width]="width"
-        (recommendFnReady)="onRecommendFnReady($event)"
+        (recommendFnReady)="recommendFn.set($event)"
         (resultsReady)="results.set($event)"
+        (loading)="onLoading($event)"
     />
 
     <app-search-parameters
         [medium]="medium"
         [width]="width"
         [recommendationsReady]="recommendationsReady"
-        [recommendFn]="recommendFn"
+        [recommendFn]="recommendFn()!"
         (numRecommendationsChange)="numRecommendations.set($event)"
     />
 
 </div>  
 
 <app-results 
-    *ngIf="results().length > 0"
+    *ngIf="results().length > 0 && !loading()"
     [results]="results()"
     (rendered)="recommendationsReady.set($event)"
 />

@@ -16,10 +16,11 @@ import {
 import { ActivatedRoute, RouterModule } from '@angular/router';
 
 import { PopupDirective } from '../../popup-card/popup-directive/popup-directive';
-import { Results } from '../../results/results';
 import { Rating, fetchUserUserCFRecommendations } from '../../../services/recommend/get-user-user-cf-recommendation'; 
 import { ModelInfo } from '../../model-info/model-info';
 import { UserUserCFInputs } from './user-user-cf-inputs/user-user-cf-inputs';
+import { EmbeddingMethod } from '../../../types/model.types';
+import { EmbeddingOption } from '../embedding-option/embedding-option';
 
 import { RecommendFn } from '../../../types/movies.types';
 
@@ -32,7 +33,8 @@ import { RecommendFn } from '../../../types/movies.types';
     CommonModule,
     ModelInfo,
     RouterModule,
-    UserUserCFInputs
+    UserUserCFInputs,
+    EmbeddingOption
   ],
   templateUrl: './user-user-cf.html',
   styleUrls: ['../../../styles/model.css'],
@@ -44,14 +46,18 @@ export class UserUserCF {
 
   ratings: WritableSignal<Rating[]> = signal([]);
   numSimilarUsers: WritableSignal<number> = signal(25);
+  selectedEmbedding: WritableSignal<EmbeddingMethod> = signal('SBERT');
 
   @Output() recommendFnReady = new EventEmitter<RecommendFn>();
+  @Output() loading = new EventEmitter<boolean>();
   @Output() resultsReady = new EventEmitter<string[]>();
 
   constructor(private route: ActivatedRoute) {}
 
   ngOnInit() {
-    this.recommendFnReady.emit(this.recommend);
+    Promise.resolve().then(() => {
+      this.recommendFnReady.emit(this.recommend);
+    });
   }
 
   loadingRecommendations = signal(false);
@@ -75,14 +81,21 @@ export class UserUserCF {
     this.recommendationsReady.set(ready);
   }
 
+  onSelectEmbedding(embedding: EmbeddingMethod) {
+    this.selectedEmbedding.set(embedding);
+  }
+
   private recommend: RecommendFn = async () => {
+    this.loading.emit(true);
     const results = await fetchUserUserCFRecommendations(
       this.ratings(), 
       this.numRecommendations,
-      this.numSimilarUsers()
+      this.numSimilarUsers(),
+      this.selectedEmbedding()
     );
 
     this.resultsReady.emit(results ?? []);
+    this.loading.emit(false);
   }
 
 }

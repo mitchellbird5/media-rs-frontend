@@ -38,10 +38,14 @@ export class AutocompleteComponent {
   @Input() forceCloseSignal?: Signal<number>;
   
   @Output() valueSelected = new EventEmitter<string>();
+  @Output() cleared = new EventEmitter<void>();
 
   results: WritableSignal<string[]> = signal<string[]>([]);
   isOpen: WritableSignal<boolean> = signal(false);
   loading: WritableSignal<boolean> = signal(false);
+
+  private debounceTimer: any = null;
+  @Input() debounceMs = 300;
 
   private dropdownEl?: HTMLDivElement;
 
@@ -63,6 +67,13 @@ export class AutocompleteComponent {
     { injector: this.injector }
   );
 
+  private _syncQueryEffect = effect(() => {
+    const inputEl = this.host.nativeElement.querySelector('input') as HTMLInputElement;
+    if (inputEl && inputEl.value !== this.query()) {
+      inputEl.value = this.query();
+    }
+  }, { injector: this.injector });
+
   ngOnDestroy() {
     // if (this.dropdownEl && this.dropdownEl.parentElement) {
     //   this.dropdownEl.parentElement.removeChild(this.dropdownEl);
@@ -71,42 +82,51 @@ export class AutocompleteComponent {
     this.closeDropdown();
   }
 
-  async onInput(value: string) {
+  onInput(value: string) {
     this.query.set(value);
+  }
+
+  private _debouncedFetchEffect = effect(() => {
+    const value = this.query();
 
     if (!value || value.length < 2) {
       this.closeDropdown();
       return;
     }
 
-    this.loading.set(true);
-
-    try {
-      const data = await this.fetchResults(this.query());
-      this.results.set(data);
-
-      if (!data.length) {
-        this.closeDropdown();
-        return;
-      }
-
-      this.isOpen.set(true);
-
-      // Create dropdown only if it doesn’t exist
-      if (!this.dropdownEl) {
-        this.dropdownEl = document.createElement('div');
-        this.dropdownEl.className = 'autocomplete-dropdown';
-        this.dropdownEl.style.position = 'fixed';
-        this.dropdownEl.style.zIndex = `${this.zIndex}`;
-        document.body.appendChild(this.dropdownEl);
-      }
-
-      this.updateDropdown();
-    } finally {
-      this.loading.set(false);
+    // Clear previous debounce
+    if (this.debounceTimer) {
+      clearTimeout(this.debounceTimer);
     }
-  }
 
+    this.debounceTimer = setTimeout(async () => {
+      this.loading.set(true);
+
+      try {
+        const data = await this.fetchResults(value);
+        this.results.set(data);
+
+        if (!data.length) {
+          this.closeDropdown();
+          return;
+        }
+
+        this.isOpen.set(true);
+
+        if (!this.dropdownEl) {
+          this.dropdownEl = document.createElement('div');
+          this.dropdownEl.className = 'autocomplete-dropdown';
+          this.dropdownEl.style.position = 'fixed';
+          this.dropdownEl.style.zIndex = `${this.zIndex}`;
+          document.body.appendChild(this.dropdownEl);
+        }
+
+        this.updateDropdown();
+      } finally {
+        this.loading.set(false);
+      }
+    }, this.debounceMs);
+  }, { injector: this.injector });
 
   select(value: string) {
     if (!value) return;
@@ -119,28 +139,25 @@ export class AutocompleteComponent {
 
 
   closeDropdown() {
-    if (!this.dropdownEl) return;
-
-    if (this.dropdownEl.parentElement) {
+    if (this.dropdownEl?.parentElement) {
       this.dropdownEl.parentElement.removeChild(this.dropdownEl);
     }
+
     this.dropdownEl = undefined;
     this.isOpen.set(false);
+    this.results.set([]); // 🔑 ensures empty dropdown state
   }
-
-
+      
   private updateDropdown() {
     if (!this.dropdownEl) return;
 
     if (!this.isOpen() || !this.results().length) {
       this.dropdownEl.style.display = 'none';
-      const inputEl = this.host.nativeElement.querySelector('input') as HTMLInputElement;
-      if (inputEl) inputEl.value = this.query(); 
       return;
     }
 
     const inputEl = this.host.nativeElement.querySelector('input') as HTMLInputElement;
-    if (inputEl) inputEl.value = this.query(); 
+    if (!inputEl) return;
 
     const rect = inputEl.getBoundingClientRect();
 

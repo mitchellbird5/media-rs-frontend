@@ -1,0 +1,31 @@
+.compare-container {
+  display: flex;
+  flex-direction: column;
+  gap: 3em;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-lg);
+  border: 1px solid var(--text-muted);
+  border-radius: var(--radius-lg);
+  background-color: var(--bg-background-light);
+}
+
+.model-input-container {
+  border: 1px solid var(--text-muted);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+}
+
+.select-model-container {
+  display: flex;
+  flex-direction: column;
+  gap:1em;
+}
+
+.model-tickbox-container {
+  display: flex;
+  flex-direction: row;
+  gap: 1em;
+  align-items: center;
+  justify-content: center;
+}

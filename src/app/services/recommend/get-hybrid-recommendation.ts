@@ -1,4 +1,5 @@
 import { getBaseUrl } from "../baseUrl";
+import { EmbeddingMethod } from "../../types/model.types";
 
 const BASE_URL = getBaseUrl();
 
@@ -14,6 +15,7 @@ export const fetchHybridRecommendations = async (
   beta: number,
   numberOfRecommendations: number,
   numberOfSimilarUsers: number,
+  embeddingMethod: EmbeddingMethod
 ): Promise<string[] | null> => {
   if (!title) return null;
 
@@ -24,6 +26,7 @@ export const fetchHybridRecommendations = async (
     ratings: ratings,
     top_n: numberOfRecommendations,
     k_similar_users: numberOfSimilarUsers,
+    embedding_method: embeddingMethod
   };
 
   console.log('Fetching recommendations with payload:', payload);

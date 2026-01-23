@@ -27,6 +27,7 @@ export class TextInput {
   @Input({ required: true }) query!: WritableSignal<string>;
 
   @Output() queryChange = new EventEmitter<string>();
+  @Output() cleared = new EventEmitter<void>();
 
   readonly X = X;
   
@@ -38,6 +39,7 @@ export class TextInput {
   clear() {
     this.query.set('');
     this.queryChange.emit('');
+    this.cleared.emit();
   }
 
 }

@@ -1,0 +1,20 @@
+<div class="model-tickbox-container">
+  <div class="subtitle">{{ ModelTitles[model()] }}</div>
+  <input
+    type="checkbox"
+    [checked]="showModel()"
+    (change)="onShowModel($event.target.checked)"
+  />
+  <button
+    *ngIf="showModel()" 
+    class="edit-button"
+    appPopup
+    [popupTemplate]="modelParamsPopup.template"
+    [popupContext]="getPopupContext()"
+  >
+    Edit Parameters
+  </button>
+</div>
+
+
+<app-model-params-popup #modelParamsPopup/>

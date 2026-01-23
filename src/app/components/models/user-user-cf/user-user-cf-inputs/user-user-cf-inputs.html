@@ -14,6 +14,7 @@
     [popupTemplate]="ratingSummaryPopup.template"
     [popupContext]="{
       ratings: ratings,
+      ratingsChange: ratingsChange,
       medium: medium,
       search: search,
       width: width,
@@ -25,7 +26,7 @@
   </div>
 
   <app-slider
-    label="Number of Users"
+    label="Number of Similar Users"
     [max]="50"
     [step]="1"
     [value]="numSimilarUsers()"

@@ -4,20 +4,19 @@ import {
   ViewChild,
   TemplateRef,
   EventEmitter,
-  Output,
   signal,
-  Signal,
   WritableSignal 
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { 
   LucideAngularModule, 
-  Search,
+  Trash2,
 } from 'lucide-angular';
 
 import { Rating } from '../../services/recommend/get-user-user-cf-recommendation';
 import { SearchBar } from '../search-bar/search-bar';
+import { SliderComponent } from '../slider/slider';
 
 @Component({
   selector: 'app-rating-summary',
@@ -25,7 +24,8 @@ import { SearchBar } from '../search-bar/search-bar';
     CommonModule,
     FormsModule,
     LucideAngularModule,
-    SearchBar
+    SearchBar,
+    SliderComponent
   ],
   templateUrl: './rating-summary.html',
   styleUrl: './rating-summary.css',
@@ -40,8 +40,9 @@ export class RatingSummary {
 
   query: WritableSignal<string> = signal('');
   searchResults: WritableSignal<string[]> = signal([]);
+  closeAutocompleteTrigger: WritableSignal<number> = signal(0);
 
-  closeAutocompleteTrigger = signal(0);
+  readonly Trash2=Trash2
 
   @ViewChild('ratingSummaryPopup', { static: true })
   template!: TemplateRef<any>;
@@ -50,10 +51,28 @@ export class RatingSummary {
     return rating.name;
   }
 
-  updateRating(name: string, value: number) {
-    queueMicrotask(() => {
-      this.ratings.update(r => r.map(r => r.name === name ? { ...r, value } : r));
-    });
+  updateRating(
+    ratingsSignal: WritableSignal<Rating[]>, 
+    ratingsChange: EventEmitter<Rating[]>, 
+    name: string, 
+    value: number
+  ) {
+    ratingsSignal.update(r => r.map(r => r.name === name ? { ...r, value } : r));
+    ratingsChange.emit(ratingsSignal());
+  }
+
+  removeRating(
+    ratingsSignal: WritableSignal<Rating[]>, 
+    ratingsChange: EventEmitter<Rating[]>, 
+    name: string, 
+  ) {
+    ratingsSignal.update(r => r.filter(rating => rating.name !== name));
+    ratingsChange.emit(ratingsSignal());
+  }
+
+  clearSearch() {
+    this.query.set('');
+    this.closeAutocompleteTrigger.set(this.closeAutocompleteTrigger() + 1);
   }
   
 }

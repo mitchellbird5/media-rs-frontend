@@ -6,7 +6,7 @@
 
 @import './app/styles/input.css';
 @import './app/styles/popup.css';
-@import './app/styles/close-button.css';
+@import './app/styles/button.css';
 @import './app/styles/spinner.css';
 @import './app/components/autocomplete/autocomplete.css'; /* need to import to global to work */
 

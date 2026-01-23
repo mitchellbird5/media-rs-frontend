@@ -1,7 +1,10 @@
 import { 
   Component, 
   signal,
+  input,
   WritableSignal,
+  InputSignal,
+  computed
 } from '@angular/core';
 import { NgIf } from '@angular/common';
 import { CommonModule } from '@angular/common';
@@ -17,7 +20,10 @@ import { ItemItemCF } from '../../components/models/item-item-cf/item-item-cf';
 import { UserUserCF } from '../../components/models/user-user-cf/user-user-cf';
 import { Hybrid } from '../../components/models/hybrid/hybrid';
 import { SearchParameters } from '../../components/models/search-parameters/search-parameters';
+
 import { RecommendFn } from '../../types/movies.types';
+import { ModelType, isModelType } from '../../types/model.types';
+import { MediumType, isMediumType } from '../../types/medium.type';
 
 @Component({
   selector: 'app-recommendation',
@@ -39,29 +45,35 @@ import { RecommendFn } from '../../types/movies.types';
   styleUrl: './recommendation.css',
 })
 export class Recommendation {
-  medium!: string;
-  model!: string;
-  width: string = '600px';
+  medium!: MediumType;
+  model!: ModelType;
 
+  width: string = '600px';
   results: WritableSignal<string[]> = signal([]);
   numRecommendations: WritableSignal<number> = signal(10);
-  renderResults: WritableSignal<boolean> = signal(false);
-  recommendFn!: RecommendFn;
+  loading: WritableSignal<boolean> = signal(false);
+  recommendFn: WritableSignal<RecommendFn | null> = signal(null);
 
   recommendationsReady = signal(true);
 
   constructor(private route: ActivatedRoute) {}
 
   ngOnInit() {
-    this.medium = this.route.snapshot.paramMap.get('medium')!;
-    this.model = this.route.snapshot.paramMap.get('model')!;
+    const mediumParam = this.route.snapshot.paramMap.get('medium');
+    const modelParam = this.route.snapshot.paramMap.get('model');
+
+    if (!mediumParam || !isMediumType(mediumParam)) {
+      throw new Error(`Invalid medium '${mediumParam}'`);
+    }
+    if (!modelParam || !isModelType(modelParam)) {
+      throw new Error(`Invalid recommendation model '${modelParam}'`);
+    }
+
+    this.medium = mediumParam;
+    this.model = modelParam;
   }
 
-  onResultsChange(newResults: string[]) {
-    this.results.set(newResults);
-  }
-
-  onRecommendFnReady(fn: RecommendFn) {
-    this.recommendFn = fn;
+  onLoading(loading: boolean) {
+    this.loading.set(loading);
   }
 }

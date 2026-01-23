@@ -44,9 +44,9 @@ export class SearchBar {
 
   @Output() searchQueryChange = new EventEmitter<string>();
   @Output() selectedItemChange = new EventEmitter<string>();
+  @Output() cleared = new EventEmitter<void>();
 
   @ViewChild(PopupDirective) searchResultsPopup!: PopupDirective;
-  @ViewChild(SearchResults) searchResultsComponent!: SearchResults;
   @ViewChild(AutocompleteComponent) autocomplete!: AutocompleteComponent;
 
   async onSearchIconClick() {
@@ -70,5 +70,12 @@ export class SearchBar {
     this.searchQuery.set('')
     this.selectedItemChange.emit(item);
     this.searchResults.set([]);
+  }
+
+  onCleared() {
+    this.searchQuery.set('');
+    this.searchResults.set([]);
+    this.searchResultsPopup?.close?.();
+    this.cleared.emit();
   }
 }

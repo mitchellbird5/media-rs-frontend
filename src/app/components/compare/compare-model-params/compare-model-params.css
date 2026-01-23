@@ -1,0 +1,7 @@
+.model-tickbox-container {
+  display: flex;
+  flex-direction: row;
+  gap: 1em;
+  align-items: center;
+  justify-content: center;
+}

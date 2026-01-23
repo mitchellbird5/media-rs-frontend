@@ -52,3 +52,13 @@
   color: var(--secondary-default);
   transform: translateY(-60%) scale(1.05);
 }
+
+.rating-container {
+  display: flex;
+  flex-direction: row;
+  gap: 1.0em;
+}
+
+.clear-icon {
+  transform: translateY(30%);
+}

@@ -1,15 +1,18 @@
 import { getBaseUrl } from "../baseUrl";
+import { EmbeddingMethod } from "../../types/model.types";
 
 const BASE_URL = getBaseUrl();
 
 export const fetchItemSimilarityRecommendations = async (
   title: string,
-  numberOfRecommendations: number
+  numberOfRecommendations: number,
+  embeddingMethod: EmbeddingMethod
 ): Promise<string[] | null> => {
 
   const query = new URLSearchParams({
     movie_title: title,
     top_n:numberOfRecommendations.toString(),
+    embedding_method: embeddingMethod
   });
 
   const response = await fetch(`${BASE_URL}/recommend/content/?${query.toString()}`, {
@@ -35,12 +38,14 @@ export const fetchItemSimilarityRecommendations = async (
 
 export const fetchItemSimilarityDescriptionRecommendations = async (
   description: string,
-  numberOfRecommendations: number
+  numberOfRecommendations: number,
+  embeddingMethod: 'SBERT' | 'TFIDF'
 ): Promise<string[] | null> => {
 
   const query = new URLSearchParams({
     description: description,
     top_n: numberOfRecommendations.toString(),
+    embedding_method: embeddingMethod
   });
 
   const response = await fetch(`${BASE_URL}/recommend/content-description/?${query.toString()}`, {

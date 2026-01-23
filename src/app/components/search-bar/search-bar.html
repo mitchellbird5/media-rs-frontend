@@ -8,6 +8,7 @@
       [zIndex]="autocompleteZIndex"
       [forceCloseSignal]="autocompleteForceCloseSignal"
       (valueSelected)="onSelected($event)"
+      (cleared)="onCleared()"
     ></app-autocomplete>
 
     <lucide-icon
