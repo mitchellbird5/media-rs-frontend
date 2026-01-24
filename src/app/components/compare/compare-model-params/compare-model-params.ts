@@ -52,6 +52,7 @@ export class CompareModelParams {
   private recommendFnReadyEmitter = new EventEmitter<RecommendFn>();
 
   readonly ModelTitles = ModelTitles;
+  readonly ModelParamsPopup = ModelParamsPopup;
 
   ngOnInit() {
     this.resultsChangeEmitter.subscribe(res => this.results.emit(res));

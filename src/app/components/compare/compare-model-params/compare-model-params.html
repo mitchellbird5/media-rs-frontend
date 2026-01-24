@@ -9,8 +9,9 @@
     *ngIf="showModel()" 
     class="edit-button"
     appPopup
-    [popupTemplate]="modelParamsPopup.template"
+    [popupComponent]="ModelParamsPopup"
     [popupContext]="getPopupContext()"
+    [zIndex]="1100"
   >
     Edit Parameters
   </button>

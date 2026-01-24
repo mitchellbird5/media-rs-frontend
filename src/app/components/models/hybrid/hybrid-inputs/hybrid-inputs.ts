@@ -27,8 +27,7 @@ import { PopupDirective } from '../../../popup-card/popup-directive/popup-direct
     HybridWeightSlidersComponent,
     ItemItemCFInputs,
     UserUserCFInputs,
-    PopupDirective,
-    ModelInfo
+    PopupDirective
   ],
   templateUrl: './hybrid-inputs.html',
   styleUrls: [
@@ -49,6 +48,7 @@ export class HybridInputs {
   }>();
 
   readonly Info = Info;
+  readonly ModelInfo = ModelInfo;
 
   onNumSimilarUsersChange(value: number) {
     this.numSimilarUsersChange.emit(value);

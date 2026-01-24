@@ -29,7 +29,6 @@ import { RecommendFn } from '../../../types/movies.types';
     LucideAngularModule,
     PopupDirective,
     CommonModule,
-    ModelInfo,
     RouterModule,
     ItemItemCFInputs
   ],
@@ -56,6 +55,7 @@ export class ItemItemCF {
   }
 
   readonly Info = Info;
+  readonly ModelInfo = ModelInfo;
 
   info_title = 'Item-Item Collaborative Filtering Recommendation';
   info_description =

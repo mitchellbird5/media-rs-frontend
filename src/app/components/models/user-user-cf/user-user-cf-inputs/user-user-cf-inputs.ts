@@ -29,9 +29,7 @@ import { AutocompleteComponent } from '../../../autocomplete/autocomplete';
     LucideAngularModule,
     SearchBar,
     PopupDirective,
-    RatingSummary,
-    SliderComponent,
-    RatingPopup
+    SliderComponent
   ],
   templateUrl: './user-user-cf-inputs.html',
   styleUrls: [
@@ -52,12 +50,17 @@ export class UserUserCFInputs {
   @Output() numSimilarUsersChange = new EventEmitter<number>();
   @Output() ratingsChange = new EventEmitter<Rating[]>();
 
-  constructor(private route: ActivatedRoute) {}
-
   searchResults = signal<string[]>([]);
   loadingSearchResults = signal(false);
 
-  readonly Info = Info
+  readonly Info = Info;
+  readonly RatingSummary = RatingSummary;
+  readonly RatingPopup = RatingPopup;
+
+  private ratingPopupQueue: string | null = null;
+  private ratingPopupOpening = false;
+  private ratingPopupOpenFor: string | null = null;
+
 
   @ViewChild('ratingPopupTrigger', { read: PopupDirective })
   ratingPopupTrigger!: PopupDirective;
@@ -68,22 +71,43 @@ export class UserUserCFInputs {
   @ViewChild(AutocompleteComponent)
   searchAutocomplete!: AutocompleteComponent;
 
+  constructor() {}
+
   search = async (query: string): Promise<string[]> => {
-    const titles = await fetchMovieTitles(query, 5);
-    return titles;
-  }
+    return await fetchMovieTitles(query, 5);
+  };
 
   onItemSelected(item: string) {
+    if (this.ratingPopupOpenFor === item) return;
+
+    if (this.ratingPopupOpening) {
+      this.ratingPopupQueue = item;
+      return;
+    }
+
+    this.processRatingPopup(item);
+  }
+
+  private processRatingPopup(item: string) {
+    this.ratingPopupOpening = true;
+    this.ratingPopupOpenFor = item;
     this.selectedItem.set(item);
     this.searchAutocomplete?.closeDropdown();
 
-    // Open RatingPopup with the selected item
+    // defer the actual popup open to next tick
     queueMicrotask(() => {
-      if (this.ratingPopupTrigger) {
-        this.ratingPopupTrigger.open({
-          name: this.selectedItem(),
-          onRatingInput: (value: number) => this.onRatingInput(value)
-        });
+      this.ratingPopupTrigger?.open({
+        name: item,
+        onRatingInput: (value: number) => this.onRatingInput(value)
+      });
+
+      this.ratingPopupOpening = false;
+
+      // If another item was queued during opening, process it now
+      if (this.ratingPopupQueue) {
+        const nextItem = this.ratingPopupQueue;
+        this.ratingPopupQueue = null;
+        this.processRatingPopup(nextItem);
       }
     });
   }
@@ -94,10 +118,6 @@ export class UserUserCFInputs {
     this.searchAutocomplete?.closeDropdown();
   };
 
-  get showAddRatingPopup(): boolean {
-    return !!this.selectedItem();
-  }
-
   onNumSimilarUsersUpdate(users: number) {
     this.numSimilarUsers.set(users);
     this.numSimilarUsersChange.emit(users);
@@ -105,14 +125,29 @@ export class UserUserCFInputs {
 
   addRating(name: string | null, score: number) {
     if (!name) return;
+
+    const existingIndex = this.ratings().findIndex(r => r.name === name);
+    if (existingIndex !== -1) return; // Don't add duplicates
+    
     this.ratings.update(r => [...r, { name, value: score }]);
     this.ratingsChange.emit(this.ratings());
   }
 
+  handleRatingsChange = (newRatings: Rating[]) => {
+    this.ratings.set(newRatings);
+    this.ratingsChange.emit(newRatings);
+  };
+
   onRatingInput(value: number) {
-    if (this.selectedItem() && !isNaN(value)) {
-      this.addRating(this.selectedItem(), value); 
-      this.selectedItem.set(''); 
+    const name = this.selectedItem();
+    if (name != null && !isNaN(value)) {
+      this.addRating(name, value);
+      
+      queueMicrotask(() => {
+        this.selectedItem.set(null);
+        this.ratingPopupOpenFor = null;
+      });
     }
-  }
+  };
+
 }

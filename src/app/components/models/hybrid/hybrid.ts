@@ -29,7 +29,6 @@ import { RecommendFn } from '../../../types/movies.types';
     CommonModule,
     RouterModule,
     HybridInputs,
-    ModelInfo,
     PopupDirective,
     EmbeddingOption
   ],
@@ -66,6 +65,7 @@ export class Hybrid {
     `Recommend items using a combination of content-similarity filtering, item-item collaborative filtering and user-user collaborative filtering.`;
 
   readonly Info = Info;
+  readonly ModelInfo = ModelInfo;
 
   
   onWeightsChange(weights: {alpha: number, beta: number}) {

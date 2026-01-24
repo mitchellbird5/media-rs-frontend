@@ -6,7 +6,7 @@
             [img]="Info" 
             class="info-icon"
             appPopup
-            [popupTemplate]="modelInfoPopup.template"
+            [popupComponent]="ModelInfo"
             [popupContext]="{
                 info_title: info_title,
                 info_description: info_description
@@ -27,5 +27,3 @@
     />
 
 </div>  
-
-<app-model-info #modelInfoPopup/>

@@ -1,8 +1,6 @@
 import { 
   Component, 
   Input,
-  ViewChild,
-  TemplateRef,
   EventEmitter,
   signal,
   WritableSignal 
@@ -32,6 +30,7 @@ import { SliderComponent } from '../slider/slider';
 })
 export class RatingSummary {
   @Input() ratings!: WritableSignal<Rating[]>;
+  @Input() ratingsChange!: (ratings: Rating[]) => void;
   @Input() medium!: string;
   @Input() width: string = '400px';
   @Input() placeholder: string = 'Search...';
@@ -39,40 +38,38 @@ export class RatingSummary {
   @Input() onItemSelected!: (item: string) => void;
 
   query: WritableSignal<string> = signal('');
-  searchResults: WritableSignal<string[]> = signal([]);
   closeAutocompleteTrigger: WritableSignal<number> = signal(0);
 
   readonly Trash2=Trash2
-
-  @ViewChild('ratingSummaryPopup', { static: true })
-  template!: TemplateRef<any>;
 
   trackByName(_: number, rating: Rating) {
     return rating.name;
   }
 
-  updateRating(
-    ratingsSignal: WritableSignal<Rating[]>, 
-    ratingsChange: EventEmitter<Rating[]>, 
-    name: string, 
-    value: number
-  ) {
-    ratingsSignal.update(r => r.map(r => r.name === name ? { ...r, value } : r));
-    ratingsChange.emit(ratingsSignal());
+  updateRating(name: string, value: number) {
+    this.ratings.update(r => r.map(r => r.name === name ? { ...r, value } : r));
+    this.emitRatingsChange();
   }
 
-  removeRating(
-    ratingsSignal: WritableSignal<Rating[]>, 
-    ratingsChange: EventEmitter<Rating[]>, 
-    name: string, 
-  ) {
-    ratingsSignal.update(r => r.filter(rating => rating.name !== name));
-    ratingsChange.emit(ratingsSignal());
+  removeRating(name: string) {
+    this.ratings.update(r => r.filter(r => r.name !== name));
+    this.emitRatingsChange();
+  }
+
+  private emitRatingsChange() {
+    if (typeof this.ratingsChange === 'function') {
+      this.ratingsChange(this.ratings());
+    }
   }
 
   clearSearch() {
     this.query.set('');
-    this.closeAutocompleteTrigger.set(this.closeAutocompleteTrigger() + 1);
+    this.closeAutocompleteTrigger.update(n => n + 1);
   }
-  
+
+  handleItemSelected(item: string) {
+    queueMicrotask(() => this.onItemSelected?.(item));
+    this.clearSearch();
+  }
+    
 }

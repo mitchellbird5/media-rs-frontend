@@ -17,8 +17,7 @@ import { EmbeddingMethod } from '../../../types/model.types';
   selector: 'app-embedding-option',
   imports: [
     LucideAngularModule,
-    PopupDirective,
-    ModelInfo
+    PopupDirective
   ],
   templateUrl: './embedding-option.html',
   styleUrls: [
@@ -32,6 +31,7 @@ export class EmbeddingOption {
 
   readonly Search = Search;
   readonly Info = Info;
+  readonly ModelInfo = ModelInfo;
 
   description: string = 'Select an option for how to calculate item embeddings. SBERT is a sentence transformer, this is best used for short, varied, or nuanced descriptions. TF-IDF is a simpler text analysis method, best for matching key words and recommending items from the same franchise.';
 

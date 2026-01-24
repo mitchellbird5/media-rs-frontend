@@ -1,36 +1,28 @@
-import {
-  Directive,
-  Input,
-  TemplateRef,
-  ViewContainerRef,
-  ComponentRef,
-  HostListener,
-  ApplicationRef,
-  createComponent,
-  EmbeddedViewRef,
-  effect,
-  Signal,
-  DestroyRef,
-  Injector,
-  inject,
-} from '@angular/core';
+import { Directive, Input, HostListener, ComponentRef, ApplicationRef, Injector, inject } from '@angular/core';
+import { createComponent } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { PopupShellComponent } from '../popup-shell/popup-shell';
+
+// Generic type for Angular components (works in all Angular versions)
+export type AngularComponent<T = any> = new (...args: any[]) => T;
 
 @Directive({
   selector: '[appPopup]',
+  exportAs: 'appPopup',
   standalone: true,
 })
 export class PopupDirective {
-  @Input() popupTemplate!: TemplateRef<any>;
-  @Input() popupContext: any = {};
+  @Input() popupComponent!: AngularComponent; // Dynamic component to render
+  @Input() popupContext: any = {}; // Inputs / EventEmitters
   @Input() zIndex: number = 1000;
 
-  private popupRef?: ComponentRef<PopupShellComponent>;
-  private viewRef?: EmbeddedViewRef<any>;
-  
-  private injector = inject(Injector);
+  private popupRef?: ComponentRef<any>;
+  private shellRef?: ComponentRef<PopupShellComponent>;
+  private appRef = inject(ApplicationRef);
+  private subscriptions: Subscription[] = [];
 
-  constructor(private appRef: ApplicationRef) {}
+  public isOpen: boolean = false;
+  private opening: boolean = false;
 
   @HostListener('click')
   handleHostClick() {
@@ -38,59 +30,86 @@ export class PopupDirective {
   }
 
   open(context?: any) {
-    if (this.popupRef) return;
+    if (this.popupRef || this.opening) return;
 
-    if (context) {
-      this.popupContext = context; // keep signals intact
-    }
+    this.opening = true;
+    this.isOpen = true;
 
-    this.popupContext.close = () => this.close();
-    this.popupContext.refresh = () => this.viewRef?.detectChanges();
+    if (context) this.popupContext = context;
 
-    this.popupRef = createComponent(PopupShellComponent, {
+    this.shellRef = createComponent(PopupShellComponent, {
       environmentInjector: this.appRef.injector,
     });
 
-    this.popupRef.instance.overlayZIndex = this.zIndex;
-    this.popupRef.instance.close.subscribe(() => this.close());
+    this.shellRef.instance.overlayZIndex = this.zIndex;
+    this.shellRef.instance.close.subscribe(() => this.close());
 
-    // pass popupContext directly without unwrapping signals
-    this.viewRef = this.popupTemplate.createEmbeddedView(this.popupContext);
+    this.appRef.attachView(this.shellRef.hostView);
+    document.body.appendChild(this.shellRef.location.nativeElement);
 
-    const container = this.popupRef.location.nativeElement.querySelector('.popup-card');
-    this.viewRef.rootNodes.forEach((node) => container.appendChild(node));
-    this.viewRef.detectChanges();
+    const host = this.shellRef.instance.host;
 
-    this.appRef.attachView(this.popupRef.hostView);
-    document.body.appendChild(this.popupRef.location.nativeElement);
+    this.popupRef = host.createComponent(this.popupComponent, {
+      environmentInjector: this.appRef.injector,
+    });
 
-    this.setupReactivity();
-  }
+    Object.assign(this.popupRef.instance, {
+      ...this.popupContext,
+      close: this.close.bind(this),
+      refresh: this.refresh,
+    });
 
-  private setupReactivity() {
-    if (!this.viewRef) return;
-
-    for (const [key, value] of Object.entries(this.popupContext)) {
-      if (this.isSignal(value)) {
-        effect(() => {
-          value(); // track the signal
-          this.viewRef?.detectChanges();
-        }, { injector: this.injector });
+    for (const key of Object.keys(this.popupContext)) {
+      const value = this.popupContext[key];
+      const instanceValue = this.popupRef.instance[key];
+      
+      if (value?.subscribe && instanceValue?.subscribe) {
+        // Only subscribe if both are EventEmitters and they're different instances
+        if (value !== instanceValue) {
+          const sub = instanceValue.subscribe((v: any) => {
+            // Emit asynchronously to break potential synchronous loops
+            queueMicrotask(() => {
+              if (this.isOpen && value.emit) {
+                value.emit(v);
+              }
+            });
+          });
+          this.subscriptions.push(sub);
+        }
       }
     }
+
+    this.popupRef.changeDetectorRef.detectChanges();
+    this.opening = false;
   }
 
-  private isSignal(value: any): value is Signal<any> {
-    return value && typeof value === 'function' && 'set' in value;
-  }
+  refresh = () => {
+    this.popupRef?.changeDetectorRef.detectChanges();
+  };
 
   close() {
-    if (!this.popupRef) return;
+    if (!this.popupRef && !this.shellRef) return;
 
-    this.appRef.detachView(this.popupRef.hostView);
-    this.popupRef.destroy();
-    this.viewRef?.destroy();
+    this.subscriptions.forEach(sub => sub.unsubscribe());
+    this.subscriptions = [];
 
-    this.popupRef = undefined;
+    if (this.popupRef) {
+      this.appRef.detachView(this.popupRef.hostView);
+      this.popupRef.destroy();
+      this.popupRef = undefined;
+    }
+
+    if (this.shellRef) {
+      this.appRef.detachView(this.shellRef.hostView);
+      this.shellRef.destroy();
+      this.shellRef = undefined;
+    }
+
+    this.isOpen = false;
   }
+
+  ngOnDestroy() {
+    this.close();
+  }
+
 }

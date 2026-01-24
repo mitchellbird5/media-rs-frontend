@@ -1,54 +1,38 @@
-<ng-template
-  #ratingSummaryPopup
-  let-ratings="ratings"
-  let-ratingsChange="ratingsChange"
-  let-medium="medium"
-  let-search="search"
-  let-handleSelect="handleSelect"
-  let-refresh="refresh"
->
-
+<div class="rating-summary-container">
   <div class="popup-title">Ratings</div>
 
-  <app-search-bar 
+  <app-search-bar
     [searchQuery]="query"
     [search]="search"
     [width]="width"
     [placeholder]="placeholder"
-    [popupTitle]="`Searching ${medium}s...`"
     [autocompleteZIndex]="1005"
     [searchResultPopupZIndex]="1010"
     [autocompleteForceCloseSignal]="closeAutocompleteTrigger"
-    (selectedItemChange)="handleSelect($event); this.clearSearch(); refresh()"
-    (cleared)="clearSearch(); refresh()"
+    (selectedItemChange)="handleItemSelected($event)"
+    (cleared)="clearSearch()"
   />
 
-  <div
-    *ngFor="let rating of ratings(); trackBy: trackByName"
-    class="search-result"
-  >
+  <div *ngFor="let rating of ratings(); trackBy: trackByName" class="search-result">
     <div class="rating-summary">
-      <div class="label">
-        {{ rating.name }}
-      </div>
+      <div class="label">{{ rating.name }}</div>
 
       <div class="rating-container">
-        <app-slider 
+        <app-slider
           [label]="'Rating'"
-          [min]="0",
-          [max]="5",
+          [min]="0"
+          [max]="5"
           [step]="0.5"
-          [value]=rating.value
-          (valueChange)="updateRating(ratings, ratingsChange, rating.name, $event); refresh()"
+          [value]="rating.value"
+          (valueChange)="updateRating(rating.name, $event)"
         />
-
         <lucide-icon
           [img]="Trash2"
           size="22"
-          (click)="removeRating(ratings, ratingsChange, rating.name); refresh()"
+          (click)="removeRating(rating.name)"
           class="trash-icon clear-icon"
         ></lucide-icon>
       </div>
     </div>
   </div>
-</ng-template>
+</div>

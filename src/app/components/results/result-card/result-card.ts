@@ -7,13 +7,15 @@ import { PopupDirective } from '../../popup-card/popup-directive/popup-directive
 @Component({
   selector: 'app-result-card',
   standalone: true,
-  imports: [CommonModule, DetailPopup, PopupDirective],
+  imports: [CommonModule, PopupDirective],
   templateUrl: './result-card.html',
   styleUrls: ['./result-card.css'],
 })
 export class ResultCard implements OnChanges {
   @Input() movie!: MovieData;
   @Input() animationDelay: string = '0s';
+
+  readonly DetailPopup = DetailPopup;
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['movie']) {

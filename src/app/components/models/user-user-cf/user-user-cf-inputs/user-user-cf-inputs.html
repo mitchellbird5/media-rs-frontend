@@ -11,7 +11,7 @@
   <div 
     class="edit-button"
     appPopup
-    [popupTemplate]="ratingSummaryPopup.template"
+    [popupComponent]="RatingSummary"
     [popupContext]="{
       ratings: ratings,
       ratingsChange: ratingsChange,
@@ -19,8 +19,8 @@
       search: search,
       width: width,
       placeholder: `Search ${medium}s...`,
-      handleSelect: onSearchSelect
-  }"
+      onItemSelected: onSearchSelect
+    }"
   >
       Edit ratings
   </div>
@@ -35,21 +35,12 @@
   />
 </div>
 
-
-<app-rating-summary #ratingSummaryPopup/>
-
-<app-rating-popup
-  #ratingPopup
-  [name]="selectedItem() ?? ''"
-  [onRatingInput]="onRatingInput.bind(this)"
-/>
-
 <span
   #ratingPopupTrigger
   appPopup
-  [popupTemplate]="ratingPopup.template"
+  [popupComponent]="RatingPopup"
   [popupContext]="{
-    name: selectedItem(),
+    name: null,
     onRatingInput: onRatingInput.bind(this)
   }"
   [zIndex]="1050"

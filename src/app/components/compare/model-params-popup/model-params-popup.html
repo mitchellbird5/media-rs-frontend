@@ -1,49 +1,38 @@
-<ng-template 
-  #modelParamsPopup 
-  let-model="model" 
-  let-medium="medium" 
-  let-numRecommendations="numRecommendations" 
-  let-resultsChange="resultsChange" 
-  let-loading="loading" 
-  let-recommendFnReady="recommendFnReady"
->
+<ng-container [ngSwitch]="model">
+  <app-item-similarity
+      *ngSwitchCase="'item-similarity'"
+      [medium]="medium"
+      [numRecommendations]="numRecommendations"
+      (recommendFnReady)="recommendFnReady.emit($event)"
+      (resultsChange)="resultsChange.emit($event)"
+      (loading)="loading.emit($event)"
+  ></app-item-similarity>
 
-  <ng-container [ngSwitch]="model">
-    <app-item-similarity
-        *ngSwitchCase="'item-similarity'"
-        [medium]="medium"
-        [numRecommendations]="numRecommendations"
-        (recommendFnReady)="recommendFnReady.emit($event)"
-        (resultsChange)="resultsChange.emit($event)"
-        (loading)="loading.emit($event)"
-    ></app-item-similarity>
+  <app-item-item-cf
+      *ngSwitchCase="'item-item-cf'"
+      [medium]="medium"
+      [numRecommendations]="numRecommendations"
+      (recommendFnReady)="recommendFnReady.emit($event)"
+      (resultsChange)="resultsChange.emit($event)"
+      (loading)="loading.emit($event)"
+  ></app-item-item-cf>
 
-    <app-item-item-cf
-        *ngSwitchCase="'item-item-cf'"
-        [medium]="medium"
-        [numRecommendations]="numRecommendations"
-        (recommendFnReady)="recommendFnReady.emit($event)"
-        (resultsChange)="resultsChange.emit($event)"
-        (loading)="loading.emit($event)"
-    ></app-item-item-cf>
+  <app-user-user-cf
+      *ngSwitchCase="'user-user-cf'"
+      [medium]="medium"
+      [numRecommendations]="numRecommendations"
+      (recommendFnReady)="recommendFnReady.emit($event)"
+      (resultsReady)="resultsChange.emit($event)"
+      (loading)="loading.emit($event)"
+  ></app-user-user-cf>
 
-    <app-user-user-cf
-        *ngSwitchCase="'user-user-cf'"
-        [medium]="medium"
-        [numRecommendations]="numRecommendations"
-        (recommendFnReady)="recommendFnReady.emit($event)"
-        (resultsReady)="resultsChange.emit($event)"
-        (loading)="loading.emit($event)"
-    ></app-user-user-cf>
+  <app-hybrid
+      *ngSwitchCase="'hybrid'"
+      [medium]="medium"
+      [numRecommendations]="numRecommendations"
+      (recommendFnReady)="recommendFnReady.emit($event)"
+      (resultsReady)="resultsChange.emit($event)"
+      (loading)="loading.emit($event)"
+  ></app-hybrid>
 
-    <app-hybrid
-        *ngSwitchCase="'hybrid'"
-        [medium]="medium"
-        [numRecommendations]="numRecommendations"
-        (recommendFnReady)="recommendFnReady.emit($event)"
-        (resultsReady)="resultsChange.emit($event)"
-        (loading)="loading.emit($event)"
-    ></app-hybrid>
-
-  </ng-container>
-</ng-template>
+</ng-container>

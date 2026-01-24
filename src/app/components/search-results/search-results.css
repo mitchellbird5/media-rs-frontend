@@ -1,9 +1,22 @@
+
+.title-results-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+}
+.search-results-container { 
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+}
+
 .search-result {
     padding: var(--spacing-sm) var(--spacing-md);
     /* border-bottom: 1px solid var(--text-muted); */
     cursor: pointer;
     transition: background-color 0.2s ease;
     border-radius: var(--radius-sm);
+    font-size: 600;
 }
 
 .search-result:hover {

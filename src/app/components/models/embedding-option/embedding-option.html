@@ -6,7 +6,7 @@
         [img]="Info" 
         class="info-icon"
         appPopup
-        [popupTemplate]="embeddingInfoPopup.template"
+        [popupComponent]="ModelInfo"
         [popupContext]="{
             info_title: 'Embedding Option',
             info_description: description
@@ -26,5 +26,3 @@
     </button>
   </div>
 </div>
-
-<app-model-info #embeddingInfoPopup/>

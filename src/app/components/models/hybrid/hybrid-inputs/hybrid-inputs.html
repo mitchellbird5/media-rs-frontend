@@ -7,7 +7,7 @@
                 [img]="Info" 
                 class="info-icon"
                 appPopup
-                [popupTemplate]="modelInfoPopup.template"
+                [popupContext]="ModelInfo"
                 [popupContext]="{
                     info_title: `Select a ${ medium | titlecase}`,
                     info_description: `Select a ${medium} to be used in the content-similarity and item-item collaborative filtering model.`
@@ -31,7 +31,7 @@
                 [img]="Info" 
                 class="info-icon"
                 appPopup
-                [popupTemplate]="modelInfoPopup.template"
+                [popupContext]="ModelInfo"
                 [popupContext]="{
                     info_title: `Enter ${ medium | titlecase} Ratings`,
                     info_description: `Enter ${medium} ratings to be used in the user-user collaborative filtering model.\n`
@@ -55,7 +55,7 @@
                 [img]="Info" 
                 class="info-icon"
                 appPopup
-                [popupTemplate]="modelInfoPopup.template"
+                [popupContext]="ModelInfo"
                 [popupContext]="{
                     info_title: 'Model Weights',
                     info_description: 'Weightings to use for results from different models.'
@@ -69,5 +69,3 @@
         ></app-hybrid-weight-sliders>
     </div>
 </div>  
-
-<app-model-info #modelInfoPopup/>

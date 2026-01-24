@@ -31,7 +31,6 @@ import { RecommendFn } from '../../../types/movies.types';
     LucideAngularModule,
     PopupDirective,
     CommonModule,
-    ModelInfo,
     RouterModule,
     UserUserCFInputs,
     EmbeddingOption
@@ -64,6 +63,7 @@ export class UserUserCF {
   recommendationsReady = signal(true);  // initially true for the sake of spinner logic
 
   readonly Info = Info;
+  readonly ModelInfo = ModelInfo;
 
   info_title = 'User-User Collaborative Filtering Recommendation';
   info_description =

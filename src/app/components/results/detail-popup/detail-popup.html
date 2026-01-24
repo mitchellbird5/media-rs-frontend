@@ -1,17 +1,15 @@
-<ng-template #popupTemplate let-movie="movie">
-  <div class="detail-popup-content">
-    <div class="detail-popup-title">{{ movie.title }}</div>
+<div class="detail-popup-content">
+  <div class="detail-popup-title">{{ movie.title }}</div>
 
-    <div *ngIf="genresDisplay"><strong>Genres:</strong> {{ genresDisplay }}</div>
-    <div *ngIf="runtimeDisplay"><strong>Runtime:</strong> {{ runtimeDisplay }}</div>
-    <div *ngIf="movie.overview"><strong>Overview:</strong> {{ movie.overview }}</div>
-    <div *ngIf="movie.vote_average"><strong>Rating:</strong> {{ movie.vote_average }}/10</div>
-    <div *ngIf="movie.release_date"><strong>Release:</strong> {{ movie.release_date }}</div>
-    <div *ngIf="movie.tmdb_id"><strong>TMDB ID:</strong> {{ movie.tmdb_id }}</div>
-    <div *ngIf="movie.imdb_id"><strong>IMDB ID:</strong> {{ movie.imdb_id }}</div>
+  <div *ngIf="genresDisplay"><strong>Genres:</strong> {{ genresDisplay }}</div>
+  <div *ngIf="runtimeDisplay"><strong>Runtime:</strong> {{ runtimeDisplay }}</div>
+  <div *ngIf="movie.overview"><strong>Overview:</strong> {{ movie.overview }}</div>
+  <div *ngIf="movie.vote_average"><strong>Rating:</strong> {{ movie.vote_average }}/10</div>
+  <div *ngIf="movie.release_date"><strong>Release:</strong> {{ movie.release_date }}</div>
+  <div *ngIf="movie.tmdb_id"><strong>TMDB ID:</strong> {{ movie.tmdb_id }}</div>
+  <div *ngIf="movie.imdb_id"><strong>IMDB ID:</strong> {{ movie.imdb_id }}</div>
 
-    <div class="attribution-label">
-      Cover image and details provided by 'The Movie Database' (TMDB) and the TMDB APIs. This service is not endorsed, certified or otherwise apprived by TMDB.
-    </div>
+  <div class="attribution-label">
+    Cover image and details provided by 'The Movie Database' (TMDB) and the TMDB APIs. This service is not endorsed, certified or otherwise apprived by TMDB.
   </div>
-</ng-template>
+</div>

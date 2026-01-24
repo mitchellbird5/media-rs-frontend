@@ -35,7 +35,6 @@ import { RecommendFn } from '../../../types/movies.types';
     LucideAngularModule,
     PopupDirective,
     CommonModule,
-    ModelInfo,
     RouterModule,
     ItemSimilarityInputs,
     EmbeddingOption
@@ -65,6 +64,7 @@ export class ItemSimilarity {
   }
   
   readonly Info = Info;
+  readonly ModelInfo = ModelInfo;
 
   info_title = 'Item Similarity Recommendation';
   info_description =

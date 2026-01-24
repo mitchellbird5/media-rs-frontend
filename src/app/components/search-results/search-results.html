@@ -1,28 +1,23 @@
-<ng-template
-    #searchResultsPopup
-    let-title="search_title"
-    let-results="results"
-    let-loading="loadingSearchResults"
-    let-onResultSelected="onResultSelected"
-    let-close="close"
->
+<div class="title-results-container">
     <div class="popup-title">
-        {{ title }}
+        {{ search_title }}
     </div>
 
-    <div *ngIf="loading()">
+    <div *ngIf="loadingSearchResults()">
         Loading…
     </div>
 
-    <div *ngIf="!loading() && results()?.length === 0" class="search-results-empty">
+    <div *ngIf="!loadingSearchResults() && results().length === 0" class="search-results-empty">
         No results found.
     </div>
 
-    <div 
-        *ngFor="let result of results()" 
-        (click)="onResultSelected(result); close()"
-        class="search-result"
-    >
-        {{ result }}
+    <div class="search-results-container">
+        <div 
+            *ngFor="let result of results()" 
+            (click)="onResultSelected(result); close()"
+            class="search-result"
+        >
+            {{ result }}
+        </div>
     </div>
-</ng-template>
+</div>

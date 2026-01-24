@@ -1,9 +1,4 @@
-<ng-template 
-  #addRatingPopup 
-  let-name="name" 
-  let-close="close"
-  let-refresh="refresh"
->
+<div class="rating-popup-container">
   <div class="popup-title">Add rating</div>
 
   <div class="enter-rating-container">
@@ -17,15 +12,15 @@
       [max]="5",
       [step]="0.5"
       [value]=rating
-      (valueChange)="rating = $event; refresh()"
+      (valueChange)="rating = $event"
     />
   </div>
 
   <button
     class="confirm-button"
-    (click)="submit(); close()"
+    (click)="submit()"
     [disabled]="rating < 0 || rating > 5"
   >
     Confirm
   </button>
-</ng-template>
+</div>

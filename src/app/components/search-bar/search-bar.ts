@@ -22,7 +22,6 @@ import { SearchResults } from '../search-results/search-results';
     AutocompleteComponent,
     LucideAngularModule,
     PopupDirective,
-    SearchResults
   ],
   templateUrl: './search-bar.html',
   styleUrls: ['./search-bar.css'],
@@ -41,6 +40,7 @@ export class SearchBar {
   @Input() autocompleteForceCloseSignal?: WritableSignal<number>;
 
   readonly Search = Search;
+  readonly SearchResults = SearchResults;
 
   @Output() searchQueryChange = new EventEmitter<string>();
   @Output() selectedItemChange = new EventEmitter<string>();
@@ -70,6 +70,7 @@ export class SearchBar {
     this.searchQuery.set('')
     this.selectedItemChange.emit(item);
     this.searchResults.set([]);
+    this.searchResultsPopup?.close?.();
   }
 
   onCleared() {
