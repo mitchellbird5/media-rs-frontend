@@ -22,7 +22,7 @@ import { RecommendFn } from '../../../types/movies.types';
   selector: 'app-compare-model-params',
   imports: [
     CommonModule,
-    ModelParamsPopup,
+
     PopupDirective
   ],
   templateUrl: './compare-model-params.html',

@@ -17,15 +17,10 @@
 }
 
 .select-model-container {
-  display: flex;
-  flex-direction: column;
-  gap:1em;
+  display: inline-block; /* Changed from flex */
 }
 
-.model-tickbox-container {
-  display: flex;
-  flex-direction: row;
-  gap: 1em;
-  align-items: center;
-  justify-content: center;
+.compare-title {
+  text-align: center;
+  margin-bottom: 1em;
 }

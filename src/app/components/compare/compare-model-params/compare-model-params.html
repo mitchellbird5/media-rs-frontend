@@ -1,13 +1,15 @@
 <div class="model-tickbox-container">
-  <div class="subtitle">{{ ModelTitles[model()] }}</div>
-  <input
-    type="checkbox"
-    [checked]="showModel()"
-    (change)="onShowModel($event.target.checked)"
-  />
+  <div class="model-tickbox-core">
+    <input
+      type="checkbox"
+      [checked]="showModel()"
+      (change)="onShowModel($event.target.checked)"
+    />
+    <div class="subtitle">{{ ModelTitles[model()] }}</div>
+  </div>
   <button
-    *ngIf="showModel()" 
-    class="edit-button"
+    class="edit-button compare-edit-button"
+    [style.visibility]="showModel() ? 'visible' : 'hidden'"
     appPopup
     [popupComponent]="ModelParamsPopup"
     [popupContext]="getPopupContext()"
@@ -16,6 +18,3 @@
     Edit Parameters
   </button>
 </div>
-
-
-<app-model-params-popup #modelParamsPopup/>

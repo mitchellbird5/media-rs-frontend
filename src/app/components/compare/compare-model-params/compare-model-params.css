@@ -1,7 +1,30 @@
 .model-tickbox-container {
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: auto 1fr;
   gap: 1em;
   align-items: center;
-  justify-content: center;
+  margin-bottom: 1em;
+}
+
+.model-tickbox-core {
+  display: grid;
+  grid-template-columns: auto max-content;
+  gap: 1em;
+  align-items: center;
+  justify-self: end; /* Aligns to the right of first column */
+}
+
+.model-tickbox-core input[type="checkbox"] {
+  justify-self: center;
+}
+
+.model-tickbox-core .subtitle {
+  justify-self: start;
+  white-space: nowrap;
+}
+
+.compare-edit-button {
+  white-space: nowrap;
+  visibility: visible; /* Will be overridden by inline style */
+  justify-self: end;
 }
