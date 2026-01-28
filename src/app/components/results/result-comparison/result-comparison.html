@@ -1,7 +1,7 @@
 <ng-container *ngIf="ready()">
   <div class="result-comparison-container">
     <div 
-      class="subtitle"
+      class="subtitle model-title"
       *ngIf="title"
     >
       {{ title }}
@@ -10,7 +10,7 @@
       *ngFor="let movie of moviesSignal(); let i = index"
       appPopup
       [popupComponent]="DetailPopup"
-      [popupContext]="{ movie: movie.title }"
+      [popupContext]="{ movie: movie }"
     >
       <div class="result-comparison-cell">
         {{ movie.title }}

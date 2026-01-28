@@ -1,8 +1,6 @@
 import { 
   Component, 
   Input, 
-  signal,
-  WritableSignal,
   Output,
   EventEmitter, 
 } from '@angular/core';
@@ -38,8 +36,7 @@ export class SearchParameters {
   @Input() medium!: string;
   @Input() recommendationsReady!: boolean; 
   @Input() recommendFn: () => Promise<void> = async () => {};
-
-  numRecommendations: WritableSignal<number> = signal(10);
+  @Input() numRecommendations: number = 10;
 
   @Output() numRecommendationsChange = new EventEmitter<number>();
   @Output() recommend = new EventEmitter<void>();
@@ -47,7 +44,7 @@ export class SearchParameters {
   readonly Loader = Loader;
 
   onNumRecommendationsChange(value: number) {
-    this.numRecommendations.set(value);
+    console.log(`Updating number of recommendations from ${this.numRecommendations} to ${value}`);
     this.numRecommendationsChange.emit(value);
   }
 }

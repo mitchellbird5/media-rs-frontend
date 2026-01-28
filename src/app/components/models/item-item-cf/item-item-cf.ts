@@ -5,7 +5,9 @@ import {
   EventEmitter,
   WritableSignal,
   signal,
-  effect
+  effect,
+  InputSignal,
+  input
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -39,7 +41,7 @@ import { ItemItemCFMetaData } from '../../../types/model.types';
 })
 export class ItemItemCF {
   @Input() medium!: string;
-  @Input() numRecommendations!: number;
+  numRecommendations: InputSignal<number> = input.required<number>();
   @Input() autocompleteZIndex!: number;
   @Input() searchResultPopupZIndex!: number;
   @Input() modelInfoPopupZIndex: number = 1000;
@@ -61,7 +63,7 @@ export class ItemItemCF {
   constructor() {
     effect(() => {
       const meta = this.latestMetaData();
-      const n = this.numRecommendations;
+      const n = this.numRecommendations();
 
       if (!meta?.selectedItem) return;
 

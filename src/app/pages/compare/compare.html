@@ -59,7 +59,8 @@
     [width]="width"
     [recommendationsReady]="allRecommendationsReady()"
     [recommendFn]="recommendFn.bind(this)"
-    (numRecommendationsChange)="numRecommendations.set($event)"
+    [numRecommendations]="numRecommendations()"
+    (numRecommendationsChange)="onNumRecommendationsChange($event)"
   />
 </div>  
 

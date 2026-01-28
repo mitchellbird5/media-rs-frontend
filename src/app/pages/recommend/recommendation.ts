@@ -75,4 +75,9 @@ export class Recommendation {
   onLoading(loading: boolean) {
     this.loading.set(loading);
   }
+
+  onNumRecommendationsChange(value: number) {
+    console.log(`Updating number of recommendations in recommendation from ${this.numRecommendations} to ${value}`);
+    this.numRecommendations.set(value);
+  }
 }

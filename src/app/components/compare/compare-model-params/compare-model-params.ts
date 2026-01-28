@@ -47,7 +47,7 @@ export class CompareModelParams {
   model: InputSignal<ModelType> = input.required<ModelType>();
   currentMetaData!: WritableSignal<ModelMetaData>;
 
-  @Input() numRecommendations!: number;
+  numRecommendations: InputSignal<number> = input.required<number>();
   @Input() set metaData(value: ModelMetaData) {
     if (!value) return;
     if (!this.currentMetaData) {
@@ -68,21 +68,20 @@ export class CompareModelParams {
   readonly ModelTitles = ModelTitles;
   readonly ModelParamsPopup = ModelParamsPopup;
 
-  onResultsChange(results: string[]) {
-    this.results.emit(results);
+  constructor() {
+    // Watch for changes to numRecommendations or currentMetaData
+    effect(() => {
+      const meta = this.currentMetaData?.();
+      const numRecs = this.numRecommendations();
+      
+      if (!meta) return;
+
+      // Regenerate recommendFn when either changes
+      this.regenerateRecommendFn(meta, numRecs);
+    });
   }
 
-  clearModel() {
-    const resetMeta = nullMetaData[this.model()];
-    this.currentMetaData.set(resetMeta);
-    this.metaDataChange.emit(resetMeta);
-  }
-
-  onMetaDataChange(metaData: ModelMetaData) {
-    console.log(`Updating metadata for ${this.model()}`)
-    console.log('metaData = ', metaData)
-    this.currentMetaData.set(metaData); 
-
+  private regenerateRecommendFn(metaData: ModelMetaData, numRecs: number) {
     const methodMap: Record<string, Function> = {
       'item-similarity': createItemSimilarityRecommendFn,
       'item-item-cf': createItemItemCFRecommendFn,
@@ -95,17 +94,30 @@ export class CompareModelParams {
       return;
     }
 
-    console.log(`Defining recommendFn for ${this.model()}`)
-    console.log('\tmetaData=', this.currentMetaData())
+    console.log(`Regenerating recommendFn for ${this.model()} with numRecs=${numRecs}`);
 
     const recommendFn: RecommendFn = method(
-      this.currentMetaData(),
+      metaData,
       this.loading,
       this.results,
-      this.numRecommendations
+      numRecs
     );
 
     this.recommendFn.emit(recommendFn);
+  }
+
+  onResultsChange(results: string[]) {
+    this.results.emit(results);
+  }
+
+  clearModel() {
+    const resetMeta = nullMetaData[this.model()];
+    this.currentMetaData.set(resetMeta);
+    this.metaDataChange.emit(resetMeta);
+  }
+
+  onMetaDataChange(metaData: ModelMetaData) {
+    this.currentMetaData.set(metaData); 
     this.metaDataChange.emit(metaData);
   }
 

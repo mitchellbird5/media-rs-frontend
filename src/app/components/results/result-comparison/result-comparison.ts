@@ -22,7 +22,10 @@ import { fetchMovieData, MovieData } from "../../../services/movieSearch";
     PopupDirective
   ],
   templateUrl: "./result-comparison.html",
-  styleUrls: ["./result-comparison.css"],
+  styleUrls: [
+    "./result-comparison.css",
+    "../../../styles/model.css"
+  ],
 })
 export class ResultComparison {
   readonly resultsSignal = signal<string[]>([]);

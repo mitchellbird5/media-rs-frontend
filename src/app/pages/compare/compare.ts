@@ -23,8 +23,6 @@ import {
   ModelParameters,
   ModelType, 
   ModelTitles,
-  ItemSimilarityMetaData,
-  ItemItemCFMetaData,
   ModelMetaData,
   nullMetaData 
 } from '../../types/model.types';
@@ -148,6 +146,11 @@ export class Compare {
         ...newParams
       }
     });
+  }
+
+  onNumRecommendationsChange(numRecommendations: number) {
+    console.log(`Changing number of recommendations from ${this.numRecommendations()} to ${numRecommendations}`)
+    this.numRecommendations.set(numRecommendations);
   }
 
   onResultsChange(modelName: string, results: string[]) {

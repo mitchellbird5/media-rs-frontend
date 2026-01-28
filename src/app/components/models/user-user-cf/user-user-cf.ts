@@ -2,7 +2,9 @@ import {
   Component, 
   Input, 
   Output,
-  EventEmitter
+  EventEmitter,
+  InputSignal,
+  input
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -36,7 +38,7 @@ import { UserUserCFMetaData } from '../../../types/model.types';
 })
 export class UserUserCF {
   @Input() medium!: string;
-  @Input() numRecommendations!: number;
+  numRecommendations: InputSignal<number> = input.required<number>();
   @Input() autocompleteZIndex!: number;
   @Input() searchResultPopupZIndex!: number;
   @Input() ratingPopupZIndex!: number;
@@ -68,7 +70,7 @@ export class UserUserCF {
       this.latestMetaData,
       this.loading,
       this.resultsChange,
-      this.numRecommendations
+      this.numRecommendations()
     );
 
     this.recommendFnReady.emit(recommendFn);

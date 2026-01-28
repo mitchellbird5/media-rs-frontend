@@ -5,7 +5,9 @@ import {
   signal,
   EventEmitter,
   WritableSignal,
-  effect
+  effect,
+  InputSignal,
+  input
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -40,7 +42,7 @@ import { RecommendFn } from '../../../types/movies.types';
 })
 export class ItemSimilarity {
   @Input() medium!: string;
-  @Input() numRecommendations!: number;
+  numRecommendations: InputSignal<number> = input.required<number>();
   @Input() autocompleteZIndex!: number;
   @Input() searchResultPopupZIndex!: number;
   @Input() modelInfoPopupZIndex: number = 1000;
@@ -64,7 +66,7 @@ export class ItemSimilarity {
   constructor() {
     effect(() => {
       const meta = this.latestMetaData();
-      const n = this.numRecommendations;
+      const n = this.numRecommendations();
 
       if (!meta) return;
 
@@ -80,7 +82,6 @@ export class ItemSimilarity {
   }
 
   onMetaDataChange(metaData: ItemSimilarityMetaData) {
-    console.log('Updating item-similarity meta data to ', metaData)
     this.latestMetaData.set(metaData);
   }
 
