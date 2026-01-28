@@ -44,7 +44,7 @@ import {
 })
 export class ItemItemCFInputs implements OnChanges {
   @Input() medium!: string;
-  @Input() placeholder: string = `Search for ${this.medium}s...`;
+  @Input() placeholder!: string;
   @Input() autocompleteZIndex!: number;
   @Input() searchResultPopupZIndex!: number;
   @Input() width: string = '400px';
@@ -53,15 +53,12 @@ export class ItemItemCFInputs implements OnChanges {
     if (value) {
       this._metaDataInput = value;
       this.metaData.set(value);
-      this.searchQuery.set('');
     }
   }
   get metaDataInput(): ItemItemCFMetaData {
     return this._metaDataInput;
   }
   private _metaDataInput!: ItemItemCFMetaData;
-
-  searchQuery: WritableSignal<string> = signal('');
 
   @Output() metaDataChange = new EventEmitter<ItemItemCFMetaData>();
   @Output() resultsChange = new EventEmitter<string[]>();
@@ -114,14 +111,12 @@ export class ItemItemCFInputs implements OnChanges {
 
   clearSelectedItem = () => {
     this.onItemSelected(null);
-    this.searchQuery.set('');
     this.updateMetaData('selectedItem', null);
     this.resultsChange.emit([]);
   }
 
   onSearchSelect = (item: string) => {
     this.onItemSelected(item);
-    this.searchQuery.set('');
   };
 
 }
