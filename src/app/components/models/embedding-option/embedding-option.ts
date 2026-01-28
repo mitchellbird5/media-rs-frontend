@@ -1,6 +1,7 @@
 import { 
   Component,
   EventEmitter,
+  Input,
   Output 
 } from '@angular/core';
 import { 
@@ -26,8 +27,8 @@ import { EmbeddingMethod } from '../../../types/model.types';
   ]
 })
 export class EmbeddingOption {
+  @Input() selectedEmbedding!: EmbeddingMethod;
   @Output() embeddingSelected = new EventEmitter<EmbeddingMethod>();
-  selectedEmbedding: EmbeddingMethod = 'SBERT';
 
   readonly Search = Search;
   readonly Info = Info;

@@ -3,9 +3,9 @@
     <input
       type="checkbox"
       [checked]="showModel()"
-      (change)="testLog($event)"
+      (change)="onShowModelChange($event)"
     />
-    <div class="subtitle">{{ ModelTitles[model()] }}</div>
+    <div class="subtitle">{{ modelTitle() }}</div>
   </div>
   <button
     class="edit-button compare-edit-button"
@@ -17,7 +17,7 @@
       model: model(),
       numRecommendations: numRecommendations,
       metaData: currentMetaData(),
-      MetaDataChange: {
+      metaDataChange: {
         emit: onMetaDataChange.bind(this)
       },
       resultsChange: {
@@ -25,7 +25,6 @@
       }
     }"
     [zIndex]="1100"
-    (click)="onEditClick()"
   >
     Edit Parameters
   </button>

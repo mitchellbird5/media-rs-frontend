@@ -40,10 +40,10 @@ export class EnterRatings {
   @Input() ratingPopupZIndex: number = 1050;
   @Input() ratingSummaryZIndex: number = 1050;
   @Input() width: string = '400px';
+  @Input() ratings!: WritableSignal<Rating[]>;
 
   selectedItem: WritableSignal<string | null> = signal(null);
   searchQuery: WritableSignal<string> = signal('');
-  ratings: WritableSignal<Rating[]> = signal([]);
 
   @Output() ratingsChange = new EventEmitter<Rating[]>();
 
@@ -101,7 +101,6 @@ export class EnterRatings {
     }
     
     this.ratings.update(r => [...r, { name, value: score }]);
-
     this.ratingsChange.emit(this.ratings());
   }
 

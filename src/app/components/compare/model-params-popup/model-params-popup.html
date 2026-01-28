@@ -1,13 +1,15 @@
 <div class="model-params-popup-wrapper">
     <ng-container [ngSwitch]="model">
-        <!-- <app-item-similarity-inputs
+        <app-item-similarity-inputs
             *ngSwitchCase="'item-similarity'"
+            [metaDataInput]="itemSimilarityMetaData!"
             [medium]="medium"
             [placeholder]="`Search ${medium}s...`"
             [autocompleteZIndex]="1100"
             [searchResultPopupZIndex]="1100"
-            (metaDataChange)="MetaDataChange.emit($event)"
-        /> -->
+            (metaDataChange)="metaDataChange.emit($event)"
+            (resultsChange)="resultsChange.emit($event)"
+        />
         <app-item-item-cf-inputs
             *ngSwitchCase="'item-item-cf'"
             [metaDataInput]="itemItemCFMetaData!"
@@ -15,7 +17,19 @@
             [placeholder]="`Search ${medium}s...`"
             [autocompleteZIndex]="1100"
             [searchResultPopupZIndex]="1110"
-            (metaDataChange)="MetaDataChange.emit($event)"
+            (metaDataChange)="metaDataChange.emit($event)"
+            (resultsChange)="resultsChange.emit($event)"
+        />
+        <app-user-user-cf-inputs
+            *ngSwitchCase="'user-user-cf'"
+            [metaDataInput]="userUserCFMetaData!"
+            [medium]="medium"
+            [placeholder]="`Search ${medium}s...`"
+            [autocompleteZIndex]="1100"
+            [searchResultPopupZIndex]="1110"
+            [ratingPopupZIndex]="1115"
+            [ratingSummaryZIndex]="1115"
+            (metaDataChange)="metaDataChange.emit($event)"
             (resultsChange)="resultsChange.emit($event)"
         />
     </ng-container>

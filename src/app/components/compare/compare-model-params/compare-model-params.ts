@@ -7,7 +7,7 @@ import {
   signal,
   InputSignal,
   input,
-  ViewChild,
+  computed,
   effect  
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -17,6 +17,7 @@ import { PopupDirective } from '../../popup-card/popup-directive/popup-directive
 
 import { createItemItemCFRecommendFn } from '../../models/item-item-cf/item-item-cf-recommend-fn';
 import { createItemSimilarityRecommendFn } from '../../models/item-similarity/item-similarity-recommend-fn';
+import { createUserUserCFRecommendFn } from '../../models/user-user-cf/user-user-cf-recommend-fn';
 
 import { MediumType } from '../../../types/medium.type';
 import { 
@@ -48,10 +49,15 @@ export class CompareModelParams {
 
   @Input() numRecommendations!: number;
   @Input() set metaData(value: ModelMetaData) {
-    if (value) {
-      this.currentMetaData.set(value);
+    if (!value) return;
+    if (!this.currentMetaData) {
+      this.currentMetaData = signal(value);
+      return;
     }
+    this.currentMetaData.set(value);
   }
+
+  modelTitle = computed(() => ModelTitles[this.model()]);
 
   @Output() showModelChange = new EventEmitter<boolean>();
   @Output() results = new EventEmitter<string[]>();
@@ -59,39 +65,28 @@ export class CompareModelParams {
   @Output() recommendFn = new EventEmitter<RecommendFn>();
   @Output() metaDataChange = new EventEmitter<ModelMetaData>();
 
-  @ViewChild(ModelParamsPopup) modelParamsPopup!: ModelParamsPopup;
-  @ViewChild(PopupDirective) popupDirective!: PopupDirective;
-
   readonly ModelTitles = ModelTitles;
   readonly ModelParamsPopup = ModelParamsPopup;
-
-  constructor() {
-    // Use effect to initialize once model is available
-    effect(() => {
-      if (!this.currentMetaData) {
-        this.currentMetaData = signal(nullMetaData[this.model()]);
-      }
-    }, { allowSignalWrites: true });
-  }
 
   onResultsChange(results: string[]) {
     this.results.emit(results);
   }
 
   clearModel() {
-    console.log('resetting meta...')
     const resetMeta = nullMetaData[this.model()];
-    console.log('resetMeta=', resetMeta)
     this.currentMetaData.set(resetMeta);
     this.metaDataChange.emit(resetMeta);
   }
 
   onMetaDataChange(metaData: ModelMetaData) {
+    console.log(`Updating metadata for ${this.model()}`)
+    console.log('metaData = ', metaData)
     this.currentMetaData.set(metaData); 
 
     const methodMap: Record<string, Function> = {
       'item-similarity': createItemSimilarityRecommendFn,
       'item-item-cf': createItemItemCFRecommendFn,
+      'user-user-cf': createUserUserCFRecommendFn
     };
 
     const method = methodMap[this.model()];
@@ -100,8 +95,11 @@ export class CompareModelParams {
       return;
     }
 
+    console.log(`Defining recommendFn for ${this.model()}`)
+    console.log('\tmetaData=', this.currentMetaData())
+
     const recommendFn: RecommendFn = method(
-      this.currentMetaData,
+      this.currentMetaData(),
       this.loading,
       this.results,
       this.numRecommendations
@@ -111,31 +109,15 @@ export class CompareModelParams {
     this.metaDataChange.emit(metaData);
   }
 
-
   onShowModel(show: boolean) {
-    console.log('onShowModel called with:', show);
-    console.log('Current metadata before clear:', this.currentMetaData());
     this.showModel.set(show);
     this.showModelChange.emit(show);
     this.clearModel();
-    console.log('Current metadata after clear:', this.currentMetaData());
   }
 
   onShowModelChange(event: Event) {
     const checkbox = event.target as HTMLInputElement;
-    console.log('Checkbox changed to:', checkbox.checked);
     this.onShowModel(checkbox.checked);
   }
 
-  testLog(event: any) {
-    console.log('CHECKBOX EVENT FIRED:', event);
-    console.log('Event target:', event.target);
-    console.log('Checked value:', event.target.checked);
-    const checkbox = event.target as HTMLInputElement;
-    this.onShowModel(checkbox.checked);
-  }
-
-  onEditClick() {
-    console.log('Edit button clicked, passing metadata:', this.currentMetaData());
-  }
 }

@@ -5,6 +5,7 @@ import {
   WritableSignal,
   signal,
   EventEmitter,
+  computed
 } from '@angular/core';
 import { 
   LucideAngularModule, 
@@ -48,12 +49,9 @@ export class UserUserCFInputs {
   @Input() width: string = '400px';
 
   @Input() set metaDataInput(value: UserUserCFMetaData) {
-    console.log('metaDataInput setter called with:', value);
     if (value) {
       this._metaDataInput = value;
       this.metaData.set(value);
-      this.numSimilarUsers=signal(value.numSimilarUsers);
-      this.selectedEmbedding=signal(value.embeddingMethod);
     }
   }
   get metaDataInput(): UserUserCFMetaData {
@@ -61,8 +59,7 @@ export class UserUserCFInputs {
   }
   private _metaDataInput!: UserUserCFMetaData;
 
-  numSimilarUsers: WritableSignal<number> = signal(25);
-  selectedEmbedding: WritableSignal<EmbeddingMethod> = signal('SBERT');
+  ratings = computed(() => this.metaData().ratings);
 
   @Output() metaDataChange = new EventEmitter<UserUserCFMetaData>();
   @Output() resultsChange = new EventEmitter<string[]>();
@@ -72,7 +69,7 @@ export class UserUserCFInputs {
 
   readonly Info = Info;
 
-  private metaData = signal<UserUserCFMetaData>(nullMetaData[ModelType.UserUserCF]);
+  metaData = signal<UserUserCFMetaData>(nullMetaData[ModelType.UserUserCF]);
 
   private updateMetaData<K extends keyof UserUserCFMetaData>(
     key: K,
@@ -90,17 +87,16 @@ export class UserUserCFInputs {
   }
 
   onNumSimilarUsersUpdate(users: number) {
-    this.numSimilarUsers.set(users);
     this.updateMetaData('numSimilarUsers', users);
   }
 
   onSelectEmbedding(embedding: EmbeddingMethod) {
-    this.selectedEmbedding.set(embedding);
     this.updateMetaData('embeddingMethod', embedding);
   }
 
   onRatingsChange(ratings: Rating[]) {
-    this.updateMetaData('ratings', ratings);
+    this.metaData().ratings.set(ratings);
+    this.metaDataChange.emit(this.metaData());
   }
 
 }

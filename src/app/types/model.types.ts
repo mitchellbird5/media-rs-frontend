@@ -1,3 +1,4 @@
+import { WritableSignal, signal } from "@angular/core";
 import { RecommendFn } from "./movies.types";
 
 export type EmbeddingMethod = 'SBERT' | 'TFIDF';
@@ -40,7 +41,7 @@ export const nullMetaData: ModelMetaDataMap = {
     selectedItem: null
   },
   [ModelType.UserUserCF]: {
-    ratings: [],
+    ratings: signal([]),
     numSimilarUsers: 25,
     embeddingMethod: 'SBERT'
   },
@@ -74,7 +75,7 @@ export interface ItemItemCFMetaData {
 }
 
 export interface UserUserCFMetaData {
-  ratings: Rating[];
+  ratings: WritableSignal<Rating[]>;
   numSimilarUsers: number;
   embeddingMethod: EmbeddingMethod;
 }

@@ -1,5 +1,6 @@
 <div class="model-container">
   <app-enter-ratings 
+    [ratings]="ratings()"
     [width]="width"
     [medium]="medium"
     [placeholder]="placeholder"
@@ -11,6 +12,7 @@
   />
 
   <app-embedding-option 
+    [selectedEmbedding]="metaData().embeddingMethod"
     (embeddingSelected)="onSelectEmbedding($event)"
   />
 
@@ -19,7 +21,7 @@
     [max]="50"
     [min]="1"
     [step]="1"
-    [value]="numSimilarUsers()"
+    [value]="metaData().numSimilarUsers"
     [width]="width"
     (valueChange)="onNumSimilarUsersUpdate($event)"
   />

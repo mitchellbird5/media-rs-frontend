@@ -20,7 +20,7 @@ export function createUserUserCFRecommendFn(
     loading.emit(true);
     try {
       const results = await fetchUserUserCFRecommendations(
-        metaData.ratings, 
+        metaData.ratings(), 
         numRecommendations,
         metaData.numSimilarUsers,
         metaData.embeddingMethod
