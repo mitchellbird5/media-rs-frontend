@@ -45,8 +45,6 @@ export class ItemItemCF {
   @Input() modelInfoPopupZIndex: number = 1000;
   @Input() width: string = '400px';
 
-  placeholder: string = `Search ${this.medium}s...`;
-
   @Output() recommendFnReady = new EventEmitter<RecommendFn>();
   @Output() loading = new EventEmitter<boolean>();
   @Output() resultsChange = new EventEmitter<string[]>();
