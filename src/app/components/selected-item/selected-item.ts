@@ -20,7 +20,7 @@ import { CommonModule } from '@angular/common';
 })
 export class SelectedItem {
   @Input() label: string = 'Selected Item:'
-  @Input() selectedItem!: WritableSignal<string | null>;
+  @Input() selectedItem!: string | null;
   @Input() clearSelectedItem!: () => void;
 
   readonly Trash2 = Trash2

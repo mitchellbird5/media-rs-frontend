@@ -3,6 +3,7 @@ import {
   WritableSignal,
   signal,
   InputSignal,
+  Signal,
   input,
   computed 
 } from '@angular/core';
@@ -15,8 +16,18 @@ import {
 
 import { RecommendFn } from '../../types/movies.types';
 import { CompareModelParams } from '../../components/compare/compare-model-params/compare-model-params';
+import { SearchParameters } from '../../components/models/search-parameters/search-parameters';
+import { ResultComparison } from '../../components/results/result-comparison/result-comparison';
 
-import { ModelParameters, ModelType } from '../../types/model.types';
+import { 
+  ModelParameters,
+  ModelType, 
+  ModelTitles,
+  ItemSimilarityMetaData,
+  ItemItemCFMetaData,
+  ModelMetaData,
+  nullMetaData 
+} from '../../types/model.types';
 import { MediumType, isMediumType } from '../../types/medium.type';
 
 
@@ -28,6 +39,8 @@ import { MediumType, isMediumType } from '../../types/medium.type';
     CommonModule,
     LucideAngularModule,
     CompareModelParams,
+    SearchParameters,
+    ResultComparison
   ],
   templateUrl: './compare.html',
   styleUrls: [
@@ -38,13 +51,36 @@ import { MediumType, isMediumType } from '../../types/medium.type';
   ]
 })
 export class Compare {
-  medium: InputSignal<MediumType | null> = input<MediumType | null>(null);
   routeMedium!: MediumType;
+  medium: InputSignal<MediumType | null> = input<MediumType | null>(null);
+  loading: WritableSignal<boolean> = signal(false);
+  numRecommendations: WritableSignal<number> = signal(10);
   width: string = '600px';
 
   readonly Loader = Loader;
   readonly MediumType = MediumType;
   readonly ModelType = ModelType;
+  readonly ModelTitles = ModelTitles;
+
+  allRecommendationsReady: Signal<boolean> = computed(() => {
+    return Object.values(this.modelData()).every(
+      model => model.recommendationsReady === true
+    );
+  });
+
+  shownModelCount = computed(() => {
+    return Object.values(this.modelData())
+      .filter(model => model.show)
+      .length;
+  });
+
+  modelEntries = computed(() => {
+    return Object.entries(this.modelData()) as [
+      ModelType,
+      ModelParameters
+    ][];
+  });
+
 
   modelData: WritableSignal<{ [modelName: string]: ModelParameters }> = signal({
     "item-similarity": {
@@ -52,32 +88,35 @@ export class Compare {
       results: [],
       loading: false,
       recommendFn: null,
-      recommendationsReady: false
+      recommendationsReady: false,
+      metaData: nullMetaData[ModelType.ItemSimilarity]
     },
     "item-item-cf": {
       show: false,
       results: [],
       loading: false,
       recommendFn: null,
-      recommendationsReady: false
+      recommendationsReady: false,
+      metaData: nullMetaData[ModelType.ItemItemCF]
     },
     "user-user-cf": {
       show: false,
       results: [],
       loading: false,
       recommendFn: null,
-      recommendationsReady: false
+      recommendationsReady: false,
+      metaData: nullMetaData[ModelType.UserUserCF]
     },
     "hybrid": {
       show: false,
       results: [],
       loading: false,
       recommendFn: null,
-      recommendationsReady: false
+      recommendationsReady: false,
+      metaData: nullMetaData[ModelType.Hybrid]
     }
   });
 
-  numRecommendations: WritableSignal<number> = signal(10);
   constructor(private route: ActivatedRoute) {}
 
   ngOnInit() {
@@ -95,6 +134,11 @@ export class Compare {
   });
 
 
+  trackByModelType(index: number, entry: [ModelType, ModelParameters]): ModelType {
+    return entry[0];
+  }
+
+
   updateModel(modelName: string, newParams: Partial<ModelParameters>) {
     const current = this.modelData();
     this.modelData.set({
@@ -107,10 +151,12 @@ export class Compare {
   }
 
   onResultsChange(modelName: string, results: string[]) {
-    this.updateModel(modelName, { results });
+    console.log(`Compare received results for ${modelName}:`, results);
+    this.updateModel(modelName, { results: [...results] });
   }
 
   onRecommendFnReady(modelName: string, recommendFn: RecommendFn) {
+    console.log(`Compare received recommendFn for ${modelName}`);
     this.updateModel(modelName, { recommendFn });
   }
 
@@ -120,5 +166,40 @@ export class Compare {
 
   onShow(modelName: string, show: boolean) {
     this.updateModel(modelName, { show });
+  }
+
+  onRecommendationsReady(modelName: string, recommendationsReady: boolean) {
+    const currentModel = this.modelData()[modelName];
+    if (currentModel.recommendationsReady !== recommendationsReady) {
+      this.updateModel(modelName, { recommendationsReady });
+    }
+  }
+
+  onMetaDataChange(modelName: string, metaData: ModelMetaData) {
+    console.log(`Updating metaData for ${modelName}: `, metaData);
+    this.updateModel(modelName, { metaData });
+  }
+
+  async recommendFn() {
+    const models = this.modelData();
+
+    const calls: Promise<unknown>[] = [];
+
+    for (const [modelName, model] of Object.entries(models)) {
+      if (!model.show) continue;
+
+      if (!model.recommendFn) continue;
+
+      try {
+        // recommendFn returns a promise, so just push it directly
+        calls.push(model.recommendFn());
+      } catch (err) {
+        console.error(`RecommendFn failed for model: ${modelName}`, err);
+      }
+    }
+
+    if (calls.length) {
+      await Promise.all(calls);
+    }
   }
 }

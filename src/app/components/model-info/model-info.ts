@@ -1,8 +1,6 @@
 import { 
   Component, 
-  Input, 
-  ViewChild,
-  TemplateRef 
+  Input
 } from '@angular/core';
 
 @Component({

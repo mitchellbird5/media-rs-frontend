@@ -7,7 +7,7 @@
                 [img]="Info" 
                 class="info-icon"
                 appPopup
-                [popupContext]="ModelInfo"
+                [popupComponent]="ModelInfo"
                 [popupContext]="{
                     info_title: `Select a ${ medium | titlecase}`,
                     info_description: `Select a ${medium} to be used in the content-similarity and item-item collaborative filtering model.`
@@ -15,12 +15,14 @@
             ></lucide-icon>
         </div>
 
-        <app-item-item-cf-inputs
+        <!-- <app-item-item-cf-inputs
             [medium]="medium"
             [placeholder]="`Search ${medium}s...`"
             [width]="width"
+            [autocompleteZIndex]="autocompleteZIndex"
+            [searchResultPopupZIndex]="searchResultPopupZIndex"
             (selectedItemChange)="onUpdateSelectedItem($event)"
-        />
+        /> -->
     </div>
 
     <div class="hybrid-model-container">
@@ -31,7 +33,7 @@
                 [img]="Info" 
                 class="info-icon"
                 appPopup
-                [popupContext]="ModelInfo"
+                [popupComponent]="ModelInfo"
                 [popupContext]="{
                     info_title: `Enter ${ medium | titlecase} Ratings`,
                     info_description: `Enter ${medium} ratings to be used in the user-user collaborative filtering model.\n`
@@ -42,8 +44,10 @@
             [medium]="medium"
             [placeholder]="`Search for ${medium}s to rate...`"
             [width]="width"
-            (numSimilarUsersChange)="onNumSimilarUsersChange($event)"
-            (ratingsChange)="onRatingsChange($event)"
+            [autocompleteZIndex]="autocompleteZIndex"
+            [searchResultPopupZIndex]="searchResultPopupZIndex"
+            [ratingPopupZIndex]="ratingPopupZIndex"
+            [ratingSummaryZIndex]="ratingSummaryZIndex"
         />
     </div>
 
@@ -55,7 +59,7 @@
                 [img]="Info" 
                 class="info-icon"
                 appPopup
-                [popupContext]="ModelInfo"
+                [popupComponent]="ModelInfo"
                 [popupContext]="{
                     info_title: 'Model Weights',
                     info_description: 'Weightings to use for results from different models.'

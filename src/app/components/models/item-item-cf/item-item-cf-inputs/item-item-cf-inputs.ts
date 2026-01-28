@@ -4,7 +4,9 @@ import {
   signal,
   Output,
   EventEmitter,
-  WritableSignal 
+  WritableSignal,
+  SimpleChanges,
+  OnChanges
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -15,10 +17,16 @@ import {
 } from 'lucide-angular';
 import { ActivatedRoute, RouterModule  } from '@angular/router';
 
-import { fetchMovieTitles } from '../../../../services/movieSearch';
 import { SearchBar } from '../../../search-bar/search-bar';
 import { SelectedItem } from '../../../selected-item/selected-item';
 
+import { fetchMovieTitles } from '../../../../services/movieSearch';
+
+import { 
+  ItemItemCFMetaData,
+  nullMetaData,
+  ModelType 
+} from '../../../../types/model.types';
 
 @Component({
   selector: 'app-item-item-cf-inputs',
@@ -34,37 +42,84 @@ import { SelectedItem } from '../../../selected-item/selected-item';
   templateUrl: './item-item-cf-inputs.html',
   styleUrls: ['../../../../styles/model.css'], 
 })
-export class ItemItemCFInputs {
+export class ItemItemCFInputs implements OnChanges {
   @Input() medium!: string;
-  @Input() placeholder!: string;
+  @Input() placeholder: string = `Search for ${this.medium}s...`;
+  @Input() autocompleteZIndex!: number;
+  @Input() searchResultPopupZIndex!: number;
   @Input() width: string = '400px';
+  
+  @Input() set metaDataInput(value: ItemItemCFMetaData) {
+    console.log('metaDataInput setter called with:', value);
+    if (value) {
+      this._metaDataInput = value;
+      this.metaData.set(value);
+      this.searchQuery.set('');
+    }
+  }
+  get metaDataInput(): ItemItemCFMetaData {
+    return this._metaDataInput;
+  }
+  private _metaDataInput!: ItemItemCFMetaData;
 
-  selectedItem: WritableSignal<string | null> = signal(null);
   searchQuery: WritableSignal<string> = signal('');
 
-  @Output() selectedItemChange = new EventEmitter<string | null>();
+  @Output() metaDataChange = new EventEmitter<ItemItemCFMetaData>();
   @Output() resultsChange = new EventEmitter<string[]>();
-
-  constructor(private route: ActivatedRoute) {}
-
-  loadingSearchResults = signal(false);
 
   readonly Search = Search;
   readonly Trash2 = Trash2;
 
-  search = async (query: string): Promise<string[]> => {
-    const titles = await fetchMovieTitles(query, 5);
-    return titles;
+  constructor(private route: ActivatedRoute) {}
+
+  metaData = signal<ItemItemCFMetaData>(nullMetaData[ModelType.ItemItemCF]);
+
+  private updateMetaData<K extends keyof ItemItemCFMetaData>(
+    key: K,
+    value: ItemItemCFMetaData[K]
+  ) {
+    this.metaData.update(current => {
+      const updated = {
+        ...current,
+        [key]: value,
+      };
+
+      this.metaDataChange.emit(updated);
+      return updated;
+    });
   }
+
+  ngOnInit() {
+    console.log('ItemItemCFInputs initialized with metaDataInput:', this.metaDataInput);
+    if (this.metaDataInput) {
+      this.metaData.set(this.metaDataInput);
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    console.log('ngOnChanges called', changes);
+    if (changes['metaDataInput'] && this.metaDataInput) {
+      console.log('Syncing metaDataInput:', this.metaDataInput);
+      this.metaData.set(this.metaDataInput);
+    }
+  }
+
+  autocompleteSearch = async (query: string): Promise<string[]> => {
+    return await fetchMovieTitles(query, 5);
+  };
+
+  popupSearch = async (query: string): Promise<string[]> => {
+    return await fetchMovieTitles(query, 50);
+  };
 
   onItemSelected(item: string | null) {
-    this.selectedItem.set(item);
-    this.selectedItemChange.emit(item);
+    this.updateMetaData('selectedItem', item);
   }
 
-  clearSelectedItem() {
+  clearSelectedItem = () => {
     this.onItemSelected(null);
     this.searchQuery.set('');
+    this.updateMetaData('selectedItem', null);
     this.resultsChange.emit([]);
   }
 

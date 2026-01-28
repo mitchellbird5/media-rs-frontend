@@ -10,17 +10,22 @@
             appPopup
             [popupComponent]="ModelInfo"
             [popupContext]="{
+
+            
                 info_title: info_title,
                 info_description: info_description
             }"
+            [zIndex]="modelInfoPopupZIndex"
         ></lucide-icon>
     </div>
 
     <app-item-item-cf-inputs 
         [medium]="medium"
         [width]="width"
-        [placeholder]="`Search ${medium}s...`"
-        (selectedItemChange)="onItemSelected($event)"
-        (resultsChange)="onResultsChange($event)"
+        [placeholder]="placeholder"
+        [autocompleteZIndex]="autocompleteZIndex"
+        [searchResultPopupZIndex]="searchResultPopupZIndex"
+        (metaDataChange)="onMetaDataChange($event)"
+        (resultsChange)="resultsChange.emit($event)"
     />
 </div>  

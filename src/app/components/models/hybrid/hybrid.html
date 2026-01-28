@@ -12,12 +12,15 @@
                 info_title: info_title,
                 info_description: info_description
             }"
+            [zIndex]="modelInfoPopupZIndex"
         ></lucide-icon>
     </div>
 
     <app-hybrid-inputs 
         [medium]="medium"
         [width]="width"
+        [autocompleteZIndex]="autocompleteZIndex"
+        [searchResultPopupZIndex]="searchResultPopupZIndex"
         (selectedItemChange)="selectedItem.set($event)"
         (ratingsChange)="ratings.set($event)"
         (numSimilarUsersChange)="numSimilarUsers.set($event)"

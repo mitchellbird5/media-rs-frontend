@@ -1,29 +1,18 @@
 <div class="model-container">
-  <app-search-bar 
-    [searchQuery]="searchQuery"
-    [search]="search",
-    [width]="width",
+  <app-enter-ratings 
+    [width]="width"
+    [medium]="medium"
     [placeholder]="placeholder"
-    [popupTitle]="`Searching ${medium}s...`"
-    (selectedItemChange)="onItemSelected($event)"
+    [autocompleteZIndex]="autocompleteZIndex"
+    [searchResultPopupZIndex]="searchResultPopupZIndex"
+    [ratingPopupZIndex]="ratingPopupZIndex"
+    [ratingSummaryZIndex]="ratingSummaryZIndex"
+    (ratingsChange)="onRatingsChange($event)"
   />
 
-  <div 
-    class="edit-button"
-    appPopup
-    [popupComponent]="RatingSummary"
-    [popupContext]="{
-      ratings: ratings,
-      ratingsChange: handleRatingsChange,
-      medium: medium,
-      search: search,
-      width: width,
-      placeholder: `Search ${medium}s...`,
-      onItemSelected: onSearchSelect
-    }"
-  >
-      Edit ratings
-  </div>
+  <app-embedding-option 
+    (embeddingSelected)="onSelectEmbedding($event)"
+  />
 
   <app-slider
     label="Number of Similar Users"
@@ -34,14 +23,3 @@
     (valueChange)="onNumSimilarUsersUpdate($event)"
   />
 </div>
-
-<span
-  #ratingPopupTrigger
-  appPopup
-  [popupComponent]="RatingPopup"
-  [popupContext]="{
-    name: null,
-    onRatingInput: onRatingInput.bind(this)
-  }"
-  [zIndex]="1050"
-></span>

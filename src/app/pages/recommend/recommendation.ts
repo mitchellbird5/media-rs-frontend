@@ -53,8 +53,7 @@ export class Recommendation {
   numRecommendations: WritableSignal<number> = signal(10);
   loading: WritableSignal<boolean> = signal(false);
   recommendFn: WritableSignal<RecommendFn | null> = signal(null);
-
-  recommendationsReady = signal(true);
+  recommendationsReady: WritableSignal<boolean> = signal(true);
 
   constructor(private route: ActivatedRoute) {}
 

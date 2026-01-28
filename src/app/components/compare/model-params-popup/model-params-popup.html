@@ -1,38 +1,22 @@
-<ng-container [ngSwitch]="model">
-  <app-item-similarity
-      *ngSwitchCase="'item-similarity'"
-      [medium]="medium"
-      [numRecommendations]="numRecommendations"
-      (recommendFnReady)="recommendFnReady.emit($event)"
-      (resultsChange)="resultsChange.emit($event)"
-      (loading)="loading.emit($event)"
-  ></app-item-similarity>
-
-  <app-item-item-cf
-      *ngSwitchCase="'item-item-cf'"
-      [medium]="medium"
-      [numRecommendations]="numRecommendations"
-      (recommendFnReady)="recommendFnReady.emit($event)"
-      (resultsChange)="resultsChange.emit($event)"
-      (loading)="loading.emit($event)"
-  ></app-item-item-cf>
-
-  <app-user-user-cf
-      *ngSwitchCase="'user-user-cf'"
-      [medium]="medium"
-      [numRecommendations]="numRecommendations"
-      (recommendFnReady)="recommendFnReady.emit($event)"
-      (resultsReady)="resultsChange.emit($event)"
-      (loading)="loading.emit($event)"
-  ></app-user-user-cf>
-
-  <app-hybrid
-      *ngSwitchCase="'hybrid'"
-      [medium]="medium"
-      [numRecommendations]="numRecommendations"
-      (recommendFnReady)="recommendFnReady.emit($event)"
-      (resultsReady)="resultsChange.emit($event)"
-      (loading)="loading.emit($event)"
-  ></app-hybrid>
-
-</ng-container>
+<div class="model-params-popup-wrapper">
+    <ng-container [ngSwitch]="model">
+        <!-- <app-item-similarity-inputs
+            *ngSwitchCase="'item-similarity'"
+            [medium]="medium"
+            [placeholder]="`Search ${medium}s...`"
+            [autocompleteZIndex]="1100"
+            [searchResultPopupZIndex]="1100"
+            (metaDataChange)="MetaDataChange.emit($event)"
+        /> -->
+        <app-item-item-cf-inputs
+            *ngSwitchCase="'item-item-cf'"
+            [metaDataInput]="itemItemCFMetaData!"
+            [medium]="medium"
+            [placeholder]="`Search ${medium}s...`"
+            [autocompleteZIndex]="1100"
+            [searchResultPopupZIndex]="1110"
+            (metaDataChange)="MetaDataChange.emit($event)"
+            (resultsChange)="resultsChange.emit($event)"
+        />
+    </ng-container>
+</div>

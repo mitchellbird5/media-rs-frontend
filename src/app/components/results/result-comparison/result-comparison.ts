@@ -4,42 +4,41 @@ import {
   effect, 
   signal, 
   Output,
-  EventEmitter,
-  ViewChildren,
-  QueryList
+  EventEmitter
 } from "@angular/core";
 import { CommonModule, NgIf } from "@angular/common";
 
-import { ResultCard } from "./result-card/result-card";
+import { DetailPopup } from "../detail-popup/detail-popup";
+import { PopupDirective } from "../../popup-card/popup-directive/popup-directive";
 
-import { fetchMovieData, MovieData } from "../../services/movieSearch";
+import { fetchMovieData, MovieData } from "../../../services/movieSearch";
 
 @Component({
-  selector: "app-results",
+  selector: "app-result-comparison",
   standalone: true,
   imports: [
     CommonModule, 
-    ResultCard, 
-    NgIf
+    NgIf,
+    PopupDirective
   ],
-  templateUrl: "./results.html",
-  styleUrls: ["./results.css"],
+  templateUrl: "./result-comparison.html",
+  styleUrls: ["./result-comparison.css"],
 })
-export class Results {
+export class ResultComparison {
   readonly resultsSignal = signal<string[]>([]);
   readonly moviesSignal = signal<MovieData[]>([]);
   
   readonly ready = signal(false);
+  readonly DetailPopup = DetailPopup;
 
   @Output() rendered = new EventEmitter<boolean>();
-
-  @ViewChildren(ResultCard) resultCards!: QueryList<ResultCard>;
 
   @Input({ required: true })
   set results(value: string[]) {
     this.ready.set(false);
     this.resultsSignal.set(value ?? []);
   }
+  @Input() title!: string;
 
   constructor() {
     // Reactively load movie data whenever titles change
@@ -107,10 +106,5 @@ export class Results {
   private setReady(value: boolean) {
     this.ready.set(value);
     this.rendered.emit(value);
-  }
-
-  /** Helper for full image URL */
-  getFullImageUrl(file_path?: string | null) {
-    return file_path ? `https://image.tmdb.org/t/p/w500${file_path}` : '';
   }
 }

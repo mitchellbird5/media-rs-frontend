@@ -12,7 +12,7 @@ import { LucideAngularModule, Info } from 'lucide-angular';
 import { RouterModule } from '@angular/router';
 
 import { ModelInfo } from '../../model-info/model-info';
-import { Rating } from '../../../services/recommend/get-user-user-cf-recommendation';
+import { Rating } from '../../../types/model.types';
 import { fetchHybridRecommendations } from '../../../services/recommend/get-hybrid-recommendation';
 import { HybridInputs } from './hybrid-inputs/hybrid-inputs';
 import { PopupDirective } from '../../popup-card/popup-directive/popup-directive';
@@ -40,8 +40,13 @@ import { RecommendFn } from '../../../types/movies.types';
 })
 export class Hybrid {
   @Input() medium!: string;
-  @Input() width: string = '400px';
   @Input() numRecommendations!: number;
+  @Input() autocompleteZIndex!: number;
+  @Input() searchResultPopupZIndex!: number;
+  @Input() ratingPopupZIndex!: number;
+  @Input() ratingSummaryZIndex!: number;
+  @Input() modelInfoPopupZIndex: number = 1000;
+  @Input() width: string = '400px';
 
   @Output() recommendFnReady = new EventEmitter<RecommendFn>();
   @Output() loading = new EventEmitter<boolean>();
@@ -54,10 +59,10 @@ export class Hybrid {
   numSimilarUsers: WritableSignal<number> = signal(25);
   selectedEmbedding: WritableSignal<EmbeddingMethod> = signal('SBERT');
 
-  ngOnInit() {
-    Promise.resolve().then(() => {
-      this.recommendFnReady.emit(this.recommend);
-    });
+  ngAfterViewInit() {
+    // Emit immediately when component is ready
+    console.log('Hybrid emitting recommendFn');
+    this.recommendFnReady.emit(this.recommend);
   }
 
   info_title = 'Hybrid Recommendation';

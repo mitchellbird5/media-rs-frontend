@@ -31,7 +31,8 @@ export class SearchBar {
   searchResults: WritableSignal<string[]> = signal<string[]>([]);
 
   @Input() searchQuery!: WritableSignal<string>;
-  @Input() search!: (query: string) => Promise<string[]>;
+  @Input() autocompleteSearch!: (query: string) => Promise<string[]>;
+  @Input() popupSearch!: (query: string) => Promise<string[]>;
   @Input() width: string = '400px';
   @Input() placeholder: string = 'Search...';
   @Input() popupTitle: string = 'Searching...'
@@ -57,7 +58,7 @@ export class SearchBar {
 
     this.searchResultsPopup?.popupContext.refresh?.();
 
-    const results = await this.search(this.searchQuery());
+    const results = await this.popupSearch(this.searchQuery());
 
     queueMicrotask(() => {
       this.searchResults.set(results);

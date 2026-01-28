@@ -1,12 +1,8 @@
 import { getBaseUrl } from "../baseUrl";
 import { EmbeddingMethod } from "../../types/model.types";
+import { Rating } from "../../types/model.types";
 
 const BASE_URL = getBaseUrl();
-
-export interface Rating {
-  name: string;
-  value: number;
-}
 
 export const fetchUserUserCFRecommendations = async (
   ratings: Rating[],

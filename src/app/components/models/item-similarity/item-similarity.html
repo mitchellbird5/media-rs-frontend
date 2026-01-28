@@ -11,6 +11,7 @@
                 info_title: info_title,
                 info_description: info_description
             }"
+            [zIndex]="modelInfoPopupZIndex"
         ></lucide-icon>
     </div>
     
@@ -18,11 +19,8 @@
         [medium]="medium"
         [width]="width"
         [placeholder]="`Search ${medium}s...`"
-        (selectedItemChange)="onItemSelected($event)"
-        (resultsChange)="onResultsChange($event)"
-    />
-
-    <app-embedding-option 
-        (embeddingSelected)="onSelectEmbedding($event)"
+        [autocompleteZIndex]="autocompleteZIndex"
+        [searchResultPopupZIndex]="searchResultPopupZIndex"
+        (metaDataChange)="onMetaDataChange($event)"
     />
 </div>

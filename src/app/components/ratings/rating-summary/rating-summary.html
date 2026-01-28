@@ -3,11 +3,12 @@
 
   <app-search-bar
     [searchQuery]="query"
-    [search]="search"
+    [autocompleteSearch]="autocompleteSearch",
+    [popupSearch]="popupSearch"
     [width]="width"
     [placeholder]="placeholder"
-    [autocompleteZIndex]="1005"
-    [searchResultPopupZIndex]="1010"
+    [autocompleteZIndex]="autocompleteZIndex"
+    [searchResultPopupZIndex]="searchResultPopupZIndex"
     [autocompleteForceCloseSignal]="closeAutocompleteTrigger"
     (selectedItemChange)="handleItemSelected($event)"
     (cleared)="clearSearch()"

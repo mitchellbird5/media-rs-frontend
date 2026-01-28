@@ -3,7 +3,7 @@
     <input
       type="checkbox"
       [checked]="showModel()"
-      (change)="onShowModel($event.target.checked)"
+      (change)="testLog($event)"
     />
     <div class="subtitle">{{ ModelTitles[model()] }}</div>
   </div>
@@ -12,8 +12,20 @@
     [style.visibility]="showModel() ? 'visible' : 'hidden'"
     appPopup
     [popupComponent]="ModelParamsPopup"
-    [popupContext]="getPopupContext()"
+    [popupContext]="{
+      medium: medium(),
+      model: model(),
+      numRecommendations: numRecommendations,
+      metaData: currentMetaData(),
+      MetaDataChange: {
+        emit: onMetaDataChange.bind(this)
+      },
+      resultsChange: {
+        emit: onResultsChange.bind(this)
+      }
+    }"
     [zIndex]="1100"
+    (click)="onEditClick()"
   >
     Edit Parameters
   </button>

@@ -10,11 +10,12 @@ import { LucideAngularModule, Info } from 'lucide-angular';
 import { RouterModule } from '@angular/router';
 
 import { ModelInfo } from '../../../model-info/model-info';
-import { Rating } from '../../../../services/recommend/get-user-user-cf-recommendation';
 import { HybridWeightSlidersComponent } from './hybrid-weight-sliders/hybrid-weight-sliders';
 import { ItemItemCFInputs } from '../../item-item-cf/item-item-cf-inputs/item-item-cf-inputs';
 import { UserUserCFInputs } from '../../user-user-cf/user-user-cf-inputs/user-user-cf-inputs';
 import { PopupDirective } from '../../../popup-card/popup-directive/popup-directive';
+
+import { Rating } from '../../../../types/model.types';
 
 @Component({
   selector: 'app-hybrid-inputs',
@@ -25,7 +26,6 @@ import { PopupDirective } from '../../../popup-card/popup-directive/popup-direct
     CommonModule,
     RouterModule,
     HybridWeightSlidersComponent,
-    ItemItemCFInputs,
     UserUserCFInputs,
     PopupDirective
   ],
@@ -37,6 +37,10 @@ import { PopupDirective } from '../../../popup-card/popup-directive/popup-direct
 })
 export class HybridInputs {
   @Input() medium!: string;
+  @Input() autocompleteZIndex!: number;
+  @Input() searchResultPopupZIndex!: number;
+  @Input() ratingPopupZIndex: number = 1050;
+  @Input() ratingSummaryZIndex: number = 1050;
   @Input() width: string = '400px';
 
   @Output() selectedItemChange = new EventEmitter<string | null>();

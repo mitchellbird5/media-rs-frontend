@@ -14,7 +14,7 @@
     <div class="search-results-container">
         <div 
             *ngFor="let result of results()" 
-            (click)="onResultSelected(result); close()"
+            (click)="onResultSelected(result);  $event.stopPropagation()"
             class="search-result"
         >
             {{ result }}

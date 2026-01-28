@@ -1,10 +1,11 @@
 import { 
   Component, 
   Input, 
-  signal,
   Output,
   EventEmitter,
-  WritableSignal 
+  WritableSignal,
+  signal,
+  effect
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -15,11 +16,12 @@ import {
 import { ActivatedRoute, RouterModule  } from '@angular/router';
 
 import { PopupDirective } from '../../popup-card/popup-directive/popup-directive';
-import { fetchItemItemCFRecommendations } from '../../../services/recommend/get-item-item-cf-recommendation';
 import { ModelInfo } from '../../model-info/model-info';
 import { ItemItemCFInputs } from './item-item-cf-inputs/item-item-cf-inputs';
+import { createItemItemCFRecommendFn } from './item-item-cf-recommend-fn';
 
 import { RecommendFn } from '../../../types/movies.types';
+import { ItemItemCFMetaData } from '../../../types/model.types';
 
 @Component({
   selector: 'app-item-item-cf',
@@ -37,22 +39,19 @@ import { RecommendFn } from '../../../types/movies.types';
 })
 export class ItemItemCF {
   @Input() medium!: string;
-  @Input() width: string = '400px';
   @Input() numRecommendations!: number;
+  @Input() autocompleteZIndex!: number;
+  @Input() searchResultPopupZIndex!: number;
+  @Input() modelInfoPopupZIndex: number = 1000;
+  @Input() width: string = '400px';
 
-  selectedItem: WritableSignal<string | null> = signal(null);
+  placeholder: string = `Search ${this.medium}s...`;
 
   @Output() recommendFnReady = new EventEmitter<RecommendFn>();
   @Output() loading = new EventEmitter<boolean>();
   @Output() resultsChange = new EventEmitter<string[]>();
 
-  constructor(private route: ActivatedRoute) {}
-
-  ngOnInit() {
-    Promise.resolve().then(() => {
-      this.recommendFnReady.emit(this.recommend);
-    });
-  }
+  private latestMetaData: WritableSignal<ItemItemCFMetaData | null> = signal(null);
 
   readonly Info = Info;
   readonly ModelInfo = ModelInfo;
@@ -61,25 +60,27 @@ export class ItemItemCF {
   info_description =
     `Recommend items that are commonly rated high by users who also enjoyed this particular item.`;
 
-  onItemSelected(item: string | null) {
-    this.selectedItem.set(item);
-  }
+  constructor() {
+    effect(() => {
+      const meta = this.latestMetaData();
+      const n = this.numRecommendations;
 
-  onResultsChange(results: string[]) {
-    this.resultsChange.emit(results);
-  }
+      if (!meta?.selectedItem) return;
 
-  private recommend: RecommendFn = async () => {
-    this.loading.emit(true);
-    const query = this.selectedItem()
-    if (!query) return;
-    const results =
-      await fetchItemItemCFRecommendations(
-        query,
-        this.numRecommendations
+      const recommendFn = createItemItemCFRecommendFn(
+        meta,
+        this.loading,
+        this.resultsChange,
+        n
       );
 
-    this.onResultsChange(results ?? []);
-    this.loading.emit(false);
+      console.log('Emitting recommendFn with meta data: ', {meta})
+      this.recommendFnReady.emit(recommendFn);
+    });
   }
+
+  onMetaDataChange(metaData: ItemItemCFMetaData) {
+    this.latestMetaData.set(metaData);
+  }
+
 }

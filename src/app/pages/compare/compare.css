@@ -17,10 +17,22 @@
 }
 
 .select-model-container {
-  display: inline-block; /* Changed from flex */
+  display: inline-block;
 }
 
 .compare-title {
   text-align: center;
   margin-bottom: 1em;
+}
+
+.results-comparison-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--cols, 1), 1fr);
+  gap: 1rem;
+  width: 100%;
+  padding: var(--spacing-lg);
+}
+
+.results-comparison-column {
+  min-width: 0; /* Prevents grid blowout */
 }

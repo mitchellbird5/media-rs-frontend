@@ -12,9 +12,9 @@ import {
   Trash2,
 } from 'lucide-angular';
 
-import { Rating } from '../../services/recommend/get-user-user-cf-recommendation';
-import { SearchBar } from '../search-bar/search-bar';
-import { SliderComponent } from '../slider/slider';
+import { Rating } from '../../../types/model.types';
+import { SearchBar } from '../../search-bar/search-bar';
+import { SliderComponent } from '../../slider/slider';
 
 @Component({
   selector: 'app-rating-summary',
@@ -34,8 +34,11 @@ export class RatingSummary {
   @Input() medium!: string;
   @Input() width: string = '400px';
   @Input() placeholder: string = 'Search...';
-  @Input() search!: (query: string) => Promise<string[]>;
+  @Input() autocompleteSearch!: (query: string) => Promise<string[]>;
+  @Input() popupSearch!: (query: string) => Promise<string[]>;
   @Input() onItemSelected!: (item: string) => void;
+  @Input() autocompleteZIndex: number = 1005;
+  @Input() searchResultPopupZIndex: number = 1010;
 
   query: WritableSignal<string> = signal('');
   closeAutocompleteTrigger: WritableSignal<number> = signal(0);

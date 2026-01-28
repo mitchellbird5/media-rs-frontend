@@ -1,0 +1,10 @@
+.result-comparison-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  width: max-content
+}
+
+.result-comparison-cell {
+  padding: 0.25em;
+}

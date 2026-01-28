@@ -1,16 +1,20 @@
 <div class="model-container">
   <app-search-bar 
     [searchQuery]="searchQuery"
-    [search]="search",
+    [autocompleteSearch]="autocompleteSearch",
+    [popupSearch]="popupSearch"
     [width]="width",
     [placeholder]="placeholder"
     [popupTitle]="`Searching ${medium}s...`"
+    [autocompleteZIndex]="autocompleteZIndex"
+    [searchResultPopupZIndex]="searchResultPopupZIndex"
     (selectedItemChange)="onItemSelected($event)"
   />
 
   <app-selected-item 
     [label]="`Selected ${medium}:`"
-    [selectedItem]="selectedItem"
-    [clearSelectedItem]="clearSelectedItem.bind(this)"
+    [selectedItem]="metaData().selectedItem"
+    [clearSelectedItem]="clearSelectedItem"
   />
+
 </div>

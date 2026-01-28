@@ -1,4 +1,12 @@
-import { Directive, Input, HostListener, ComponentRef, ApplicationRef, Injector, inject } from '@angular/core';
+import { 
+  Directive, 
+  Input, 
+  HostListener, 
+  ComponentRef, 
+  ApplicationRef, 
+  EventEmitter, 
+  inject 
+} from '@angular/core';
 import { createComponent } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { PopupShellComponent } from '../popup-shell/popup-shell';
@@ -22,17 +30,18 @@ export class PopupDirective {
   private subscriptions: Subscription[] = [];
 
   public isOpen: boolean = false;
-  private opening: boolean = false;
 
-  @HostListener('click')
-  handleHostClick() {
-    this.open();
+  @HostListener('click', ['$event'])
+  handleHostClick(event: MouseEvent) {
+    if (!this.isOpen) {
+      this.open();
+    }
   }
 
-  open(context?: any) {
-    if (this.popupRef || this.opening) return;
 
-    this.opening = true;
+  open(context?: any) {
+    if (this.isOpen) return;
+
     this.isOpen = true;
 
     if (context) this.popupContext = context;
@@ -53,34 +62,49 @@ export class PopupDirective {
       environmentInjector: this.appRef.injector,
     });
 
-    Object.assign(this.popupRef.instance, {
-      ...this.popupContext,
-      close: this.close.bind(this),
-      refresh: this.refresh,
-    });
-
+    // Assign context properties to the popup instance
     for (const key of Object.keys(this.popupContext)) {
-      const value = this.popupContext[key];
+      const contextValue = this.popupContext[key];
+      
+      // Skip if it's an EventEmitter - we'll wire those separately
+      if (contextValue instanceof EventEmitter) {
+        continue;
+      }
+      
+      // Assign non-EventEmitter properties
+      this.popupRef.instance[key] = contextValue;
+    }
+
+    // Wire up EventEmitters separately with guards
+    for (const key of Object.keys(this.popupContext)) {
+      const contextValue = this.popupContext[key];
       const instanceValue = this.popupRef.instance[key];
       
-      if (value?.subscribe && instanceValue?.subscribe) {
-        // Only subscribe if both are EventEmitters and they're different instances
-        if (value !== instanceValue) {
-          const sub = instanceValue.subscribe((v: any) => {
-            // Emit asynchronously to break potential synchronous loops
-            queueMicrotask(() => {
-              if (this.isOpen && value.emit) {
-                value.emit(v);
+      // Only wire if:
+      // 1. Context value is an EventEmitter
+      // 2. Instance has an EventEmitter with the same name
+      // 3. They are DIFFERENT instances
+      if (
+        contextValue instanceof EventEmitter && 
+        instanceValue instanceof EventEmitter &&
+        contextValue !== instanceValue
+      ) {
+        // Subscribe to popup's EventEmitter and forward to parent's EventEmitter
+        const sub = instanceValue.subscribe({
+          next: (v: any) => {
+            // Use setTimeout to break synchronous emission chain
+            setTimeout(() => {
+              if (this.isOpen) {
+                contextValue.emit(v);
               }
-            });
-          });
-          this.subscriptions.push(sub);
-        }
+            }, 0);
+          }
+        });
+        this.subscriptions.push(sub);
       }
     }
 
     this.popupRef.changeDetectorRef.detectChanges();
-    this.opening = false;
   }
 
   refresh = () => {
@@ -88,7 +112,7 @@ export class PopupDirective {
   };
 
   close() {
-    if (!this.popupRef && !this.shellRef) return;
+    if (!this.isOpen) return;
 
     this.subscriptions.forEach(sub => sub.unsubscribe());
     this.subscriptions = [];

@@ -13,7 +13,11 @@ import { LucideAngularModule, X } from 'lucide-angular';
   selector: 'app-popup-shell',
   standalone: true,
   imports: [CommonModule, LucideAngularModule],
-  styleUrls: ['./popup-shell.css'],
+  styleUrls: [
+    './popup-shell.css',
+    '../../../styles/popup.css',
+    '../../../styles/button.css'
+  ],
   template: `
     <div 
       class="overlay" 

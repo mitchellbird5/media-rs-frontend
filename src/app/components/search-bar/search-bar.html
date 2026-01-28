@@ -3,7 +3,7 @@
     <app-autocomplete
       [query]="searchQuery"
       [placeholder]="placeholder"
-      [fetchResults]="search"
+      [fetchResults]="autocompleteSearch"
       [width]="width"
       [zIndex]="autocompleteZIndex"
       [forceCloseSignal]="autocompleteForceCloseSignal"
@@ -23,7 +23,8 @@
         loadingSearchResults: loadingSearchResults,
         results: searchResults,
         onResultSelected: onSelected.bind(this),
-        refresh: searchPopup.refresh
+        refresh: searchPopup.refresh,
+        close: searchPopup.close
       }"
       [zIndex]="searchResultPopupZIndex"
     ></lucide-icon>

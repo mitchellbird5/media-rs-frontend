@@ -1,17 +1,24 @@
 <div class="model-container">
   <app-search-bar 
     [searchQuery]="searchQuery"
-    [search]="search"
+    [autocompleteSearch]="autocompleteSearch",
+    [popupSearch]="popupSearch"
     [width]="width"
     [placeholder]="placeholder"
     [popupTitle]="`Searching ${medium}s...`"
+    [autocompleteZIndex]="autocompleteZIndex"
+    [searchResultPopupZIndex]="searchResultPopupZIndex"
     (searchQueryChange)="onQueryUpdate($event)"
     (selectedItemChange)="onItemSelected($event)"
   />
 
   <app-selected-item 
     [label]="`Selected ${medium}:`"
-    [selectedItem]="selectedItem"
+    [selectedItem]="selectedItem()"
     [clearSelectedItem]="clearSelectedItem.bind(this)"
+  />
+
+  <app-embedding-option 
+    (embeddingSelected)="onSelectEmbedding($event)"
   />
 </div>

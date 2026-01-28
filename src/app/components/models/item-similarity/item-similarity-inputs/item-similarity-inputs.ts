@@ -14,9 +14,12 @@ import {
 } from 'lucide-angular';
 import { CommonModule } from '@angular/common';
 
-import { fetchMovieTitles } from '../../../../services/movieSearch';
 import { SearchBar } from '../../../search-bar/search-bar';
 import { SelectedItem } from '../../../selected-item/selected-item';
+import { EmbeddingOption } from '../../embedding-option/embedding-option';
+
+import { fetchMovieTitles } from '../../../../services/movieSearch';
+import { EmbeddingMethod, ItemSimilarityMetaData } from '../../../../types/model.types';
 
 @Component({
   selector: 'app-item-similarity-inputs',
@@ -26,7 +29,8 @@ import { SelectedItem } from '../../../selected-item/selected-item';
     LucideAngularModule,
     RouterModule,
     SearchBar,
-    SelectedItem
+    SelectedItem,
+    EmbeddingOption
   ],
   templateUrl: './item-similarity-inputs.html',
   styleUrls: ['../../../../styles/model.css'], 
@@ -34,16 +38,38 @@ import { SelectedItem } from '../../../selected-item/selected-item';
 export class ItemSimilarityInputs {
   @Input() medium!: string;
   @Input() placeholder!: string;
+  @Input() autocompleteZIndex!: number;
+  @Input() searchResultPopupZIndex!: number;
   @Input() width: string = '400px';
 
   selectedItem: WritableSignal<string | null> = signal(null);
   searchQuery: WritableSignal<string> = signal('');
+  selectedEmbedding: WritableSignal<EmbeddingMethod> = signal('SBERT');
 
-  @Output() selectedItemChange = new EventEmitter<string | null>();
-  @Output() searchQueryChange = new EventEmitter<string>();
-  @Output() resultsChange = new EventEmitter<string[]>();
+  @Output() metaDataChange = new EventEmitter<ItemSimilarityMetaData>();
 
   constructor(private route: ActivatedRoute) {}
+
+  private metaData = signal<ItemSimilarityMetaData>({
+    selectedItem: this.selectedItem(),
+    query: this.searchQuery(),
+    embeddingMethod: this.selectedEmbedding()
+  });
+
+  private updateMetaData<K extends keyof ItemSimilarityMetaData>(
+    key: K,
+    value: ItemSimilarityMetaData[K]
+  ) {
+    this.metaData.update(current => {
+      const updated = {
+        ...current,
+        [key]: value,
+      };
+
+      this.metaDataChange.emit(updated);
+      return updated;
+    });
+  }
 
   searchResults = signal<string[]>([]);
   loadingSearchResults = signal(false);
@@ -51,25 +77,27 @@ export class ItemSimilarityInputs {
   readonly Search = Search;
   readonly Trash2 = Trash2;
 
-  search = async (query: string): Promise<string[]> => {
-    const titles = await fetchMovieTitles(query, 5);
-    return titles;
-  }
+  autocompleteSearch = async (query: string): Promise<string[]> => {
+    return await fetchMovieTitles(query, 5);
+  };
+
+  popupSearch = async (query: string): Promise<string[]> => {
+    return await fetchMovieTitles(query, 50);
+  };
 
   onItemSelected(item: string | null) {
     this.selectedItem.set(item);
-    this.selectedItemChange.emit(item);
+    this.updateMetaData('selectedItem', item);
   }
 
   onQueryUpdate(query: string) {
     this.searchQuery.set(query);
-    this.searchQueryChange.emit(query);
+    this.updateMetaData('query', query);
   }
 
   clearSelectedItem() {
     this.onItemSelected(null);
     this.onQueryUpdate('');
-    this.resultsChange.emit([]);
   }
 
   onSearchSelect = (item: string) => {
@@ -77,4 +105,8 @@ export class ItemSimilarityInputs {
     this.onQueryUpdate('');
   };
 
+  onSelectEmbedding(embedding: EmbeddingMethod) {
+    this.selectedEmbedding.set(embedding);
+    this.updateMetaData('embeddingMethod', embedding);
+  }
 }

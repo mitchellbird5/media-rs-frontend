@@ -25,7 +25,7 @@
         [numRecommendations]="numRecommendations()"
         [width]="width"
         (recommendFnReady)="recommendFn.set($event)"
-        (resultsReady)="results.set($event)"
+        (resultsChange)="results.set($event)"
         (loading)="loading.set($event)"
     />
 
@@ -42,7 +42,7 @@
     <app-search-parameters
         [medium]="medium"
         [width]="width"
-        [recommendationsReady]="recommendationsReady"
+        [recommendationsReady]="recommendationsReady()"
         [recommendFn]="recommendFn()!"
         (numRecommendationsChange)="numRecommendations.set($event)"
     />

@@ -11,6 +11,7 @@
                 info_title: info_title,
                 info_description: info_description
             }"
+            [zIndex]="modelInfoPopupZIndex"
         ></lucide-icon>
     </div>
 
@@ -18,12 +19,11 @@
         [medium]="medium"
         [placeholder]="`Search ${medium}s...`"
         [width]="width"
-        (numSimilarUsersChange)="onNumSimilarUsersChange($event)"
-        (ratingsChange)="onRatingsUpdate($event)"
+        [autocompleteZIndex]="autocompleteZIndex"
+        [searchResultPopupZIndex]="searchResultPopupZIndex"
+        [ratingPopupZIndex]="ratingPopupZIndex"
+        [ratingSummaryZIndex]="ratingSummaryZIndex"
+        (metaDataChange)="onMetaDataChange($event)"
+        (resultsChange)="resultsChange.emit($event)"
     />
-
-    <app-embedding-option 
-        (embeddingSelected)="onSelectEmbedding($event)"
-    />
-
 </div>  

@@ -22,7 +22,6 @@ export class SearchResults {
   @Input() loadingSearchResults!: WritableSignal<boolean>;
   @Input() results!: WritableSignal<string[]>;
   @Input() onResultSelected!: (result: string) => void;
-  @Input() close!: () => void;
   @Input() refresh!: () => void;
 
   @ViewChild('searchResultsPopup', { static: true })
@@ -30,6 +29,5 @@ export class SearchResults {
 
   selectResult(result: string) {
     this.onResultSelected(result);
-    this.close?.();
   }
 }
