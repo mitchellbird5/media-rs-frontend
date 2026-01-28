@@ -1,6 +1,5 @@
 <div class="model-container">
   <app-search-bar 
-    [searchQuery]="searchQuery"
     [autocompleteSearch]="autocompleteSearch",
     [popupSearch]="popupSearch"
     [width]="width"
@@ -14,7 +13,7 @@
 
   <app-selected-item 
     [label]="`Selected ${medium}:`"
-    [selectedItem]="selectedItem()"
+    [selectedItem]="metaData().selectedItem"
     [clearSelectedItem]="clearSelectedItem.bind(this)"
   />
 

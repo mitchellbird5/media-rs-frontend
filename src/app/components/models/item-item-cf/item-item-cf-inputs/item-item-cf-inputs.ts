@@ -50,7 +50,6 @@ export class ItemItemCFInputs implements OnChanges {
   @Input() width: string = '400px';
   
   @Input() set metaDataInput(value: ItemItemCFMetaData) {
-    console.log('metaDataInput setter called with:', value);
     if (value) {
       this._metaDataInput = value;
       this.metaData.set(value);
@@ -90,16 +89,13 @@ export class ItemItemCFInputs implements OnChanges {
   }
 
   ngOnInit() {
-    console.log('ItemItemCFInputs initialized with metaDataInput:', this.metaDataInput);
     if (this.metaDataInput) {
       this.metaData.set(this.metaDataInput);
     }
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log('ngOnChanges called', changes);
     if (changes['metaDataInput'] && this.metaDataInput) {
-      console.log('Syncing metaDataInput:', this.metaDataInput);
       this.metaData.set(this.metaDataInput);
     }
   }

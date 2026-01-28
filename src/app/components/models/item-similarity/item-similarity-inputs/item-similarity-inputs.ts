@@ -4,7 +4,8 @@ import {
   Output,
   WritableSignal,
   signal,
-  EventEmitter
+  EventEmitter,
+  SimpleChanges
 } from '@angular/core';
 import { ActivatedRoute, RouterModule  } from '@angular/router';
 import { 
@@ -19,7 +20,12 @@ import { SelectedItem } from '../../../selected-item/selected-item';
 import { EmbeddingOption } from '../../embedding-option/embedding-option';
 
 import { fetchMovieTitles } from '../../../../services/movieSearch';
-import { EmbeddingMethod, ItemSimilarityMetaData } from '../../../../types/model.types';
+import { 
+  EmbeddingMethod, 
+  ItemSimilarityMetaData,
+  nullMetaData,
+  ModelType 
+} from '../../../../types/model.types';
 
 @Component({
   selector: 'app-item-similarity-inputs',
@@ -42,19 +48,23 @@ export class ItemSimilarityInputs {
   @Input() searchResultPopupZIndex!: number;
   @Input() width: string = '400px';
 
-  selectedItem: WritableSignal<string | null> = signal(null);
-  searchQuery: WritableSignal<string> = signal('');
-  selectedEmbedding: WritableSignal<EmbeddingMethod> = signal('SBERT');
+  @Input() set metaDataInput(value: ItemSimilarityMetaData) {
+    if (value) {
+      this._metaDataInput = value;
+      this.metaData.set(value);
+    }
+  }
+  get metaDataInput(): ItemSimilarityMetaData {
+    return this._metaDataInput;
+  }
+  private _metaDataInput!: ItemSimilarityMetaData;
 
   @Output() metaDataChange = new EventEmitter<ItemSimilarityMetaData>();
+  @Output() resultsChange = new EventEmitter<string[]>();
 
   constructor(private route: ActivatedRoute) {}
 
-  private metaData = signal<ItemSimilarityMetaData>({
-    selectedItem: this.selectedItem(),
-    query: this.searchQuery(),
-    embeddingMethod: this.selectedEmbedding()
-  });
+  metaData = signal<ItemSimilarityMetaData>(nullMetaData[ModelType.ItemSimilarity]);
 
   private updateMetaData<K extends keyof ItemSimilarityMetaData>(
     key: K,
@@ -77,6 +87,18 @@ export class ItemSimilarityInputs {
   readonly Search = Search;
   readonly Trash2 = Trash2;
 
+  ngOnInit() {
+    if (this.metaDataInput) {
+      this.metaData.set(this.metaDataInput);
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['metaDataInput'] && this.metaDataInput) {
+      this.metaData.set(this.metaDataInput);
+    }
+  }
+
   autocompleteSearch = async (query: string): Promise<string[]> => {
     return await fetchMovieTitles(query, 5);
   };
@@ -86,18 +108,21 @@ export class ItemSimilarityInputs {
   };
 
   onItemSelected(item: string | null) {
-    this.selectedItem.set(item);
     this.updateMetaData('selectedItem', item);
   }
 
   onQueryUpdate(query: string) {
-    this.searchQuery.set(query);
+    console.log('updating query to ', query)
     this.updateMetaData('query', query);
+    if (!this.metaData().selectedItem && query==='') {
+      this.resultsChange.emit([])
+    }
   }
 
   clearSelectedItem() {
     this.onItemSelected(null);
     this.onQueryUpdate('');
+    this.resultsChange.emit([]);
   }
 
   onSearchSelect = (item: string) => {
@@ -106,7 +131,6 @@ export class ItemSimilarityInputs {
   };
 
   onSelectEmbedding(embedding: EmbeddingMethod) {
-    this.selectedEmbedding.set(embedding);
     this.updateMetaData('embeddingMethod', embedding);
   }
 }

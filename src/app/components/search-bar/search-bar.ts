@@ -30,7 +30,8 @@ export class SearchBar {
   loadingSearchResults: WritableSignal<boolean> = signal(false)
   searchResults: WritableSignal<string[]> = signal<string[]>([]);
 
-  @Input() searchQuery!: WritableSignal<string>;
+  _searchQuery: WritableSignal<string> = signal('');
+
   @Input() autocompleteSearch!: (query: string) => Promise<string[]>;
   @Input() popupSearch!: (query: string) => Promise<string[]>;
   @Input() width: string = '400px';
@@ -50,15 +51,21 @@ export class SearchBar {
   @ViewChild(PopupDirective) searchResultsPopup!: PopupDirective;
   @ViewChild(AutocompleteComponent) autocomplete!: AutocompleteComponent;
 
+  onQueryChange(query: string) {
+    this._searchQuery.set(query);
+    this.searchQueryChange.emit(query);
+  }
+
   async onSearchIconClick() {
     this.autocomplete.closeDropdown();
-    if (!this.searchQuery) return;
+    const currentQuery = this._searchQuery();
+
+    if (!currentQuery) return;
 
     this.loadingSearchResults.set(true);
-
     this.searchResultsPopup?.popupContext.refresh?.();
 
-    const results = await this.popupSearch(this.searchQuery());
+    const results = await this.popupSearch(currentQuery);
 
     queueMicrotask(() => {
       this.searchResults.set(results);
@@ -68,14 +75,14 @@ export class SearchBar {
   }
 
   onSelected(item: string) {
-    this.searchQuery.set('')
+    this._searchQuery.set('')
     this.selectedItemChange.emit(item);
     this.searchResults.set([]);
     this.searchResultsPopup?.close?.();
   }
 
   onCleared() {
-    this.searchQuery.set('');
+    this._searchQuery.set('');
     this.searchResults.set([]);
     this.searchResultsPopup?.close?.();
     this.cleared.emit();

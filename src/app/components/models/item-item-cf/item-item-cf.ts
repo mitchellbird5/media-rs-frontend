@@ -74,7 +74,6 @@ export class ItemItemCF {
         n
       );
 
-      console.log('Emitting recommendFn with meta data: ', {meta})
       this.recommendFnReady.emit(recommendFn);
     });
   }

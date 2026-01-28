@@ -22,5 +22,6 @@
         [autocompleteZIndex]="autocompleteZIndex"
         [searchResultPopupZIndex]="searchResultPopupZIndex"
         (metaDataChange)="onMetaDataChange($event)"
+        (resultsChange)="resultsChange.emit($event)"
     />
 </div>

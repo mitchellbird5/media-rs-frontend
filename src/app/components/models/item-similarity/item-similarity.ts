@@ -5,6 +5,7 @@ import {
   signal,
   EventEmitter,
   WritableSignal,
+  effect
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -45,14 +46,13 @@ export class ItemSimilarity {
   @Input() modelInfoPopupZIndex: number = 1000;
   @Input() width: string = '400px';
 
-  selectedItem: WritableSignal<string | null> = signal(null);
-  searchQuery: WritableSignal<string> = signal('');
+  placeholder: string = `Search ${this.medium}s...`;
 
   @Output() recommendFnReady = new EventEmitter<RecommendFn>();
   @Output() loading = new EventEmitter<boolean>();
   @Output() resultsChange = new EventEmitter<string[]>();
   
-  private latestMetaData: ItemSimilarityMetaData | null = null;
+  private latestMetaData: WritableSignal<ItemSimilarityMetaData | null> = signal(null);
 
   readonly Info = Info;
   readonly ModelInfo = ModelInfo;
@@ -61,21 +61,28 @@ export class ItemSimilarity {
   info_description =
     `Recommend items that are similar to the selected items, or the given description, based on similarity of content using sentence transformers (all-MiniLM-L6-v2) aka SBERT.`;
 
-  constructor(private route: ActivatedRoute) {}
+  constructor() {
+    effect(() => {
+      const meta = this.latestMetaData();
+      const n = this.numRecommendations;
+
+      if (!meta) return;
+
+      const recommendFn = createItemSimilarityRecommendFn(
+        meta,
+        this.loading,
+        this.resultsChange,
+        n
+      );
+
+      this.recommendFnReady.emit(recommendFn);
+    });
+  }
 
   onMetaDataChange(metaData: ItemSimilarityMetaData) {
-    console.log('Upating metadata', metaData, 'Returning empty results')
-    this.latestMetaData = metaData;
-
-    console.log('Updating recommendFn with metaData', metaData)
-    const recommendFn = createItemSimilarityRecommendFn(
-      this.latestMetaData,
-      this.loading,
-      this.resultsChange,
-      this.numRecommendations
-    );
-
-    this.recommendFnReady.emit(recommendFn);
+    console.log('Updating item-similarity meta data to ', metaData)
+    this.latestMetaData.set(metaData);
   }
+
 
 }

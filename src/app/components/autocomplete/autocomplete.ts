@@ -39,6 +39,7 @@ export class AutocompleteComponent {
   
   @Output() valueSelected = new EventEmitter<string>();
   @Output() cleared = new EventEmitter<void>();
+  @Output() queryChange = new EventEmitter<string>();
 
   results: WritableSignal<string[]> = signal<string[]>([]);
   isOpen: WritableSignal<boolean> = signal(false);
@@ -84,6 +85,7 @@ export class AutocompleteComponent {
 
   onInput(value: string) {
     this.query.set(value);
+    this.queryChange.emit(value);
   }
 
   private _debouncedFetchEffect = effect(() => {
@@ -131,7 +133,7 @@ export class AutocompleteComponent {
   select(value: string) {
     if (!value) return;
     this.valueSelected.emit(value);
-    this.query.set('');
+    this.onInput('');
 
     // Close dropdown completely
     this.closeDropdown();
