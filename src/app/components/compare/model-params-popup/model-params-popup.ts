@@ -41,10 +41,6 @@ export class ModelParamsPopup {
   @Output() metaDataChange = new EventEmitter<ModelMetaData>();
   @Output() resultsChange = new EventEmitter<string[]>();
 
-  ngOnInit() {
-    console.log('ModelParamsPopup initialized with metaData:', this.metaData);
-  }
-
   get itemSimilarityMetaData(): ItemSimilarityMetaData | undefined {
     return this.model === ModelType.ItemSimilarity
       ? (this.metaData as ItemSimilarityMetaData)

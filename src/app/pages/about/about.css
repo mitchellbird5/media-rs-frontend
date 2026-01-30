@@ -1,0 +1,16 @@
+.about-container {
+  display: flex;
+  flex-direction: column;
+  gap: 5em;
+}
+
+.about-title {
+  border-bottom: 1px solid var(--text-muted);
+  width: max-content;
+}
+
+.info-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
