@@ -39,8 +39,6 @@ export const fetchMovies = async (
     query: title,
     limit: limit.toString(),
   });
-
-  console.log("Fetching movies with query:", `${BASE_URL}/movies/search/?${query.toString()}`);
   
   const response = await fetch(`${BASE_URL}/movies/search?${query.toString()}`, {
     method: "GET",
@@ -62,7 +60,6 @@ export const fetchMovies = async (
     throw new Error(`Unexpected API response: ${JSON.stringify(data)}`);
   }
 
-  console.log("Received movie data:", data);
   return data;
 };
 
@@ -82,7 +79,6 @@ export const fetchMovieData = async (
   );
 
   const url = `${BASE_URL}/movies/data?${params.toString()}`;
-  console.log("Fetching movie data with query:", url);
 
   const response = await fetch(url, { headers: { Accept: "application/json" } });
 
@@ -96,8 +92,6 @@ export const fetchMovieData = async (
   if (!Array.isArray(data)) {
     throw new Error(`Unexpected API response: ${JSON.stringify(data)}`);
   }
-
-  console.log("Received movie data:", data);
 
   return data as MovieData[];
 };

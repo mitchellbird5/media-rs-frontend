@@ -25,8 +25,6 @@ export const fetchHybridRecommendations = async (
     embedding_method: embeddingMethod
   };
 
-  console.log('Fetching recommendations with payload:', payload);
-
   const response = await fetch(`${BASE_URL}/recommend/hybrid`, {
     method: 'POST',
     headers: {
@@ -45,8 +43,6 @@ export const fetchHybridRecommendations = async (
   }
 
   const data: string[] = await response.json();
-
-  console.log('Received recommendations:', data);
 
   return data;
 };
