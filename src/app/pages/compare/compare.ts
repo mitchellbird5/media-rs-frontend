@@ -60,10 +60,10 @@ export class Compare {
   readonly ModelType = ModelType;
   readonly ModelTitles = ModelTitles;
 
-  allRecommendationsReady: Signal<boolean> = computed(() => {
-    return Object.values(this.modelData()).every(
-      model => model.recommendationsReady === true
-    );
+  allLoading: Signal<boolean> = computed(() => {
+    return Object.values(this.modelData())
+      .filter(model => model.show)
+      .every(model => model.loading === true);
   });
 
   shownModelCount = computed(() => {
@@ -86,7 +86,6 @@ export class Compare {
       results: [],
       loading: false,
       recommendFn: null,
-      recommendationsReady: false,
       metaData: nullMetaData[ModelType.ItemSimilarity]
     },
     "item-item-cf": {
@@ -94,7 +93,6 @@ export class Compare {
       results: [],
       loading: false,
       recommendFn: null,
-      recommendationsReady: false,
       metaData: nullMetaData[ModelType.ItemItemCF]
     },
     "user-user-cf": {
@@ -102,7 +100,6 @@ export class Compare {
       results: [],
       loading: false,
       recommendFn: null,
-      recommendationsReady: false,
       metaData: nullMetaData[ModelType.UserUserCF]
     },
     "hybrid": {
@@ -110,7 +107,6 @@ export class Compare {
       results: [],
       loading: false,
       recommendFn: null,
-      recommendationsReady: false,
       metaData: nullMetaData[ModelType.Hybrid]
     }
   });
@@ -169,13 +165,6 @@ export class Compare {
 
   onShow(modelName: string, show: boolean) {
     this.updateModel(modelName, { show });
-  }
-
-  onRecommendationsReady(modelName: string, recommendationsReady: boolean) {
-    const currentModel = this.modelData()[modelName];
-    if (currentModel.recommendationsReady !== recommendationsReady) {
-      this.updateModel(modelName, { recommendationsReady });
-    }
   }
 
   onMetaDataChange(modelName: string, metaData: ModelMetaData) {

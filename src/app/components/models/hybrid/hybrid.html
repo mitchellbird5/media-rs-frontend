@@ -21,14 +21,9 @@
         [width]="width"
         [autocompleteZIndex]="autocompleteZIndex"
         [searchResultPopupZIndex]="searchResultPopupZIndex"
-        (selectedItemChange)="selectedItem.set($event)"
-        (ratingsChange)="ratings.set($event)"
-        (numSimilarUsersChange)="numSimilarUsers.set($event)"
-        (weightsChange)="onWeightsChange($event)"
+        [ratingPopupZIndex]="ratingPopupZIndex"
+        [ratingSummaryZIndex]="ratingSummaryZIndex"
+        (metaDataChange)="onMetaDataChange($event)"
+        (resultsChange)="resultsChange.emit($event)"
     />
-    
-    <app-embedding-option 
-        (embeddingSelected)="onSelectEmbedding($event)"
-    />
-
 </div>  

@@ -3,23 +3,25 @@ import {
   Input, 
   Output,
   EventEmitter,
-  signal,
-  WritableSignal 
+  InputSignal,
+  input,
+  effect,
+  WritableSignal,
+  signal
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { LucideAngularModule, Info } from 'lucide-angular';
-import { RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 
 import { ModelInfo } from '../../model-info/model-info';
-import { Rating } from '../../../types/model.types';
-import { fetchHybridRecommendations } from '../../../services/recommend/get-hybrid-recommendation';
 import { HybridInputs } from './hybrid-inputs/hybrid-inputs';
 import { PopupDirective } from '../../popup-card/popup-directive/popup-directive';
-import { EmbeddingMethod } from '../../../types/model.types';
-import { EmbeddingOption } from '../embedding-option/embedding-option';
+
+import { createHybridRecommendFn } from './hybrid-recommend-fn';
 
 import { RecommendFn } from '../../../types/movies.types';
+import { HybridMetaData } from '../../../types/model.types';
 
 @Component({
   selector: 'app-hybrid',
@@ -29,8 +31,7 @@ import { RecommendFn } from '../../../types/movies.types';
     CommonModule,
     RouterModule,
     HybridInputs,
-    PopupDirective,
-    EmbeddingOption
+    PopupDirective
   ],
   templateUrl: './hybrid.html',
   styleUrls: [
@@ -40,7 +41,7 @@ import { RecommendFn } from '../../../types/movies.types';
 })
 export class Hybrid {
   @Input() medium!: string;
-  @Input() numRecommendations!: number;
+  numRecommendations: InputSignal<number> = input.required<number>();
   @Input() autocompleteZIndex!: number;
   @Input() searchResultPopupZIndex!: number;
   @Input() ratingPopupZIndex!: number;
@@ -50,53 +51,37 @@ export class Hybrid {
 
   @Output() recommendFnReady = new EventEmitter<RecommendFn>();
   @Output() loading = new EventEmitter<boolean>();
-  @Output() resultsReady = new EventEmitter<string[]>();
+  @Output() resultsChange = new EventEmitter<string[]>();
 
-  ratings: WritableSignal<Rating[]> = signal([]);
-  selectedItem: WritableSignal<string | null> = signal(null);
-  alpha: WritableSignal<number> = signal(0.25);
-  beta: WritableSignal<number> = signal(0.25);
-  numSimilarUsers: WritableSignal<number> = signal(25);
-  selectedEmbedding: WritableSignal<EmbeddingMethod> = signal('SBERT');
+  private latestMetaData: WritableSignal<HybridMetaData | null> = signal(null);
 
-  ngAfterViewInit() {
-    // Emit immediately when component is ready
-    console.log('Hybrid emitting recommendFn');
-    this.recommendFnReady.emit(this.recommend);
-  }
+  readonly Info = Info;
+  readonly ModelInfo = ModelInfo;
 
   info_title = 'Hybrid Recommendation';
   info_description =
     `Recommend items using a combination of content-similarity filtering, item-item collaborative filtering and user-user collaborative filtering.`;
 
-  readonly Info = Info;
-  readonly ModelInfo = ModelInfo;
+  constructor() {
+    effect(() => {
+      const meta = this.latestMetaData();
+      const n = this.numRecommendations();
 
-  
-  onWeightsChange(weights: {alpha: number, beta: number}) {
-    this.alpha.set(weights.alpha);
-    this.beta.set(weights.beta)
+      if (!meta) return;
+
+      const recommendFn = createHybridRecommendFn(
+        meta,
+        this.loading,
+        this.resultsChange,
+        n
+      );
+
+      this.recommendFnReady.emit(recommendFn);
+    });
   }
 
-  onSelectEmbedding(embedding: EmbeddingMethod) {
-    this.selectedEmbedding.set(embedding);
+  onMetaDataChange(metaData: HybridMetaData) {
+    this.latestMetaData.set(metaData);
   }
-
-  private recommend: RecommendFn = async () => {
-    this.loading.emit(true);
-    const results = await fetchHybridRecommendations(
-      this.selectedItem(),
-      this.ratings(), 
-      this.alpha(),
-      this.beta(),
-      this.numRecommendations,
-      this.numSimilarUsers(),
-      this.selectedEmbedding()
-    );
-
-    this.resultsReady.emit(results ?? []);
-    this.loading.emit(false);
-  }
-
 
 }

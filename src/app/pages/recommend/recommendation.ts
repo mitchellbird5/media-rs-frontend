@@ -53,7 +53,6 @@ export class Recommendation {
   numRecommendations: WritableSignal<number> = signal(10);
   loading: WritableSignal<boolean> = signal(false);
   recommendFn: WritableSignal<RecommendFn | null> = signal(null);
-  recommendationsReady: WritableSignal<boolean> = signal(true);
 
   constructor(private route: ActivatedRoute) {}
 
@@ -74,10 +73,5 @@ export class Recommendation {
 
   onLoading(loading: boolean) {
     this.loading.set(loading);
-  }
-
-  onNumRecommendationsChange(value: number) {
-    console.log(`Updating number of recommendations in recommendation from ${this.numRecommendations} to ${value}`);
-    this.numRecommendations.set(value);
   }
 }

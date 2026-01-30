@@ -27,7 +27,7 @@ export const fetchHybridRecommendations = async (
 
   console.log('Fetching recommendations with payload:', payload);
 
-  const response = await fetch(`${BASE_URL}/recommend/hybrid/`, {
+  const response = await fetch(`${BASE_URL}/recommend/hybrid`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

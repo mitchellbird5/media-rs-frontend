@@ -15,7 +15,7 @@ export const fetchItemSimilarityRecommendations = async (
     embedding_method: embeddingMethod
   });
 
-  const response = await fetch(`${BASE_URL}/recommend/content/?${query.toString()}`, {
+  const response = await fetch(`${BASE_URL}/recommend/content?${query.toString()}`, {
     method: 'GET',
     headers: {
       'Accept': 'application/json',
@@ -48,7 +48,7 @@ export const fetchItemSimilarityDescriptionRecommendations = async (
     embedding_method: embeddingMethod
   });
 
-  const response = await fetch(`${BASE_URL}/recommend/content-description/?${query.toString()}`, {
+  const response = await fetch(`${BASE_URL}/recommend/content-description?${query.toString()}`, {
     method: 'GET',
     headers: {
       'Accept': 'application/json',

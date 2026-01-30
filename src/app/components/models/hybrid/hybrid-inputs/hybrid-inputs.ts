@@ -3,6 +3,8 @@ import {
   Input, 
   Output,
   EventEmitter,
+  computed,
+  signal
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -15,7 +17,14 @@ import { ItemItemCFInputs } from '../../item-item-cf/item-item-cf-inputs/item-it
 import { UserUserCFInputs } from '../../user-user-cf/user-user-cf-inputs/user-user-cf-inputs';
 import { PopupDirective } from '../../../popup-card/popup-directive/popup-directive';
 
-import { Rating } from '../../../../types/model.types';
+import { 
+  Rating,
+  HybridMetaData,
+  ItemItemCFMetaData,
+  UserUserCFMetaData,
+  nullMetaData,
+  ModelType 
+} from '../../../../types/model.types';
 
 @Component({
   selector: 'app-hybrid-inputs',
@@ -26,6 +35,7 @@ import { Rating } from '../../../../types/model.types';
     CommonModule,
     RouterModule,
     HybridWeightSlidersComponent,
+    ItemItemCFInputs,
     UserUserCFInputs,
     PopupDirective
   ],
@@ -43,31 +53,52 @@ export class HybridInputs {
   @Input() ratingSummaryZIndex: number = 1050;
   @Input() width: string = '400px';
 
-  @Output() selectedItemChange = new EventEmitter<string | null>();
-  @Output() ratingsChange = new EventEmitter<Rating[]>();
-  @Output() numSimilarUsersChange = new EventEmitter<number>();
-  @Output() weightsChange = new EventEmitter<{
-    alpha: number;
-    beta: number;
-  }>();
+  @Input() set metaDataInput(value: HybridMetaData) {
+    if (value) {
+      this._metaDataInput = value;
+      this.metaData.set(value);
+    }
+  }
+  get metaDataInput(): HybridMetaData {
+    return this._metaDataInput;
+  }
+  private _metaDataInput!: HybridMetaData;
+
+  ratings = computed(() => this.metaData().userUserCFMetaData.ratings);
+
+  @Output() metaDataChange = new EventEmitter<HybridMetaData>();
+  @Output() resultsChange = new EventEmitter<string[]>();
 
   readonly Info = Info;
   readonly ModelInfo = ModelInfo;
 
-  onNumSimilarUsersChange(value: number) {
-    this.numSimilarUsersChange.emit(value);
+  metaData = signal<HybridMetaData>(nullMetaData[ModelType.Hybrid]);
+
+  private updateMetaData<K extends keyof HybridMetaData>(
+    key: K,
+    value: HybridMetaData[K]
+  ) {
+    this.metaData.update(current => {
+      const updated = {
+        ...current,
+        [key]: value,
+      };
+
+      this.metaDataChange.emit(updated);
+      return updated;
+    });
+  }
+
+  onItemItemCFMetaDataChange(itemItemCFMetaData: ItemItemCFMetaData) {
+    this.updateMetaData('itemItemCFMetaData', itemItemCFMetaData);
+  }
+
+  onUserUserCFMetaDataChange(userUserCFMetaData: UserUserCFMetaData) {
+    this.updateMetaData('userUserCFMetaData', userUserCFMetaData);
   }
 
   onHybridWeightsChange(values: { alpha: number; beta: number }) {
-    this.weightsChange.emit({alpha: values.alpha, beta: values.beta})
+    this.updateMetaData('alpha', values.alpha);
+    this.updateMetaData('beta', values.beta);
   }
-
-  onRatingsChange(ratings: Rating[]) {
-    this.ratingsChange.emit(ratings);
-  }
-
-  onUpdateSelectedItem(item: string | null) {
-    this.selectedItemChange.emit(item);
-  }
-
 }

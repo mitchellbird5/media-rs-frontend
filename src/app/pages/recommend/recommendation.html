@@ -35,14 +35,14 @@
         [numRecommendations]="numRecommendations()"
         [width]="width"
         (recommendFnReady)="recommendFn.set($event)"
-        (resultsReady)="results.set($event)"
+        (resultsChange)="results.set($event)"
         (loading)="onLoading($event)"
     />
 
     <app-search-parameters
         [medium]="medium"
         [width]="width"
-        [recommendationsReady]="recommendationsReady()"
+        [loading]="loading()"
         [recommendFn]="recommendFn()!"
         [numRecommendations]="numRecommendations()"
         (numRecommendationsChange)="numRecommendations.set($event)"
@@ -53,5 +53,4 @@
 <app-results 
     *ngIf="results().length > 0 && !loading()"
     [results]="results()"
-    (rendered)="recommendationsReady.set($event)"
 />

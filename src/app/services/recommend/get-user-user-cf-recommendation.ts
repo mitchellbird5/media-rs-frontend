@@ -20,7 +20,7 @@ export const fetchUserUserCFRecommendations = async (
 
   console.log('Fetching recommendations with payload:', payload);
 
-  const response = await fetch(`${BASE_URL}/recommend/user-cf/`, {
+  const response = await fetch(`${BASE_URL}/recommend/user-cf`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

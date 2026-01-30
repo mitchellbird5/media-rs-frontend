@@ -32,5 +32,16 @@
             (metaDataChange)="metaDataChange.emit($event)"
             (resultsChange)="resultsChange.emit($event)"
         />
+        <app-hybrid-inputs 
+            *ngSwitchCase="'hybrid'"
+            [metaDataInput]="hybridMetaData!"
+            [medium]="medium"
+            [autocompleteZIndex]="1100"
+            [searchResultPopupZIndex]="1110"
+            [ratingPopupZIndex]="1115"
+            [ratingSummaryZIndex]="1115"
+            (metaDataChange)="metaDataChange.emit($event)"
+            (resultsChange)="resultsChange.emit($event)"
+        />
     </ng-container>
 </div>

@@ -11,7 +11,7 @@ export const fetchItemItemCFRecommendations = async (
     top_n:numberOfRecommendations.toString(),
   });
 
-  const response = await fetch(`${BASE_URL}/recommend/item-cf/?${query.toString()}`, {
+  const response = await fetch(`${BASE_URL}/recommend/item-cf?${query.toString()}`, {
     method: 'GET',
     headers: {
       'Accept': 'application/json',

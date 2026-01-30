@@ -34,7 +34,7 @@ export class SearchParameters {
   @Input() onRecommend!: () => void;
   @Input() width: string = '400px'
   @Input() medium!: string;
-  @Input() recommendationsReady!: boolean; 
+  @Input() loading!: boolean; 
   @Input() recommendFn: () => Promise<void> = async () => {};
   @Input() numRecommendations: number = 10;
 

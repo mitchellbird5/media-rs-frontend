@@ -8,7 +8,6 @@ export interface ModelParameters {
   results: string[],
   loading: boolean,
   recommendFn: RecommendFn | null,
-  recommendationsReady: boolean,
   metaData: ModelMetaData
 }
 
@@ -46,9 +45,14 @@ export const nullMetaData: ModelMetaDataMap = {
     embeddingMethod: 'SBERT'
   },
   [ModelType.Hybrid]: {
-    selectedItem: null,
-    ratings: [],
-    embeddingMethod: 'SBERT'
+    itemItemCFMetaData: {selectedItem: null} as ItemItemCFMetaData,
+    userUserCFMetaData: {
+      ratings: signal([]),
+      embeddingMethod: 'SBERT',
+      numSimilarUsers: 25
+    } as UserUserCFMetaData,
+    alpha: 0.25,
+    beta: 0.25
   }
 };
 
@@ -81,9 +85,10 @@ export interface UserUserCFMetaData {
 }
 
 export interface HybridMetaData {
-  selectedItem: string | null;
-  ratings: Rating[];
-  embeddingMethod: EmbeddingMethod;
+  itemItemCFMetaData: ItemItemCFMetaData;
+  userUserCFMetaData: UserUserCFMetaData;
+  alpha: number;
+  beta: number;
 }
 
 export type ModelMetaData = ItemSimilarityMetaData | ItemItemCFMetaData | UserUserCFMetaData | HybridMetaData;

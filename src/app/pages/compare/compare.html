@@ -57,7 +57,7 @@
   <app-search-parameters
     [medium]="resolvedMedium()"
     [width]="width"
-    [recommendationsReady]="allRecommendationsReady()"
+    [loading]="allLoading()"
     [recommendFn]="recommendFn.bind(this)"
     [numRecommendations]="numRecommendations()"
     (numRecommendationsChange)="onNumRecommendationsChange($event)"
@@ -76,7 +76,6 @@
       *ngIf="entry[1].show"
       [title]="ModelTitles[entry[0]]"
       [results]="entry[1].results"
-      (rendered)="onRecommendationsReady(entry[0], $event)"
     />
   </div>
 </div>

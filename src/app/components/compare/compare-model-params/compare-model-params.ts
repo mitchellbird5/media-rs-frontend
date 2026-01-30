@@ -18,6 +18,7 @@ import { PopupDirective } from '../../popup-card/popup-directive/popup-directive
 import { createItemItemCFRecommendFn } from '../../models/item-item-cf/item-item-cf-recommend-fn';
 import { createItemSimilarityRecommendFn } from '../../models/item-similarity/item-similarity-recommend-fn';
 import { createUserUserCFRecommendFn } from '../../models/user-user-cf/user-user-cf-recommend-fn';
+import { createHybridRecommendFn } from '../../models/hybrid/hybrid-recommend-fn';
 
 import { MediumType } from '../../../types/medium.type';
 import { 
@@ -85,7 +86,8 @@ export class CompareModelParams {
     const methodMap: Record<string, Function> = {
       'item-similarity': createItemSimilarityRecommendFn,
       'item-item-cf': createItemItemCFRecommendFn,
-      'user-user-cf': createUserUserCFRecommendFn
+      'user-user-cf': createUserUserCFRecommendFn,
+      'hybrid': createHybridRecommendFn
     };
 
     const method = methodMap[this.model()];
@@ -111,6 +113,7 @@ export class CompareModelParams {
   }
 
   clearModel() {
+    this.onResultsChange([]);
     const resetMeta = nullMetaData[this.model()];
     this.currentMetaData.set(resetMeta);
     this.metaDataChange.emit(resetMeta);

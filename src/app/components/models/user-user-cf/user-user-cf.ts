@@ -4,7 +4,10 @@ import {
   Output,
   EventEmitter,
   InputSignal,
-  input
+  input,
+  effect,
+  WritableSignal,
+  signal
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -50,9 +53,7 @@ export class UserUserCF {
   @Output() loading = new EventEmitter<boolean>();
   @Output() resultsChange = new EventEmitter<string[]>();
 
-  private latestMetaData: UserUserCFMetaData | null = null;
-
-  constructor(private route: ActivatedRoute) {}
+  private latestMetaData: WritableSignal<UserUserCFMetaData | null> = signal(null);
 
   readonly Info = Info;
   readonly ModelInfo = ModelInfo;
@@ -61,19 +62,26 @@ export class UserUserCF {
   info_description =
     `Recommend items that other users with similar likes rated highly.`;
 
+  constructor() {
+    effect(() => {
+      const meta = this.latestMetaData();
+      const n = this.numRecommendations();
+
+      if (!meta) return;
+
+      const recommendFn = createUserUserCFRecommendFn(
+        meta,
+        this.loading,
+        this.resultsChange,
+        n
+      );
+
+      this.recommendFnReady.emit(recommendFn);
+    });
+  }
+
   onMetaDataChange(metaData: UserUserCFMetaData) {
-    console.log('Upating metadata', metaData, 'Returning empty results')
-    this.latestMetaData = metaData;
-
-    console.log('Updating recommendFn with metaData', metaData)
-    const recommendFn = createUserUserCFRecommendFn(
-      this.latestMetaData,
-      this.loading,
-      this.resultsChange,
-      this.numRecommendations()
-    );
-
-    this.recommendFnReady.emit(recommendFn);
+    this.latestMetaData.set(metaData);
   }
 
 }
