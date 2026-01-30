@@ -1,0 +1,56 @@
+<div class="recommendation-container">
+    <app-item-similarity
+        *ngIf="model==='item-similarity'"
+        [medium]="medium"
+        [numRecommendations]="numRecommendations()"
+        [width]="width"
+        (recommendFnReady)="recommendFn.set($event)"
+        (resultsChange)="results.set($event)"
+        (loading)="loading.set($event)"
+    />
+
+    <app-item-item-cf
+        *ngIf="model==='item-item-cf'"
+        [medium]="medium"
+        [numRecommendations]="numRecommendations()"
+        [width]="width"
+        (recommendFnReady)="recommendFn.set($event)"
+        (resultsChange)="results.set($event)"
+        (loading)="loading.set($event)"
+    />
+
+    <app-user-user-cf
+        *ngIf="model==='user-user-cf'"
+        [medium]="medium"
+        [numRecommendations]="numRecommendations()"
+        [width]="width"
+        (recommendFnReady)="recommendFn.set($event)"
+        (resultsChange)="results.set($event)"
+        (loading)="loading.set($event)"
+    />
+
+    <app-hybrid
+        *ngIf="model==='hybrid'"
+        [medium]="medium"
+        [numRecommendations]="numRecommendations()"
+        [width]="width"
+        (recommendFnReady)="recommendFn.set($event)"
+        (resultsChange)="results.set($event)"
+        (loading)="onLoading($event)"
+    />
+
+    <app-search-parameters
+        [medium]="medium"
+        [width]="width"
+        [loading]="loading()"
+        [recommendFn]="recommendFn()!"
+        [numRecommendations]="numRecommendations()"
+        (numRecommendationsChange)="numRecommendations.set($event)"
+    />
+
+</div>  
+
+<app-results 
+    *ngIf="results().length > 0 && !loading()"
+    [results]="results()"
+/>

@@ -1,0 +1,23 @@
+<div 
+  *ngIf="selectedItem"
+  class="selected-item-container"
+>
+  <div 
+    class="selected-item-display"
+  >
+    <div class="selected-item-text">
+      {{label}}
+      <div 
+        class="selected-item-label"
+      >
+        {{ selectedItem }}
+      </div>
+    </div>
+    <lucide-icon
+      [img]="Trash2"
+      size="18"
+      (click)="clearSelectedItem()"
+      class="trash-icon"
+    ></lucide-icon>
+  </div>
+</div>

@@ -35,6 +35,7 @@
   position: absolute;
   top: var(--spacing-sm);
   right: var(--spacing-sm);
+  z-index: 9999;
 }
 
 @keyframes fadeIn {

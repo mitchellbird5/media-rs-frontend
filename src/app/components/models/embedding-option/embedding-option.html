@@ -1,0 +1,28 @@
+<div class="model-container">
+  <div class="title-info-container">
+    <div class="embedding-subtitle">Select Embedding Option</div>
+
+    <lucide-icon 
+        [img]="Info" 
+        class="info-icon"
+        appPopup
+        [popupComponent]="ModelInfo"
+        [popupContext]="{
+            info_title: 'Embedding Option',
+            info_description: description
+        }"
+    ></lucide-icon>
+  </div>
+  <div class="model-selector">
+    <button 
+      (click)="selectEmbedding('SBERT')" 
+      [class.active]="selectedEmbedding === 'SBERT'">
+      SBERT
+    </button>
+    <button 
+      (click)="selectEmbedding('TFIDF')" 
+      [class.active]="selectedEmbedding === 'TFIDF'">
+      TF-IDF
+    </button>
+  </div>
+</div>

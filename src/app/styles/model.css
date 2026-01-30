@@ -1,0 +1,40 @@
+/* Parent container: vertical flex, horizontally center everything */
+.model-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  align-items: center; /* centers all children horizontally */
+}
+
+/* Title + icon container: use flex to align icon instead of absolute */
+.title-info-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;          /* space between title and icon */
+}
+
+/* Title */
+.title {
+  font-size: 1.5em;
+  font-weight: 600;
+}
+
+.subtitle {
+  font-size: 1.2em;
+  font-weight: 600;
+}
+
+/* Info icon */
+.info-icon {
+  transform: translateY(-10%);
+  width: 20px;
+  height: 20px;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.info-icon:hover {
+  color: var(--secondary-default);
+  transform: translateY(-10%) scale(1.05);
+}

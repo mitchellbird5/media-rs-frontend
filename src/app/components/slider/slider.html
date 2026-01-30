@@ -1,0 +1,16 @@
+<div class="slider-container" [style.width]="width">
+  <div class="slider-header">
+    <span class="slider-label">{{ label }}</span>
+    <span class="slider-value">{{ value | number:'1.2-2' }}</span>
+  </div>
+
+  <input
+    type="range"
+    class="slider"
+    [min]="min"
+    [max]="max"
+    [step]="step"
+    [value]="value"
+    (input)="onInput($event)"
+  />
+</div>

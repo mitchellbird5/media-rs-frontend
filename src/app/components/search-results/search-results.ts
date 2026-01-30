@@ -3,7 +3,7 @@ import {
   Input,
   ViewChild,
   TemplateRef,
-  Signal
+  WritableSignal
 } from '@angular/core';
 import { NgIf } from '@angular/common';
 import { CommonModule } from '@angular/common';
@@ -19,16 +19,15 @@ import { CommonModule } from '@angular/common';
 })
 export class SearchResults {
   @Input() search_title!: string;
-  @Input() loadingSearchResults!: Signal<boolean>;
-  @Input() results!: Signal<string[]>;
-  @Input() onResultSelected!: (result: any) => any;
-  @Input() close!: () => void;
+  @Input() loadingSearchResults!: WritableSignal<boolean>;
+  @Input() results!: WritableSignal<string[]>;
+  @Input() onResultSelected!: (result: string) => void;
+  @Input() refresh!: () => void;
 
   @ViewChild('searchResultsPopup', { static: true })
   template!: TemplateRef<any>;
 
   selectResult(result: string) {
     this.onResultSelected(result);
-    this.close?.();
   }
 }

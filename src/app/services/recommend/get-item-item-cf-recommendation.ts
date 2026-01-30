@@ -6,13 +6,12 @@ export const fetchItemItemCFRecommendations = async (
   title: string,
   numberOfRecommendations: number
 ): Promise<string[] | null> => {
-
   const query = new URLSearchParams({
     movie_title: title,
     top_n:numberOfRecommendations.toString(),
   });
 
-  const response = await fetch(`${BASE_URL}/recommend/item-cf/?${query.toString()}`, {
+  const response = await fetch(`${BASE_URL}/recommend/item-cf?${query.toString()}`, {
     method: 'GET',
     headers: {
       'Accept': 'application/json',

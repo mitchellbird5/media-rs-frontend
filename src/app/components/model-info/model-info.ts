@@ -1,8 +1,6 @@
 import { 
   Component, 
-  Input, 
-  ViewChild,
-  TemplateRef 
+  Input
 } from '@angular/core';
 
 @Component({
@@ -14,7 +12,4 @@ import {
 export class ModelInfo {
   @Input() info_title: string = '';
   @Input() info_description: string = '';
-
-  @ViewChild('modelInfoPopup', { static: true })
-  template!: TemplateRef<any>;
 }

@@ -1,0 +1,81 @@
+<div class="compare-container">
+  <div class="select-model-container">
+
+    <div class="title compare-title">
+      Select Models to Compare
+    </div>
+
+    <app-compare-model-params 
+      [medium]="resolvedMedium()"
+      [model]="ModelType.ItemSimilarity"
+      [metaData]="modelData()['item-similarity']!.metaData"
+      [numRecommendations]="numRecommendations()"
+      (showModelChange)="onShow('item-similarity', $event)"
+      (results)="onResultsChange('item-similarity', $event)"
+      (loading)="onLoading('item-similarity', $event)"
+      (recommendFn)="onRecommendFnReady('item-similarity', $event)"
+      (metaDataChange)="onMetaDataChange('item-similarity', $event)"
+    />
+
+    <app-compare-model-params 
+      [medium]="resolvedMedium()"
+      [model]="ModelType.ItemItemCF"
+      [metaData]="modelData()['item-item-cf']!.metaData"
+      [numRecommendations]="numRecommendations()"
+      (showModelChange)="onShow('item-item-cf', $event)"
+      (results)="onResultsChange('item-item-cf', $event)"
+      (loading)="onLoading('item-item-cf', $event)"
+      (recommendFn)="onRecommendFnReady('item-item-cf', $event)"
+      (metaDataChange)="onMetaDataChange('item-item-cf', $event)"
+    />
+
+    <app-compare-model-params 
+      [medium]="resolvedMedium()"
+      [model]="ModelType.UserUserCF"
+      [metaData]="modelData()['user-user-cf']!.metaData"
+      [numRecommendations]="numRecommendations()"
+      (showModelChange)="onShow('user-user-cf', $event)"
+      (results)="onResultsChange('user-user-cf', $event)"
+      (loading)="onLoading('user-user-cf', $event)"
+      (recommendFn)="onRecommendFnReady('user-user-cf', $event)"
+      (metaDataChange)="onMetaDataChange('user-user-cf', $event)"
+    />
+
+    <app-compare-model-params 
+      [medium]="resolvedMedium()"
+      [model]="ModelType.Hybrid"
+      [metaData]="modelData()['hybrid']!.metaData"
+      [numRecommendations]="numRecommendations()"
+      (showModelChange)="onShow('hybrid', $event)"
+      (results)="onResultsChange('hybrid', $event)"
+      (loading)="onLoading('hybrid', $event)"
+      (recommendFn)="onRecommendFnReady('hybrid', $event)"
+      (metaDataChange)="onMetaDataChange('hybrid', $event)"
+    />
+  </div>
+
+  <app-search-parameters
+    [medium]="resolvedMedium()"
+    [width]="width"
+    [loading]="allLoading()"
+    [recommendFn]="recommendFn.bind(this)"
+    [numRecommendations]="numRecommendations()"
+    (numRecommendationsChange)="onNumRecommendationsChange($event)"
+  />
+</div>  
+
+<div 
+  class="results-comparison-grid"
+  [style.--cols]="shownModelCount()"
+>
+  <div 
+    class="results-comparison-column"
+    *ngFor="let entry of modelEntries(); trackBy: trackByModelType"
+  >
+    <app-result-comparison 
+      *ngIf="entry[1].show"
+      [title]="ModelTitles[entry[0]]"
+      [results]="entry[1].results"
+    />
+  </div>
+</div>

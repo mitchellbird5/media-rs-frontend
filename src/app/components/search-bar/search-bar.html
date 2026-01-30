@@ -1,0 +1,33 @@
+<div class="search-container">
+  <div class="search-wrapper">
+    <app-autocomplete
+      [query]="_searchQuery"
+      [placeholder]="placeholder"
+      [fetchResults]="autocompleteSearch"
+      [width]="width"
+      [zIndex]="autocompleteZIndex"
+      [forceCloseSignal]="autocompleteForceCloseSignal"
+      (queryChange)="onQueryChange($event)"
+      (valueSelected)="onSelected($event)"
+      (cleared)="onCleared()"
+    ></app-autocomplete>
+
+    <lucide-icon
+      #searchPopup="appPopup"
+      [img]="Search"
+      class="search-icon"
+      (mousedown)="onSearchIconClick()"
+      appPopup
+      [popupComponent]="SearchResults"
+      [popupContext]="{
+        search_title: popupTitle,
+        loadingSearchResults: loadingSearchResults,
+        results: searchResults,
+        onResultSelected: onSelected.bind(this),
+        refresh: searchPopup.refresh,
+        close: searchPopup.close
+      }"
+      [zIndex]="searchResultPopupZIndex"
+    ></lucide-icon>
+  </div>
+</div>

@@ -1,0 +1,29 @@
+<div 
+  class="rating-popup-container"
+  (click)="$event.stopPropagation()"
+>
+  <div class="popup-title">Add rating</div>
+
+  <div class="enter-rating-container">
+    <div class="item-name">
+      {{ name }}
+    </div>
+
+    <app-slider 
+      [label]="'Rating'"
+      [min]="0",
+      [max]="5",
+      [step]="0.5"
+      [value]="rating"
+      (valueChange)="rating = $event"
+    />
+  </div>
+
+  <button
+    class="confirm-button"
+    (click)="submit()"
+    [disabled]="rating < 0 || rating > 5"
+  >
+    Confirm
+  </button>
+</div>

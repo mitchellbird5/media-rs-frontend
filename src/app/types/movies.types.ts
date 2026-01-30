@@ -5,3 +5,5 @@ export interface Movie {
   genre: string[];
   tags: string[];
 }
+
+export type RecommendFn = () => Promise<void>;

@@ -7,14 +7,18 @@
   color: var(--text-default);
 }
 
-/* Default page content area */
+
 .default-page {
-  flex: 1;               /* fills remaining space after header */
-  width: 100%;           /* take full width of wrapper */
+  flex: 1;            
+  width: 100%;         
   display: flex;
-  justify-content: center; /* center the inner page-content */
+  justify-content: center; 
   padding-top: var(--header-height);
-  padding-bottom: 2em;    /* optional bottom padding */
+  padding-bottom: 2em;   
+  background-color: var(--bg-background-default);
+  color: var(--text-default);
+  /* width: var(--page-width); */
+  align-self: center;
 }
 
 /* Constrain actual content width */

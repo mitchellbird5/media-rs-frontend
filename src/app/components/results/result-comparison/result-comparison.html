@@ -1,0 +1,20 @@
+<ng-container *ngIf="ready()">
+  <div class="result-comparison-container">
+    <div 
+      class="subtitle model-title"
+      *ngIf="title"
+    >
+      {{ title }}
+    </div>
+    <div
+      *ngFor="let movie of moviesSignal(); let i = index"
+      appPopup
+      [popupComponent]="DetailPopup"
+      [popupContext]="{ movie: movie }"
+    >
+      <div class="result-comparison-cell">
+        {{ movie.title }}
+      </div>
+    </div>
+  </div>
+</ng-container>

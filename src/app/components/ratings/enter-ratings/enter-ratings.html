@@ -1,0 +1,44 @@
+<div class="model-container">
+  <app-search-bar 
+    [autocompleteSearch]="autocompleteSearch",
+    [popupSearch]="popupSearch"
+    [width]="width",
+    [placeholder]="placeholder"
+    [popupTitle]="`Searching ${medium}s...`"
+    [autocompleteZIndex]="autocompleteZIndex"
+    [searchResultPopupZIndex]="searchResultPopupZIndex"
+    (selectedItemChange)="onItemSelected($event)"
+  />
+
+  <div 
+    class="edit-button"
+    appPopup
+    [popupComponent]="RatingSummary"
+    [popupContext]="{
+      ratings: ratings,
+      ratingsChange: handleRatingsChange,
+      medium: medium,
+      autocompleteSearch: autocompleteSearch,
+      popupSearch: popupSearch,
+      width: width,
+      placeholder: `Search ${medium}s...`,
+      onItemSelected: onSearchSelect,
+      autocompleteZIndex: ratingSummaryZIndex+5,
+      searchResultPopupZIndex: ratingSummaryZIndex+20
+    }"
+    [zIndex]="ratingSummaryZIndex"
+  >
+      Edit ratings
+  </div>
+</div>
+
+<span
+  #ratingPopupTrigger
+  appPopup
+  [popupComponent]="RatingPopup"
+  [popupContext]="{
+    name: null,
+    onRatingInput: onRatingInput
+  }"
+  [zIndex]="ratingPopupZIndex"
+></span>

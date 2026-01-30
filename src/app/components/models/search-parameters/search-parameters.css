@@ -1,0 +1,26 @@
+.search-parameters-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5em;
+}
+
+.number-of-recs-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.button-wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 1em;
+}
+
+.search-button-container {   
+    display: flex;    
+    align-items: center;   /* vertical alignment of children */
+    justify-content: center; /* <-- horizontally center the whole row */
+    text-align: center;   
+    gap: 1em; /* optional spacing if needed */
+}

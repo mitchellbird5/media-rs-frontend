@@ -1,95 +1,139 @@
-import {
-  Directive,
-  Input,
-  TemplateRef,
-  ViewContainerRef,
-  ComponentRef,
-  HostListener,
-  ApplicationRef,
-  createComponent,
-  EmbeddedViewRef,
-  effect,
-  Signal,
-  DestroyRef,
-  Injector,
-  inject,
+import { 
+  Directive, 
+  Input, 
+  HostListener, 
+  ComponentRef, 
+  ApplicationRef, 
+  EventEmitter, 
+  inject 
 } from '@angular/core';
+import { createComponent } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { PopupShellComponent } from '../popup-shell/popup-shell';
+
+// Generic type for Angular components (works in all Angular versions)
+export type AngularComponent<T = any> = new (...args: any[]) => T;
 
 @Directive({
   selector: '[appPopup]',
+  exportAs: 'appPopup',
   standalone: true,
 })
 export class PopupDirective {
-  @Input() popupTemplate!: TemplateRef<any>;
-  @Input() popupContext: any = {};
+  @Input() popupComponent!: AngularComponent; // Dynamic component to render
+  @Input() popupContext: any = {}; // Inputs / EventEmitters
   @Input() zIndex: number = 1000;
 
-  private popupRef?: ComponentRef<PopupShellComponent>;
-  private viewRef?: EmbeddedViewRef<any>;
-  
-  private injector = inject(Injector);
+  private popupRef?: ComponentRef<any>;
+  private shellRef?: ComponentRef<PopupShellComponent>;
+  private appRef = inject(ApplicationRef);
+  private subscriptions: Subscription[] = [];
 
-  constructor(private appRef: ApplicationRef) {}
+  public isOpen: boolean = false;
 
-  @HostListener('click')
-  handleHostClick() {
-    this.open();
+  @HostListener('click', ['$event'])
+  handleHostClick(event: MouseEvent) {
+    if (!this.isOpen) {
+      this.open();
+    }
   }
 
+
   open(context?: any) {
-    if (this.popupRef) return;
+    if (this.isOpen) return;
 
-    if (context) {
-      this.popupContext = context; // keep signals intact
-    }
+    this.isOpen = true;
 
-    this.popupContext.close = () => this.close();
+    if (context) this.popupContext = context;
 
-    this.popupRef = createComponent(PopupShellComponent, {
+    this.shellRef = createComponent(PopupShellComponent, {
       environmentInjector: this.appRef.injector,
     });
 
-    this.popupRef.instance.overlayZIndex = this.zIndex;
-    this.popupRef.instance.close.subscribe(() => this.close());
+    this.shellRef.instance.overlayZIndex = this.zIndex;
+    this.shellRef.instance.close.subscribe(() => this.close());
 
-    // pass popupContext directly without unwrapping signals
-    this.viewRef = this.popupTemplate.createEmbeddedView(this.popupContext);
+    this.appRef.attachView(this.shellRef.hostView);
+    document.body.appendChild(this.shellRef.location.nativeElement);
 
-    const container = this.popupRef.location.nativeElement.querySelector('.popup-card');
-    this.viewRef.rootNodes.forEach((node) => container.appendChild(node));
-    this.viewRef.detectChanges();
+    const host = this.shellRef.instance.host;
 
-    this.appRef.attachView(this.popupRef.hostView);
-    document.body.appendChild(this.popupRef.location.nativeElement);
+    this.popupRef = host.createComponent(this.popupComponent, {
+      environmentInjector: this.appRef.injector,
+    });
 
-    this.setupReactivity();
-  }
+    // Assign context properties to the popup instance
+    for (const key of Object.keys(this.popupContext)) {
+      const contextValue = this.popupContext[key];
+      
+      // Skip if it's an EventEmitter - we'll wire those separately
+      if (contextValue instanceof EventEmitter) {
+        continue;
+      }
+      
+      // Assign non-EventEmitter properties
+      this.popupRef.instance[key] = contextValue;
+    }
 
-  private setupReactivity() {
-    if (!this.viewRef) return;
-
-    for (const [key, value] of Object.entries(this.popupContext)) {
-      if (this.isSignal(value)) {
-        effect(() => {
-          value(); // track the signal
-          this.viewRef?.detectChanges();
-        }, { injector: this.injector });
+    // Wire up EventEmitters separately with guards
+    for (const key of Object.keys(this.popupContext)) {
+      const contextValue = this.popupContext[key];
+      const instanceValue = this.popupRef.instance[key];
+      
+      // Only wire if:
+      // 1. Context value is an EventEmitter
+      // 2. Instance has an EventEmitter with the same name
+      // 3. They are DIFFERENT instances
+      if (
+        contextValue instanceof EventEmitter && 
+        instanceValue instanceof EventEmitter &&
+        contextValue !== instanceValue
+      ) {
+        // Subscribe to popup's EventEmitter and forward to parent's EventEmitter
+        const sub = instanceValue.subscribe({
+          next: (v: any) => {
+            // Use setTimeout to break synchronous emission chain
+            setTimeout(() => {
+              if (this.isOpen) {
+                contextValue.emit(v);
+              }
+            }, 0);
+          }
+        });
+        this.subscriptions.push(sub);
       }
     }
+
+    this.popupRef.changeDetectorRef.detectChanges();
   }
 
-  private isSignal(value: any): value is Signal<any> {
-    return typeof value === 'function' && 'set' in value;
-  }
+  refresh = () => {
+    this.popupRef?.changeDetectorRef.detectChanges();
+  };
 
   close() {
-    if (!this.popupRef) return;
+    if (!this.isOpen) return;
 
-    this.appRef.detachView(this.popupRef.hostView);
-    this.popupRef.destroy();
-    this.viewRef?.destroy();
+    this.subscriptions.forEach(sub => sub.unsubscribe());
+    this.subscriptions = [];
 
-    this.popupRef = undefined;
+    if (this.popupRef) {
+      this.appRef.detachView(this.popupRef.hostView);
+      this.popupRef.destroy();
+      this.popupRef = undefined;
+    }
+
+    if (this.shellRef) {
+      this.appRef.detachView(this.shellRef.hostView);
+      this.shellRef.destroy();
+      this.shellRef = undefined;
+    }
+
+    this.isOpen = false;
   }
+
+  ngOnDestroy() {
+    this.close();
+  }
+
 }

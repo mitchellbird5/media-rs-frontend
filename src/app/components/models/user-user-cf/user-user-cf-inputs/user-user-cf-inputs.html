@@ -1,0 +1,28 @@
+<div class="model-container">
+  <app-enter-ratings 
+    [ratings]="ratings()"
+    [width]="width"
+    [medium]="medium"
+    [placeholder]="placeholder"
+    [autocompleteZIndex]="autocompleteZIndex"
+    [searchResultPopupZIndex]="searchResultPopupZIndex"
+    [ratingPopupZIndex]="ratingPopupZIndex"
+    [ratingSummaryZIndex]="ratingSummaryZIndex"
+    (ratingsChange)="onRatingsChange($event)"
+  />
+
+  <app-embedding-option 
+    [selectedEmbedding]="metaData().embeddingMethod"
+    (embeddingSelected)="onSelectEmbedding($event)"
+  />
+
+  <app-slider
+    label="Number of Similar Users"
+    [max]="50"
+    [min]="1"
+    [step]="1"
+    [value]="metaData().numSimilarUsers"
+    [width]="width"
+    (valueChange)="onNumSimilarUsersUpdate($event)"
+  />
+</div>

@@ -1,0 +1,38 @@
+<div class="search-parameters-container">
+    <div class="number-of-recs-container">
+        <app-slider
+            label="Number of Recommendations"
+            [min]="1"
+            [max]="50"
+            [step]="1"
+            [value]="numRecommendations"
+            [width]="width"
+            (valueChange)="onNumRecommendationsChange($event)"
+        />
+    </div>
+
+    <div class="search-button-container">
+        <div class="button-wrapper">
+            <div 
+                class="edit-button" 
+                [routerLink]="['/select-method', medium]"
+            >
+                Change Method
+            </div>
+            <div 
+                class="search-button"
+                (click)="recommendFn()"
+            >
+                Find Recommendations!
+            </div>
+        </div>
+        <div
+            *ngIf="loading"
+        >
+            <lucide-icon
+                [img]="Loader"
+                class="spinner"
+            />
+        </div>
+    </div>
+</div>

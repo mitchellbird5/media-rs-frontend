@@ -1,0 +1,31 @@
+<div class="model-container">
+    <div class="title-info-container">
+        <div class="title">
+            Item-Item Collaborative Filtering Recommendation
+        </div>
+
+        <lucide-icon 
+            [img]="Info" 
+            class="info-icon"
+            appPopup
+            [popupComponent]="ModelInfo"
+            [popupContext]="{
+
+            
+                info_title: info_title,
+                info_description: info_description
+            }"
+            [zIndex]="modelInfoPopupZIndex"
+        ></lucide-icon>
+    </div>
+
+    <app-item-item-cf-inputs 
+        [medium]="medium"
+        [width]="width"
+        [placeholder]="`Search ${medium}s...`"
+        [autocompleteZIndex]="autocompleteZIndex"
+        [searchResultPopupZIndex]="searchResultPopupZIndex"
+        (metaDataChange)="onMetaDataChange($event)"
+        (resultsChange)="resultsChange.emit($event)"
+    />
+</div>  

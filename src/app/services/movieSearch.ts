@@ -42,7 +42,7 @@ export const fetchMovies = async (
 
   console.log("Fetching movies with query:", `${BASE_URL}/movies/search/?${query.toString()}`);
   
-  const response = await fetch(`${BASE_URL}/movies/search/?${query.toString()}`, {
+  const response = await fetch(`${BASE_URL}/movies/search?${query.toString()}`, {
     method: "GET",
     headers: {
       "Accept": "application/json",
@@ -81,7 +81,7 @@ export const fetchMovieData = async (
     titles.map((title) => ["titles", title] as [string, string])
   );
 
-  const url = `${BASE_URL}/movies/data/?${params.toString()}`;
+  const url = `${BASE_URL}/movies/data?${params.toString()}`;
   console.log("Fetching movie data with query:", url);
 
   const response = await fetch(url, { headers: { Accept: "application/json" } });
