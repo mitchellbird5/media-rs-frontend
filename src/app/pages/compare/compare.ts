@@ -145,17 +145,14 @@ export class Compare {
   }
 
   onNumRecommendationsChange(numRecommendations: number) {
-    console.log(`Changing number of recommendations from ${this.numRecommendations()} to ${numRecommendations}`)
     this.numRecommendations.set(numRecommendations);
   }
 
   onResultsChange(modelName: string, results: string[]) {
-    console.log(`Compare received results for ${modelName}:`, results);
     this.updateModel(modelName, { results: [...results] });
   }
 
   onRecommendFnReady(modelName: string, recommendFn: RecommendFn) {
-    console.log(`Compare received recommendFn for ${modelName}`);
     this.updateModel(modelName, { recommendFn });
   }
 
@@ -168,7 +165,6 @@ export class Compare {
   }
 
   onMetaDataChange(modelName: string, metaData: ModelMetaData) {
-    console.log(`Updating metaData for ${modelName}: `, metaData);
     this.updateModel(modelName, { metaData });
   }
 
@@ -186,7 +182,6 @@ export class Compare {
         // recommendFn returns a promise, so just push it directly
         calls.push(model.recommendFn());
       } catch (err) {
-        console.error(`RecommendFn failed for model: ${modelName}`, err);
       }
     }
 

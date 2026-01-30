@@ -112,7 +112,6 @@ export class ItemSimilarityInputs {
   }
 
   onQueryUpdate(query: string) {
-    console.log('updating query to ', query)
     this.updateMetaData('query', query);
     if (!this.metaData().selectedItem && query==='') {
       this.resultsChange.emit([])

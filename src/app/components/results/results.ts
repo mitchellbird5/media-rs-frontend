@@ -83,8 +83,6 @@ export class Results {
       this.moviesSignal.set(orderedData);
       this.setReady(true);
     } catch (err) {
-      console.error("Failed to load movie data", err);
-      // fallback: empty MovieData for each requested title
       this.moviesSignal.set(results.map(title => ({
         title,
         tmdb_id: undefined,

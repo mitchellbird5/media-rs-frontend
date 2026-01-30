@@ -16,10 +16,7 @@ export function createItemSimilarityRecommendFn(
 ): RecommendFn {
   return async () => {
     loading.emit(true);
-    console.log('selectedItem = ', metaData.selectedItem);
-    console.log('query = ', metaData.query)
     const query = metaData.selectedItem ?? metaData.query;
-    console.log('chosen value = ', query)
 
     if (!query) {
       loading.emit(false);
@@ -38,7 +35,6 @@ export function createItemSimilarityRecommendFn(
       );
       resultsChange.emit(results ?? []);
     } catch (error) {
-      console.error('ItemSimilarity: Error fetching recommendations:', error);
     } finally {
       loading.emit(false);
     }

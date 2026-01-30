@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MovieData } from '../../../services/movieSearch';
 import { DetailPopup } from '../detail-popup/detail-popup';
@@ -11,17 +11,11 @@ import { PopupDirective } from '../../popup-card/popup-directive/popup-directive
   templateUrl: './result-card.html',
   styleUrls: ['./result-card.css'],
 })
-export class ResultCard implements OnChanges {
+export class ResultCard {
   @Input() movie!: MovieData;
   @Input() animationDelay: string = '0s';
 
   readonly DetailPopup = DetailPopup;
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['movie']) {
-      console.log('Movie data changed:', this.movie);
-    }
-  }
 
   get genresDisplay(): string {
     return this.movie?.genres ? Object.values(this.movie.genres).join(', ') : '';

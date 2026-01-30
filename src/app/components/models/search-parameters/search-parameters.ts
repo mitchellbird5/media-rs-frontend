@@ -44,7 +44,6 @@ export class SearchParameters {
   readonly Loader = Loader;
 
   onNumRecommendationsChange(value: number) {
-    console.log(`Updating number of recommendations from ${this.numRecommendations} to ${value}`);
     this.numRecommendationsChange.emit(value);
   }
 }

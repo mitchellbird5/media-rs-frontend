@@ -18,8 +18,6 @@ export const fetchUserUserCFRecommendations = async (
     embedding_method: embeddingMethod
   };
 
-  console.log('Fetching recommendations with payload:', payload);
-
   const response = await fetch(`${BASE_URL}/recommend/user-cf`, {
     method: 'POST',
     headers: {
@@ -38,8 +36,6 @@ export const fetchUserUserCFRecommendations = async (
   }
 
   const data: string[] = await response.json();
-
-  console.log('Received recommendations:', data);
 
   return data;
 };
