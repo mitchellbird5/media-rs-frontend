@@ -19,9 +19,6 @@ export class SliderComponent {
   @Input() max: number = 1;
   @Input() step: number = 0.01;
 
-  /** width can be px, %, rem, etc */
-  @Input() width: string = '100%';
-
   @Input() value!: number;
 
   @Output() valueChange = new EventEmitter<number>();

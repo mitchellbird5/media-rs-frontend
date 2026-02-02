@@ -17,10 +17,6 @@ import { SliderComponent } from '../../../../slider/slider';
   styleUrl: './hybrid-weight-sliders.css'
 })
 export class HybridWeightSlidersComponent {
-
-  /** width forwarded to sliders */
-  @Input() width: string = '100%';
-
   alpha: WritableSignal<number> = signal(0.5);
   beta: WritableSignal<number> = signal(0.3);
 

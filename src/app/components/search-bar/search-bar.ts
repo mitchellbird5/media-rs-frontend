@@ -34,7 +34,6 @@ export class SearchBar {
 
   @Input() autocompleteSearch!: (query: string) => Promise<string[]>;
   @Input() popupSearch!: (query: string) => Promise<string[]>;
-  @Input() width: string = '400px';
   @Input() placeholder: string = 'Search...';
   @Input() popupTitle: string = 'Searching...'
   @Input() autocompleteZIndex: number = 1000;

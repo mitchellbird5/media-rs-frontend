@@ -1,6 +1,6 @@
 <div class="model-container">
     <div class="hybrid-model-container">
-        <div class="title-info-container">
+        <div class="hybrid-title-info-container">
             <div class="title-group">
                 <div class="subtitle">Select a {{ medium | titlecase}}</div>
 
@@ -21,7 +21,6 @@
             [metaDataInput]="metaData().itemItemCFMetaData"
             [medium]="medium"
             [placeholder]="`Search ${medium}s...`"
-            [width]="width"
             [autocompleteZIndex]="autocompleteZIndex"
             [searchResultPopupZIndex]="searchResultPopupZIndex"
             (metaDataChange)="onItemItemCFMetaDataChange($event)"
@@ -50,7 +49,6 @@
             [metaDataInput]="metaData().userUserCFMetaData"
             [medium]="medium"
             [placeholder]="`Search for ${medium}s to rate...`"
-            [width]="width"
             [autocompleteZIndex]="autocompleteZIndex"
             [searchResultPopupZIndex]="searchResultPopupZIndex"
             [ratingPopupZIndex]="ratingPopupZIndex"
@@ -79,7 +77,6 @@
         </div>
 
         <app-hybrid-weight-sliders
-            [width]="width"
             (valuesChange)="onHybridWeightsChange($event)"
         ></app-hybrid-weight-sliders>
     </div>

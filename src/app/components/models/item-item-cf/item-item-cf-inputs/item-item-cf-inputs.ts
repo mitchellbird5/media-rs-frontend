@@ -47,7 +47,6 @@ export class ItemItemCFInputs implements OnChanges {
   @Input() placeholder!: string;
   @Input() autocompleteZIndex!: number;
   @Input() searchResultPopupZIndex!: number;
-  @Input() width: string = '400px';
   
   @Input() set metaDataInput(value: ItemItemCFMetaData) {
     if (value) {

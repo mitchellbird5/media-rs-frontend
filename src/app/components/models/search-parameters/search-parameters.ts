@@ -32,7 +32,6 @@ import { SliderComponent } from '../../slider/slider';
 })
 export class SearchParameters {
   @Input() onRecommend!: () => void;
-  @Input() width: string = '400px'
   @Input() medium!: string;
   @Input() loading!: boolean; 
   @Input() recommendFn: () => Promise<void> = async () => {};
