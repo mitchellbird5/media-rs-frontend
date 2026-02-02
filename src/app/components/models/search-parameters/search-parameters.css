@@ -2,6 +2,7 @@
   display: flex;
   flex-direction: column;
   gap: 1.5em;
+  width: 100%;
 }
 
 .number-of-recs-container {
@@ -9,6 +10,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
+    width: 100%;
 }
 
 .button-wrapper {
@@ -23,4 +25,10 @@
     justify-content: center; /* <-- horizontally center the whole row */
     text-align: center;   
     gap: 1em; /* optional spacing if needed */
+}
+
+@media (max-width: 767px) {
+    .button-wrapper {   
+        flex-direction: column
+    }
 }

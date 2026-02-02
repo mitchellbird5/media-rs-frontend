@@ -13,6 +13,12 @@
   box-sizing: border-box;
 }
 
+@media (max-width: 767px) {
+  .select-method-container {
+    width: 80%;
+  }
+}
+
 .select-method-text {
   position: relative;
   padding: 1.5rem 2rem;

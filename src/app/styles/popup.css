@@ -48,3 +48,17 @@
     transform: scale(1);
   }
 }
+
+@media (max-width: 767px) {
+  .popup-card {
+    width: 95%;
+    max-height: 90vh;
+    padding: var(--spacing-md);
+    max-width: none; /* Remove desktop max-width constraint */
+  }
+
+  .overlay {
+    align-items: flex-start; /* Align to top on mobile */
+    padding-top: 5vh;
+  }
+}

@@ -48,7 +48,7 @@ export class Recommendation {
   medium!: MediumType;
   model!: ModelType;
 
-  width: string = '600px';
+  width: string = '100%';
   results: WritableSignal<string[]> = signal([]);
   numRecommendations: WritableSignal<number> = signal(10);
   loading: WritableSignal<boolean> = signal(false);

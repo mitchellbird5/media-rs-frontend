@@ -32,12 +32,15 @@ export class PopupDirective {
   public isOpen: boolean = false;
 
   @HostListener('click', ['$event'])
-  handleHostClick(event: MouseEvent) {
+  @HostListener('touchend', ['$event']) // Add touch support
+  handleHostClick(event: MouseEvent | TouchEvent) {
+    event.preventDefault(); // Prevent ghost clicks on mobile
+    event.stopPropagation();
+    
     if (!this.isOpen) {
       this.open();
     }
   }
-
 
   open(context?: any) {
     if (this.isOpen) return;

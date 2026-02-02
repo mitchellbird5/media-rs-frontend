@@ -10,17 +10,7 @@
 @import './app/styles/spinner.css';
 @import './app/components/autocomplete/autocomplete.css'; /* need to import to global to work */
 
-
 body { font-family: 'Inter', sans-serif; } 
-
-html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  width: 100%;
-  overflow-x: hidden; /* prevents horizontal scroll */
-  background-color: var(--bg-background-default);
-}
 
 /* Map Tailwind theme colors to CSS variables */
 :root {
@@ -60,6 +50,12 @@ html, body {
   --spacing-lg: 20px;
 }
 
+@media (max-width: 767px) {
+  :root {
+    --page-width: 100%;
+  }
+}
+
 html, body, app-root {
   height: 100%;
   margin: 0;
@@ -82,4 +78,14 @@ html, body, app-root {
 
 .popup-description {
   font-size: 1em;
+}
+
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden; /* prevents horizontal scroll */
+  background-color: var(--bg-background-default);
 }

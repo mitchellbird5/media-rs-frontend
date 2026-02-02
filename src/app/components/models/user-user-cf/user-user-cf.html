@@ -1,18 +1,20 @@
 <div class="model-container">
     <div class="title-info-container">
-        <div class="title">User-User Collaborative Filtering Recommendation</div>
+        <div class="title-group">
+            <div class="title">User-User Collaborative Filtering Recommendation</div>
 
-        <lucide-icon 
-            [img]="Info" 
-            class="info-icon"
-            appPopup
-            [popupComponent]="ModelInfo"
-            [popupContext]="{
-                info_title: info_title,
-                info_description: info_description
-            }"
-            [zIndex]="modelInfoPopupZIndex"
-        ></lucide-icon>
+            <lucide-icon 
+                [img]="Info" 
+                class="info-icon"
+                appPopup
+                [popupComponent]="ModelInfo"
+                [popupContext]="{
+                    info_title: info_title,
+                    info_description: info_description
+                }"
+                [zIndex]="modelInfoPopupZIndex"
+            ></lucide-icon>
+        </div>
     </div>
 
     <app-user-user-cf-inputs 
