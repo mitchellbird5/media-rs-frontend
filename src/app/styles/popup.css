@@ -51,14 +51,10 @@
 
 @media (max-width: 767px) {
   .popup-card {
-    width: 95%;
     max-height: 90vh;
+    width: 85vw;
+    max-width: 85vw;
+    min-height: fit-content;
     padding: var(--spacing-md);
-    max-width: none; /* Remove desktop max-width constraint */
-  }
-
-  .overlay {
-    align-items: flex-start; /* Align to top on mobile */
-    padding-top: 5vh;
   }
 }

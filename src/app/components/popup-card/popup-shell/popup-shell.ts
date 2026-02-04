@@ -14,7 +14,6 @@ import { LucideAngularModule, X } from 'lucide-angular';
   standalone: true,
   imports: [CommonModule, LucideAngularModule],
   styleUrls: [
-    './popup-shell.css',
     '../../../styles/popup.css',
     '../../../styles/button.css'
   ],

@@ -47,7 +47,9 @@ export class PopupDirective {
 
     this.isOpen = true;
 
-    if (context) this.popupContext = context;
+    if (context) {
+      this.popupContext = { ...this.popupContext, ...context };
+    }
 
     this.shellRef = createComponent(PopupShellComponent, {
       environmentInjector: this.appRef.injector,
