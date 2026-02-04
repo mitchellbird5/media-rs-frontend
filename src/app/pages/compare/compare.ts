@@ -51,7 +51,6 @@ import { MediumType, isMediumType } from '../../types/medium.type';
 export class Compare {
   routeMedium!: MediumType;
   medium: InputSignal<MediumType | null> = input<MediumType | null>(null);
-  loading: WritableSignal<boolean> = signal(false);
   numRecommendations: WritableSignal<number> = signal(10);
   width: string = '600px';
 
@@ -61,9 +60,8 @@ export class Compare {
   readonly ModelTitles = ModelTitles;
 
   allLoading: Signal<boolean> = computed(() => {
-    return Object.values(this.modelData())
-      .filter(model => model.show)
-      .every(model => model.loading === true);
+    const shownModels = Object.values(this.modelData()).filter(m => m.show);
+    return shownModels.length > 0 && shownModels.every(m => m.loading);
   });
 
   shownModelCount = computed(() => {

@@ -17,9 +17,12 @@
 }
 
 .select-model-container {
-  display: inline-block;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+  box-sizing: border-box;
 }
-
 .compare-title {
   text-align: center;
   margin-bottom: 1em;

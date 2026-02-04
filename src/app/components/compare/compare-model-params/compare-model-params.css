@@ -1,17 +1,27 @@
 .model-tickbox-container {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 1em;
+  display: flex;
+  flex-direction: row;
   align-items: center;
-  margin-bottom: 1em;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.compare-subtitle {
+  font-size: 1.2em;
+  overflow-wrap: normal;
+  white-space: normal;
 }
 
 .model-tickbox-core {
-  display: grid;
-  grid-template-columns: auto max-content;
-  gap: 1em;
+  display: flex;
+  flex-direction: row;
   align-items: center;
-  justify-self: end; /* Aligns to the right of first column */
+  gap: 0.5rem;
+  flex-wrap: wrap; 
+  overflow-wrap: normal;
+  white-space: normal;
 }
 
 .model-tickbox-core input[type="checkbox"] {
@@ -19,12 +29,38 @@
 }
 
 .model-tickbox-core .subtitle {
-  justify-self: start;
+  justify-self: center;
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .compare-edit-button {
   white-space: nowrap;
   visibility: visible; /* Will be overridden by inline style */
   justify-self: end;
+}
+
+@media (max-width: 767px) {
+  .select-model-container {
+    padding: 0 1rem; /* breathing room from edges */
+  }
+
+  .model-tickbox-container {
+    flex-direction: column;
+    align-items: stretch; /* children take full width */
+    gap: 0.5rem;
+  }
+
+  .model-tickbox-core {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .compare-subtitle {
+    text-align: left;
+  }
+
+  .compare-edit-button {
+    align-self: flex-start; /* keeps button right-aligned within container */
+  }
 }
