@@ -42,3 +42,10 @@ app-autocomplete {
   color: var(--secondary-default);
   transform: translateY(-10%) scale(1.05);
 }
+
+@media (max-width: 767px) {
+  .search-container {
+    min-width: 0; /* Allow container to shrink on small screens */
+    padding: 0 1rem; /* Add horizontal padding for breathing room */
+  }
+}
