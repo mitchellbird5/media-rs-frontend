@@ -1,19 +1,30 @@
-/* This prevents it from being default inline element breaking flexbox layout */ 
 :host {
   display: block;
   width: 100%;
+  max-width: 100%; 
+  box-sizing: border-box;
 }
 
 .search-container {
   display: flex;
   justify-content: center;
   width: 100%;
+  min-width: 400px;
+  box-sizing: border-box; 
 }
 
 .search-wrapper {
   display: flex;
   align-items: center;
   gap: 0.75rem;
+  width: 100%; 
+  box-sizing: border-box; 
+}
+
+/* Make autocomplete grow to fill available space */
+app-autocomplete {
+  flex: 1;  /* This makes it take all available space */
+  min-width: 0;  /* Prevents flex item from overflowing */
 }
 
 /* Search icon */
@@ -23,10 +34,18 @@
   height: 20px;
   color: var(--text-muted);
   cursor: pointer;
+  flex-shrink: 0;  /* Prevents icon from shrinking */
   transition: color 0.2s ease, transform 0.2s ease;
 }
 
 .search-icon:hover {
   color: var(--secondary-default);
   transform: translateY(-10%) scale(1.05);
+}
+
+@media (max-width: 767px) {
+  .search-container {
+    min-width: 0; /* Allow container to shrink on small screens */
+    padding: 0 1rem; /* Add horizontal padding for breathing room */
+  }
 }

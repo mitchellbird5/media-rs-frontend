@@ -25,3 +25,9 @@ button:hover {
   font-size: 1.1em;
   font-weight: 400;
 }
+
+.embedding-info-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;   
+}

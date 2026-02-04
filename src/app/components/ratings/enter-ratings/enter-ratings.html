@@ -1,8 +1,7 @@
 <div class="model-container">
   <app-search-bar 
-    [autocompleteSearch]="autocompleteSearch",
+    [autocompleteSearch]="autocompleteSearch"
     [popupSearch]="popupSearch"
-    [width]="width",
     [placeholder]="placeholder"
     [popupTitle]="`Searching ${medium}s...`"
     [autocompleteZIndex]="autocompleteZIndex"
@@ -20,7 +19,6 @@
       medium: medium,
       autocompleteSearch: autocompleteSearch,
       popupSearch: popupSearch,
-      width: width,
       placeholder: `Search ${medium}s...`,
       onItemSelected: onSearchSelect,
       autocompleteZIndex: ratingSummaryZIndex+5,

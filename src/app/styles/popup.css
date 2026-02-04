@@ -48,3 +48,13 @@
     transform: scale(1);
   }
 }
+
+@media (max-width: 767px) {
+  .popup-card {
+    max-height: 90vh;
+    width: 85vw;
+    max-width: 85vw;
+    min-height: fit-content;
+    padding: var(--spacing-md);
+  }
+}

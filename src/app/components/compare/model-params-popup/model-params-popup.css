@@ -1,4 +1,8 @@
 .model-params-popup-wrapper {
   position: static;
   z-index: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* inherit the centering behavior */
+  width: 100%;
 }

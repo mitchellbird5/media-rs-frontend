@@ -8,4 +8,12 @@
     border: 1px solid var(--text-muted);
     border-radius: var(--radius-lg);
     background-color: var(--bg-background-light);
+    box-sizing: border-box;
+}
+
+@media (max-width: 767px) {
+    .recommendation-container {
+        padding: var(--spacing-md);
+        max-width: 100%;
+    }
 }

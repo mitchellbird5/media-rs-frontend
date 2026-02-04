@@ -117,6 +117,7 @@
   border: none;
   color: var(--text-default);
   cursor: pointer;
+  font-size: 2em;
 }
 
 .mobile-menu-btn:hover {

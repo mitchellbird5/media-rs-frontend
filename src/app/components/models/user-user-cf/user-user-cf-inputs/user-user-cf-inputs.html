@@ -1,7 +1,6 @@
 <div class="model-container">
   <app-enter-ratings 
     [ratings]="ratings()"
-    [width]="width"
     [medium]="medium"
     [placeholder]="placeholder"
     [autocompleteZIndex]="autocompleteZIndex"
@@ -22,7 +21,6 @@
     [min]="1"
     [step]="1"
     [value]="metaData().numSimilarUsers"
-    [width]="width"
     (valueChange)="onNumSimilarUsersUpdate($event)"
   />
 </div>

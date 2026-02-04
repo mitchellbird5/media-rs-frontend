@@ -46,8 +46,7 @@ export class ItemSimilarity {
   @Input() autocompleteZIndex!: number;
   @Input() searchResultPopupZIndex!: number;
   @Input() modelInfoPopupZIndex: number = 1000;
-  @Input() width: string = '400px';
-
+  
   placeholder: string = `Search ${this.medium}s...`;
 
   @Output() recommendFnReady = new EventEmitter<RecommendFn>();

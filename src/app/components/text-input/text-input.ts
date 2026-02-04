@@ -16,14 +16,10 @@ import { LucideAngularModule, X } from 'lucide-angular';
     LucideAngularModule
   ],
   templateUrl: './text-input.html',
-  styleUrls: ['./text-input.css'],
-  host: {
-    '[style.--input-width]': 'width'
-  }
+  styleUrls: ['./text-input.css']
 })
 export class TextInput {
   @Input() placeholder: string = 'Search...';
-  @Input() width: string = '300px';
   @Input({ required: true }) query!: WritableSignal<string>;
 
   @Output() queryChange = new EventEmitter<string>();

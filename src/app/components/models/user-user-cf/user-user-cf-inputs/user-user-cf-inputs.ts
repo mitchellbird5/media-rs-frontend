@@ -46,7 +46,6 @@ export class UserUserCFInputs {
   @Input() searchResultPopupZIndex!: number;
   @Input() ratingPopupZIndex: number = 1050;
   @Input() ratingSummaryZIndex: number = 1050;
-  @Input() width: string = '400px';
 
   @Input() set metaDataInput(value: UserUserCFMetaData) {
     if (value) {

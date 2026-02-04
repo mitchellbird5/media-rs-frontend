@@ -1,25 +1,26 @@
 <div class="model-container">
     <div class="hybrid-model-container">
-        <div class="title-info-container">
-            <div class="subtitle">Select a {{ medium | titlecase}}</div>
+        <div class="hybrid-title-info-container">
+            <div class="title-group">
+                <div class="subtitle">Select a {{ medium | titlecase}}</div>
 
-            <lucide-icon 
-                [img]="Info" 
-                class="info-icon"
-                appPopup
-                [popupComponent]="ModelInfo"
-                [popupContext]="{
-                    info_title: `Select a ${ medium | titlecase}`,
-                    info_description: `Select a ${medium} to be used in the content-similarity and item-item collaborative filtering model.`
-                }"
-            ></lucide-icon>
+                <lucide-icon 
+                    [img]="Info" 
+                    class="info-icon"
+                    appPopup
+                    [popupComponent]="ModelInfo"
+                    [popupContext]="{
+                        info_title: `Select a ${ medium | titlecase}`,
+                        info_description: `Select a ${medium} to be used in the content-similarity and item-item collaborative filtering model.`
+                    }"
+                ></lucide-icon>
+            </div>
         </div>
 
         <app-item-item-cf-inputs
             [metaDataInput]="metaData().itemItemCFMetaData"
             [medium]="medium"
             [placeholder]="`Search ${medium}s...`"
-            [width]="width"
             [autocompleteZIndex]="autocompleteZIndex"
             [searchResultPopupZIndex]="searchResultPopupZIndex"
             (metaDataChange)="onItemItemCFMetaDataChange($event)"
@@ -29,24 +30,25 @@
 
     <div class="hybrid-model-container">
         <div class="title-info-container">
-            <div class="subtitle">Enter {{ medium | titlecase}} Ratings</div>
+            <div class="title-group">
+                <div class="subtitle">Enter {{ medium | titlecase}} Ratings</div>
 
-            <lucide-icon 
-                [img]="Info" 
-                class="info-icon"
-                appPopup
-                [popupComponent]="ModelInfo"
-                [popupContext]="{
-                    info_title: `Enter ${ medium | titlecase} Ratings`,
-                    info_description: `Enter ${medium} ratings to be used in the user-user collaborative filtering model.\n`
-                }"
-            ></lucide-icon>
+                <lucide-icon 
+                    [img]="Info" 
+                    class="info-icon"
+                    appPopup
+                    [popupComponent]="ModelInfo"
+                    [popupContext]="{
+                        info_title: `Enter ${ medium | titlecase} Ratings`,
+                        info_description: `Enter ${medium} ratings to be used in the user-user collaborative filtering model.\n`
+                    }"
+                ></lucide-icon>
+            </div>
         </div>
         <app-user-user-cf-inputs
             [metaDataInput]="metaData().userUserCFMetaData"
             [medium]="medium"
             [placeholder]="`Search for ${medium}s to rate...`"
-            [width]="width"
             [autocompleteZIndex]="autocompleteZIndex"
             [searchResultPopupZIndex]="searchResultPopupZIndex"
             [ratingPopupZIndex]="ratingPopupZIndex"
@@ -58,22 +60,23 @@
 
     <div class="hybrid-model-container">
         <div class="title-info-container">
-            <div class="subtitle">Model Weights</div>
+            <div class="title-group">
+                <div class="subtitle">Model Weights</div>
 
-            <lucide-icon 
-                [img]="Info" 
-                class="info-icon"
-                appPopup
-                [popupComponent]="ModelInfo"
-                [popupContext]="{
-                    info_title: 'Model Weights',
-                    info_description: 'Weightings to use for results from different models.'
-                }"
-            ></lucide-icon>
+                <lucide-icon 
+                    [img]="Info" 
+                    class="info-icon"
+                    appPopup
+                    [popupComponent]="ModelInfo"
+                    [popupContext]="{
+                        info_title: 'Model Weights',
+                        info_description: 'Weightings to use for results from different models.'
+                    }"
+                ></lucide-icon>
+            </div>
         </div>
 
         <app-hybrid-weight-sliders
-            [width]="width"
             (valuesChange)="onHybridWeightsChange($event)"
         ></app-hybrid-weight-sliders>
     </div>

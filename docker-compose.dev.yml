@@ -8,9 +8,6 @@ services:
     volumes:
       - .:/app:delegated       # Mount source code for live reload
       - /app/node_modules      # Prevent overwriting node_modules
-    environment:
-      API_URL: "http://media-rs-backend-dev:8000"  # your backend service URL
-      CI: "false"
     ports:
       - "4200:4200"            # Angular dev server port
     command: >

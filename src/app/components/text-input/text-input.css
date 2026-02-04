@@ -1,20 +1,23 @@
 :host {
-  display: inline-block;
-  width: var(--input-width, 300px);
+  display: block; 
+  width: 100%;
+  min-width: 0; 
+  box-sizing: border-box; 
 }
-
 .text-clear-container {
   position: relative;
   width: 100%;
+  box-sizing: border-box; 
 }
 
 .text-clear-input {
-  width: 100%;             /* input fills container */
-  padding: 0.5rem 2rem 0.5rem 0.75rem; /* right padding leaves space for X */
+  width: 100%;            
+  padding: 0.5rem 2rem 0.5rem 0.75rem;
   border: 1px solid #d1d5db;
   border-radius: 0.375rem;
   font-size: 1rem;
-  box-sizing: border-box;  /* ensures width includes padding */
+  box-sizing: border-box; 
+  min-width: 0;
 }
 
 /* X icon inside the input */

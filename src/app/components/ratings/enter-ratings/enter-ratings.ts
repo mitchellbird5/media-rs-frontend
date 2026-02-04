@@ -39,7 +39,6 @@ export class EnterRatings {
   @Input() searchResultPopupZIndex!: number;
   @Input() ratingPopupZIndex: number = 1050;
   @Input() ratingSummaryZIndex: number = 1050;
-  @Input() width: string = '400px';
   @Input() ratings!: WritableSignal<Rating[]>;
 
   selectedItem: WritableSignal<string | null> = signal(null);

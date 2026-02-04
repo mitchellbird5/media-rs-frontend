@@ -1,24 +1,24 @@
 <div class="model-container">
-    
     <div class="title-info-container">
-        <div class="title">Hybrid Filtering Recommendation</div>
+        <div class="title-group">
+            <div class="title">Hybrid Filtering Recommendation</div>
 
-        <lucide-icon 
-            [img]="Info" 
-            class="info-icon"
-            appPopup
-            [popupComponent]="ModelInfo"
-            [popupContext]="{
-                info_title: info_title,
-                info_description: info_description
-            }"
-            [zIndex]="modelInfoPopupZIndex"
-        ></lucide-icon>
+            <lucide-icon 
+                [img]="Info" 
+                class="info-icon"
+                appPopup
+                [popupComponent]="ModelInfo"
+                [popupContext]="{
+                    info_title: info_title,
+                    info_description: info_description
+                }"
+                [zIndex]="modelInfoPopupZIndex"
+            ></lucide-icon>
+        </div>
     </div>
 
     <app-hybrid-inputs 
         [medium]="medium"
-        [width]="width"
         [autocompleteZIndex]="autocompleteZIndex"
         [searchResultPopupZIndex]="searchResultPopupZIndex"
         [ratingPopupZIndex]="ratingPopupZIndex"

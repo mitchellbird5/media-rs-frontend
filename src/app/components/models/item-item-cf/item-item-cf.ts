@@ -45,7 +45,6 @@ export class ItemItemCF {
   @Input() autocompleteZIndex!: number;
   @Input() searchResultPopupZIndex!: number;
   @Input() modelInfoPopupZIndex: number = 1000;
-  @Input() width: string = '400px';
 
   @Output() recommendFnReady = new EventEmitter<RecommendFn>();
   @Output() loading = new EventEmitter<boolean>();

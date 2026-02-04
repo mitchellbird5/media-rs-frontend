@@ -5,6 +5,15 @@
   gap: 1em;
   background-color: var(--bg-background-default2);
   border: 1px solid var(--text-muted);
-  padding: var(--spacing-md);
+  padding: 0.5rem 1rem;
   border-radius: var(--radius-md);
+  box-sizing: border-box;
+  width: 800px
+}
+
+@media (max-width: 767px) {
+  .hybrid-model-container{
+    width: 90%;
+    padding: 0.5rem 0.75rem;
+  }
 }

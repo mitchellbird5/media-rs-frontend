@@ -11,10 +11,12 @@ import {
   effect,
   inject,
   Injector,
-  DestroyRef 
+  DestroyRef,
+  HostListener 
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { OverlayModule } from '@angular/cdk/overlay';
 
 import { TextInput } from '../text-input/text-input';
 
@@ -24,7 +26,8 @@ import { TextInput } from '../text-input/text-input';
   imports: [
     CommonModule, 
     FormsModule,
-    TextInput
+    TextInput,
+    OverlayModule
   ],
   templateUrl: './autocomplete.html',
   styleUrls: ['./autocomplete.css']
@@ -55,6 +58,18 @@ export class AutocompleteComponent {
   private lastForceClose = 0;
   private injector = inject(Injector);
 
+  @HostListener('document:click', ['$event'])
+  @HostListener('document:touchstart', ['$event'])
+  onDocumentClick(event: Event) {
+    const target = event.target as HTMLElement;
+    const clickedInside = this.host.nativeElement.contains(target) || 
+                          this.dropdownEl?.contains(target);
+    
+    if (!clickedInside && this.isOpen()) {
+      this.closeDropdown();
+    }
+  }
+
   private _forceCloseEffect = effect(
     () => {
       if (!this.forceCloseSignal) return;
@@ -76,11 +91,10 @@ export class AutocompleteComponent {
   }, { injector: this.injector });
 
   ngOnDestroy() {
-    // if (this.dropdownEl && this.dropdownEl.parentElement) {
-    //   this.dropdownEl.parentElement.removeChild(this.dropdownEl);
-    //   this.dropdownEl = undefined;
-    // }
     this.closeDropdown();
+    if (this.debounceTimer) {
+      clearTimeout(this.debounceTimer);
+    }
   }
 
   onInput(value: string) {
@@ -116,19 +130,32 @@ export class AutocompleteComponent {
         this.isOpen.set(true);
 
         if (!this.dropdownEl) {
-          this.dropdownEl = document.createElement('div');
-          this.dropdownEl.className = 'autocomplete-dropdown';
-          this.dropdownEl.style.position = 'fixed';
-          this.dropdownEl.style.zIndex = `${this.zIndex}`;
-          document.body.appendChild(this.dropdownEl);
+          this.createDropdown();
         }
 
-        this.updateDropdown();
+        requestAnimationFrame(() => {
+          this.updateDropdown();
+        });
       } finally {
         this.loading.set(false);
       }
     }, this.debounceMs);
   }, { injector: this.injector });
+
+  private createDropdown() {
+    this.dropdownEl = document.createElement('div');
+    this.dropdownEl.className = 'autocomplete-dropdown';
+    this.dropdownEl.style.position = 'fixed';
+    this.dropdownEl.style.zIndex = `${this.zIndex}`;
+    
+    // Prevent touch issues on mobile
+    this.dropdownEl.style.touchAction = 'manipulation';
+    
+    // Use setProperty for vendor-prefixed properties
+    this.dropdownEl.style.setProperty('-webkit-tap-highlight-color', 'transparent');
+    
+    document.body.appendChild(this.dropdownEl);
+  }
 
   select(value: string) {
     if (!value) return;
@@ -141,13 +168,20 @@ export class AutocompleteComponent {
 
 
   closeDropdown() {
-    if (this.dropdownEl?.parentElement) {
-      this.dropdownEl.parentElement.removeChild(this.dropdownEl);
+    if (this.dropdownEl) {
+      // Safely remove from DOM
+      try {
+        if (this.dropdownEl.parentElement) {
+          this.dropdownEl.parentElement.removeChild(this.dropdownEl);
+        }
+      } catch (e) {
+        console.warn('Error removing dropdown:', e);
+      }
+      this.dropdownEl = undefined;
     }
 
-    this.dropdownEl = undefined;
     this.isOpen.set(false);
-    this.results.set([]); // 🔑 ensures empty dropdown state
+    this.results.set([]);
   }
       
   private updateDropdown() {
@@ -167,13 +201,27 @@ export class AutocompleteComponent {
     this.dropdownEl.style.top = `${rect.bottom + window.scrollY}px`;
     this.dropdownEl.style.left = `${rect.left + window.scrollX}px`;
     this.dropdownEl.style.width = `${rect.width}px`;
+    this.dropdownEl.style.maxHeight = '300px';
+    this.dropdownEl.style.overflowY = 'auto';
 
+    // Clear and rebuild
     this.dropdownEl.innerHTML = '';
+    
     for (const item of this.results()) {
       const div = document.createElement('div');
       div.className = 'autocomplete-item';
       div.innerText = item;
-      div.onclick = () => this.select(item);
+      
+      // Use touchend instead of click for better mobile responsiveness
+      const handleSelect = (e: Event) => {
+        e.preventDefault();
+        e.stopPropagation();
+        this.select(item);
+      };
+      
+      div.addEventListener('click', handleSelect);
+      div.addEventListener('touchend', handleSelect);
+      
       this.dropdownEl.appendChild(div);
     }
   }
