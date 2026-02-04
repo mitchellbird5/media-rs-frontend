@@ -31,10 +31,38 @@ export class PopupDirective {
 
   public isOpen: boolean = false;
 
+  // Scroll tracking for mobile
+  private wasScrolling = false;
+  private touchStartY = 0;
+  private scrollThreshold = 10; // pixels of movement to consider it a scroll
+
+  @HostListener('touchstart', ['$event'])
+  handleTouchStart(event: TouchEvent) {
+    this.wasScrolling = false;
+    this.touchStartY = event.touches[0].clientY;
+  }
+
+  @HostListener('touchmove', ['$event'])
+  handleTouchMove(event: TouchEvent) {
+    const touchMoveY = event.touches[0].clientY;
+    const deltaY = Math.abs(touchMoveY - this.touchStartY);
+    
+    // If moved more than threshold, consider it scrolling
+    if (deltaY > this.scrollThreshold) {
+      this.wasScrolling = true;
+    }
+  }
+
   @HostListener('click', ['$event'])
-  @HostListener('touchend', ['$event']) // Add touch support
+  @HostListener('touchend', ['$event'])
   handleHostClick(event: MouseEvent | TouchEvent) {
-    event.preventDefault(); // Prevent ghost clicks on mobile
+    // If this was a scroll gesture, don't open popup
+    if (event instanceof TouchEvent && this.wasScrolling) {
+      this.wasScrolling = false;
+      return;
+    }
+
+        event.preventDefault(); // Prevent ghost clicks on mobile
     event.stopPropagation();
     
     if (!this.isOpen) {

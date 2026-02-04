@@ -1,3 +1,10 @@
+.compare-wrapper {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  box-sizing: border-box;
+}
+
 .compare-container {
   display: flex;
   flex-direction: column;
@@ -8,6 +15,7 @@
   border: 1px solid var(--text-muted);
   border-radius: var(--radius-lg);
   background-color: var(--bg-background-light);
+  margin: 0 auto;
 }
 
 .model-input-container {
@@ -20,8 +28,8 @@
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  width: fit-content; /* Only as wide as needed */
-  margin: 0 auto; /* Center it */
+  width: fit-content; 
+  margin: 0 auto; 
   box-sizing: border-box;
 }
 
@@ -36,8 +44,33 @@
   gap: 2rem;
   width: 100%;
   padding: var(--spacing-lg);
+  box-sizing: border-box;
+  justify-content: center;
+  align-items: center;
+  align-self: center;
 }
 
 .results-comparison-column {
-  min-width: 0; /* Prevents grid blowout */
+  min-width: 0;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .compare-wrapper {
+    padding: 0;
+  }
+  
+  .results-comparison-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    padding: var(--spacing-sm);
+    width: 100%;
+    align-items: stretch; /* Make items fill width */
+  }
+  
+  .results-comparison-column {
+    width: 100%;
+    max-width: 100%;
+  }
 }
