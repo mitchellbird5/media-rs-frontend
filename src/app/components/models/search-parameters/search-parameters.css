@@ -21,10 +21,19 @@
 
 .search-button-container {   
     display: flex;    
-    align-items: center;   /* vertical alignment of children */
-    justify-content: center; /* <-- horizontally center the whole row */
+    align-items: center;
+    justify-content: center;
     text-align: center;   
-    gap: 1em; /* optional spacing if needed */
+    gap: 1em;
+    position: relative;
+}
+
+.search-button-container > div:has(.spinner) {
+    position: absolute;
+    left: 100%;
+    margin-left: 1em; 
+    display: flex;
+    align-items: center;
 }
 
 @media (max-width: 767px) {

@@ -1,66 +1,61 @@
 .model-tickbox-container {
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: auto max-content auto; /* checkbox, title, button */
+  gap: 1em;
   align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.compare-subtitle {
-  font-size: 1.2em;
-  overflow-wrap: normal;
-  white-space: normal;
 }
 
 .model-tickbox-core {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 0.5rem;
-  flex-wrap: wrap; 
-  overflow-wrap: normal;
-  white-space: normal;
+  display: contents; /* Makes children participate in parent grid */
 }
 
 .model-tickbox-core input[type="checkbox"] {
   justify-self: center;
 }
 
-.model-tickbox-core .subtitle {
-  justify-self: center;
+.compare-subtitle {
   white-space: nowrap;
-  flex-shrink: 0;
+  justify-self: start;
 }
 
 .compare-edit-button {
   white-space: nowrap;
-  visibility: visible; /* Will be overridden by inline style */
-  justify-self: end;
+  justify-self: start;
 }
 
 @media (max-width: 767px) {
   .select-model-container {
-    padding: 0 1rem; /* breathing room from edges */
+    padding: 0 1rem;
   }
 
   .model-tickbox-container {
-    flex-direction: column;
-    align-items: stretch; /* children take full width */
+    display: grid;
+    grid-template-columns: auto 1fr; /* checkbox and title in first row */
+    grid-template-rows: auto auto; /* two rows */
     gap: 0.5rem;
+    align-items: center;
   }
 
   .model-tickbox-core {
-    width: 100%;
-    justify-content: flex-start;
+    display: contents; /* checkbox and title stay as separate grid items */
+  }
+
+  .model-tickbox-core input[type="checkbox"] {
+    grid-column: 1;
+    grid-row: 1;
+    justify-self: start;
   }
 
   .compare-subtitle {
+    grid-column: 2;
+    grid-row: 1;
     text-align: left;
+    justify-self: start;
   }
 
   .compare-edit-button {
-    align-self: flex-start; /* keeps button right-aligned within container */
+    grid-column: 1 / -1; /* span both columns */
+    grid-row: 2;
+    justify-self: start;
   }
 }
