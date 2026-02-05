@@ -28,6 +28,7 @@ import { EmbeddingMethod } from '../../../types/model.types';
 })
 export class EmbeddingOption {
   @Input() selectedEmbedding!: EmbeddingMethod;
+  @Input() zIndex: number = 1000;
   @Output() embeddingSelected = new EventEmitter<EmbeddingMethod>();
 
   readonly Search = Search;

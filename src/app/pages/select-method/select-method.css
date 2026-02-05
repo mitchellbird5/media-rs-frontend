@@ -34,10 +34,9 @@
     background-color 0.2s ease,
     color 0.2s ease,
     box-shadow 0.2s ease;
-
-  /* Fix width to a percentage of parent */
-  width: 100%; /* or 70% depending on preference */
-  text-align: center; /* center text inside */
+  width: 100%; 
+  text-align: center; 
+  border-left: 4px solid transparent;
 }
 
 .select-method-text:hover {
@@ -46,13 +45,6 @@
   transform: translateY(-2px);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
   cursor: pointer;
-}
-
-.select-method-text {
-  border-left: 4px solid transparent;
-}
-
-.select-method-text:hover {
   border-left-color: var(--secondary-default);
 }
 

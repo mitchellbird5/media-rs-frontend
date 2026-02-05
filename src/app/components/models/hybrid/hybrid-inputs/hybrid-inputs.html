@@ -13,6 +13,7 @@
                         info_title: `Select a ${ medium | titlecase}`,
                         info_description: `Select a ${medium} to be used in the content-similarity and item-item collaborative filtering model.`
                     }"
+                    [zIndex]="infoPopupZIndex"
                 ></lucide-icon>
             </div>
         </div>
@@ -42,6 +43,7 @@
                         info_title: `Enter ${ medium | titlecase} Ratings`,
                         info_description: `Enter ${medium} ratings to be used in the user-user collaborative filtering model.\n`
                     }"
+                    [zIndex]="infoPopupZIndex"
                 ></lucide-icon>
             </div>
         </div>
@@ -53,6 +55,7 @@
             [searchResultPopupZIndex]="searchResultPopupZIndex"
             [ratingPopupZIndex]="ratingPopupZIndex"
             [ratingSummaryZIndex]="ratingSummaryZIndex"
+            [embeddingZIndex]="infoPopupZIndex"
             (metaDataChange)="onUserUserCFMetaDataChange($event)"
             (resultsChange)="resultsChange.emit($event)"
         />
@@ -72,6 +75,7 @@
                         info_title: 'Model Weights',
                         info_description: 'Weightings to use for results from different models.'
                     }"
+                    [zIndex]="infoPopupZIndex"
                 ></lucide-icon>
             </div>
         </div>
