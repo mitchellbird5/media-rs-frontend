@@ -11,19 +11,30 @@
   align-items: stretch;
   border: 1px solid var(--text-muted);
   border-radius: var(--radius-lg);
-  padding: var(--spacing-md);
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
 }
 
 .result-comparison-cell {
-  padding: 0.25em;
+  padding: 0.25em 0;
   border-radius: var(--radius-md);
   width: 100%;
   display: flex;             
   justify-content: center;   
   align-items: center; 
+  cursor: pointer;
+  touch-action: manipulation;
 }
 
-.result-comparison-cell:hover {
-  background-color: var(--secondary-default);
-  cursor: pointer;
+@media (hover: hover) and (pointer: fine) {
+  .result-comparison-cell:hover {
+    background-color: var(--secondary-default);
+    cursor: pointer;
+  }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .result-comparison-cell:active {
+    background-color: var(--secondary-default);
+  }
 }

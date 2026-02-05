@@ -46,6 +46,7 @@ export class ItemSimilarityInputs {
   @Input() placeholder!: string;
   @Input() autocompleteZIndex!: number;
   @Input() searchResultPopupZIndex!: number;
+  @Input() embeddingZIndex!: number;
 
   @Input() set metaDataInput(value: ItemSimilarityMetaData) {
     if (value) {

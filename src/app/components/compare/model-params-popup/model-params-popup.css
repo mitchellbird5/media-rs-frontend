@@ -3,6 +3,8 @@
   z-index: auto;
   display: flex;
   flex-direction: column;
-  align-items: center; /* inherit the centering behavior */
+  align-items: center;
   width: 100%;
+  padding-top: 1.5em;
+  padding-bottom: 1em;
 }

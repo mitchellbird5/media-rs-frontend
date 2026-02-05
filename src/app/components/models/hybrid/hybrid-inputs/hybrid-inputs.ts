@@ -51,6 +51,7 @@ export class HybridInputs {
   @Input() searchResultPopupZIndex!: number;
   @Input() ratingPopupZIndex: number = 1050;
   @Input() ratingSummaryZIndex: number = 1050;
+  @Input() infoPopupZIndex!: number;
 
   @Input() set metaDataInput(value: HybridMetaData) {
     if (value) {

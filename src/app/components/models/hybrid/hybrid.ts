@@ -47,6 +47,7 @@ export class Hybrid {
   @Input() ratingPopupZIndex!: number;
   @Input() ratingSummaryZIndex!: number;
   @Input() modelInfoPopupZIndex: number = 1000;
+  @Input() embeddingZIndex!: number;
 
   @Output() recommendFnReady = new EventEmitter<RecommendFn>();
   @Output() loading = new EventEmitter<boolean>();
