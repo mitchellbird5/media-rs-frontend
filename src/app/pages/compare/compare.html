@@ -7,7 +7,7 @@
       </div>
 
       <app-compare-model-params 
-        [medium]="resolvedMedium()"
+        [medium]="medium"
         [model]="ModelType.ItemSimilarity"
         [metaData]="modelData()['item-similarity']!.metaData"
         [numRecommendations]="numRecommendations()"
@@ -19,7 +19,7 @@
       />
 
       <app-compare-model-params 
-        [medium]="resolvedMedium()"
+        [medium]="medium"
         [model]="ModelType.ItemItemCF"
         [metaData]="modelData()['item-item-cf']!.metaData"
         [numRecommendations]="numRecommendations()"
@@ -31,7 +31,7 @@
       />
 
       <app-compare-model-params 
-        [medium]="resolvedMedium()"
+        [medium]="medium"
         [model]="ModelType.UserUserCF"
         [metaData]="modelData()['user-user-cf']!.metaData"
         [numRecommendations]="numRecommendations()"
@@ -43,7 +43,7 @@
       />
 
       <app-compare-model-params 
-        [medium]="resolvedMedium()"
+        [medium]="medium"
         [model]="ModelType.Hybrid"
         [metaData]="modelData()['hybrid']!.metaData"
         [numRecommendations]="numRecommendations()"
@@ -56,7 +56,7 @@
     </div>
 
     <app-search-parameters
-      [medium]="resolvedMedium()"
+      [medium]="medium"
       [loading]="allLoading()"
       [recommendFn]="recommendFn.bind(this)"
       [numRecommendations]="numRecommendations()"

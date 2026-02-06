@@ -1,6 +1,7 @@
+
 export enum MediumType {
-  Movie = 'movie',
-  Book = 'book',
+  Movies = 'movies',
+  Books = 'books',
   Music = 'music'
 }
 

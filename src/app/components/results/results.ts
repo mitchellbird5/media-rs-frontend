@@ -12,7 +12,7 @@ import { CommonModule, NgIf } from "@angular/common";
 
 import { ResultCard } from "./result-card/result-card";
 
-import { fetchMovieData, MovieData } from "../../services/movieSearch";
+import { fetchMovieData, MovieData } from "../../services/databaseSearch";
 
 @Component({
   selector: "app-results",

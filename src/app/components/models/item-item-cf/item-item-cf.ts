@@ -70,7 +70,8 @@ export class ItemItemCF {
         meta,
         this.loading,
         this.resultsChange,
-        n
+        n,
+        this.medium
       );
 
       this.recommendFnReady.emit(recommendFn);

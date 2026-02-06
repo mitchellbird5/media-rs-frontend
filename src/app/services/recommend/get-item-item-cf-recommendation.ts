@@ -4,10 +4,12 @@ const BASE_URL = getBaseUrl();
 
 export const fetchItemItemCFRecommendations = async (
   title: string,
-  numberOfRecommendations: number
+  numberOfRecommendations: number,
+  medium: string
 ): Promise<string[] | null> => {
   const query = new URLSearchParams({
-    movie_title: title,
+    title: title,
+    medium: medium,
     top_n:numberOfRecommendations.toString(),
   });
 

@@ -9,7 +9,8 @@ export function createItemItemCFRecommendFn(
   metaData: ItemItemCFMetaData,
   loading: EventEmitter<boolean>,
   resultsChange: EventEmitter<string[]>,
-  numRecommendations: number
+  numRecommendations: number,
+  medium: string
 ): RecommendFn {
   return async () => {
     if (!metaData?.selectedItem) {
@@ -21,7 +22,8 @@ export function createItemItemCFRecommendFn(
 
     const results = await fetchItemItemCFRecommendations(
       metaData.selectedItem, 
-      numRecommendations
+      numRecommendations,
+      medium
     );
     resultsChange.emit(results ?? []);
 

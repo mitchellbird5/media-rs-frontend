@@ -20,7 +20,7 @@ import { ActivatedRoute, RouterModule  } from '@angular/router';
 import { SearchBar } from '../../../search-bar/search-bar';
 import { SelectedItem } from '../../../selected-item/selected-item';
 
-import { fetchMovieTitles } from '../../../../services/movieSearch';
+import { fetchMediaTitles } from '../../../../services/databaseSearch';
 
 import { 
   ItemItemCFMetaData,
@@ -97,11 +97,11 @@ export class ItemItemCFInputs implements OnChanges {
   }
 
   autocompleteSearch = async (query: string): Promise<string[]> => {
-    return await fetchMovieTitles(query, 5);
+    return await fetchMediaTitles(query, this.medium, 5);
   };
 
   popupSearch = async (query: string): Promise<string[]> => {
-    return await fetchMovieTitles(query, 50);
+    return await fetchMediaTitles(query, this.medium, 50);
   };
 
   onItemSelected(item: string | null) {

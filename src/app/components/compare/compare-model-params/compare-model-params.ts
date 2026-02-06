@@ -96,13 +96,12 @@ export class CompareModelParams {
       return;
     }
 
-    console.log(`Regenerating recommendFn for ${this.model()} with numRecs=${numRecs}`);
-
     const recommendFn: RecommendFn = method(
       metaData,
       this.loading,
       this.results,
-      numRecs
+      numRecs,
+      this.medium()
     );
 
     this.recommendFn.emit(recommendFn);

@@ -19,7 +19,7 @@ import { SearchBar } from '../../../search-bar/search-bar';
 import { SelectedItem } from '../../../selected-item/selected-item';
 import { EmbeddingOption } from '../../embedding-option/embedding-option';
 
-import { fetchMovieTitles } from '../../../../services/movieSearch';
+import { fetchMediaTitles } from '../../../../services/databaseSearch';
 import { 
   EmbeddingMethod, 
   ItemSimilarityMetaData,
@@ -100,11 +100,11 @@ export class ItemSimilarityInputs {
   }
 
   autocompleteSearch = async (query: string): Promise<string[]> => {
-    return await fetchMovieTitles(query, 5);
+    return await fetchMediaTitles(query, this.medium, 5);
   };
 
   popupSearch = async (query: string): Promise<string[]> => {
-    return await fetchMovieTitles(query, 50);
+    return await fetchMediaTitles(query, this.medium, 50);
   };
 
   onItemSelected(item: string | null) {

@@ -73,7 +73,8 @@ export class ItemSimilarity {
         meta,
         this.loading,
         this.resultsChange,
-        n
+        n,
+        this.medium
       );
 
       this.recommendFnReady.emit(recommendFn);

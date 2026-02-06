@@ -11,7 +11,7 @@ import { CommonModule, NgIf } from "@angular/common";
 import { DetailPopup } from "../detail-popup/detail-popup";
 import { PopupDirective } from "../../popup-card/popup-directive/popup-directive";
 
-import { fetchMovieData, MovieData } from "../../../services/movieSearch";
+import { fetchMovieData, MovieData } from "../../../services/databaseSearch";
 
 @Component({
   selector: "app-result-comparison",
