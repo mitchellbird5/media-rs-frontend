@@ -22,8 +22,7 @@ import { ModelInfo } from '../../model-info/model-info';
 import { ItemItemCFInputs } from './item-item-cf-inputs/item-item-cf-inputs';
 import { createItemItemCFRecommendFn } from './item-item-cf-recommend-fn';
 
-import { RecommendFn } from '../../../types/movies.types';
-import { ItemItemCFMetaData } from '../../../types/model.types';
+import { ItemItemCFMetaData, RecommendFn } from '../../../types/model.types';
 
 @Component({
   selector: 'app-item-item-cf',

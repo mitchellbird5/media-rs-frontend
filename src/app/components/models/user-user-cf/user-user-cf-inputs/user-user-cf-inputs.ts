@@ -16,6 +16,8 @@ import { EnterRatings } from '../../../ratings/enter-ratings/enter-ratings';
 import { EmbeddingOption } from '../../embedding-option/embedding-option';
 import { SliderComponent } from '../../../slider/slider';
 
+import { fetchMedia } from '../../../../services/databaseSearch';
+
 import { 
   Rating, 
   UserUserCFMetaData,
@@ -85,6 +87,16 @@ export class UserUserCFInputs {
       return updated;
     });
   }
+
+  autocompleteSearch = async (query: string): Promise<string[]> => {
+    const media = await fetchMedia(query, 5, this.medium);
+    return media.map((m: any) => m.title);
+  };
+
+  popupSearch = async (query: string): Promise<string[]> => {
+    const media = await fetchMedia(query, 50, this.medium);
+    return media.map((m: any) => m.title);
+  };
 
   onNumSimilarUsersUpdate(users: number) {
     this.updateMetaData('numSimilarUsers', users);

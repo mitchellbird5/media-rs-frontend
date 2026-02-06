@@ -23,8 +23,7 @@ import { UserUserCFInputs } from './user-user-cf-inputs/user-user-cf-inputs';
 
 import { createUserUserCFRecommendFn } from './user-user-cf-recommend-fn';
 
-import { RecommendFn } from '../../../types/movies.types';
-import { UserUserCFMetaData } from '../../../types/model.types';
+import { UserUserCFMetaData, RecommendFn } from '../../../types/model.types';
 
 @Component({
   selector: 'app-user-user-cf',

@@ -1,0 +1,15 @@
+<div
+  class="result-card"
+  [style.background-image]="'url(' + book.img + ')'"
+  [style.animation-delay]="animationDelay"
+  appPopup
+  [popupComponent]="BookDetailPopup"
+  [popupContext]="{ book: book }"
+>
+  <div class="hover-overlay">
+    <div class="hover-text">
+      <div class="title">{{ book.title }}</div>
+      <div class="authors">{{ book.authors }}</div>
+    </div>
+  </div>
+</div>

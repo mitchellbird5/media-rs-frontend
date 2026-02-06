@@ -1,15 +1,18 @@
 import { Component, Input, TemplateRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MovieData } from '../../../services/databaseSearch';
+
+import { MovieData } from '../../../../types/medium.type';
 
 @Component({
-  selector: 'app-detail-popup',
+  selector: 'app-movie-detail-popup',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './detail-popup.html',
-  styleUrls: ['./detail-popup.css'],
+  templateUrl: './movie-detail-popup.html',
+  styleUrls: [
+    '../../../../styles/detail-popup.css'
+  ],
 })
-export class DetailPopup {
+export class MovieDetailPopup {
   @Input() movie!: MovieData;
 
   @ViewChild('popupTemplate', { static: true })

@@ -2,8 +2,7 @@ import { EventEmitter } from '@angular/core';
 
 import { fetchItemItemCFRecommendations } from '../../../services/recommend/get-item-item-cf-recommendation';
 
-import { ItemItemCFMetaData } from '../../../types/model.types';
-import { RecommendFn } from '../../../types/movies.types';
+import { ItemItemCFMetaData, RecommendFn } from '../../../types/model.types';
 
 export function createItemItemCFRecommendFn(
   metaData: ItemItemCFMetaData,

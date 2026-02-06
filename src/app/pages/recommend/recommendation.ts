@@ -21,8 +21,7 @@ import { UserUserCF } from '../../components/models/user-user-cf/user-user-cf';
 import { Hybrid } from '../../components/models/hybrid/hybrid';
 import { SearchParameters } from '../../components/models/search-parameters/search-parameters';
 
-import { RecommendFn } from '../../types/movies.types';
-import { ModelType, isModelType } from '../../types/model.types';
+import { ModelType, isModelType, RecommendFn } from '../../types/model.types';
 import { MediumType, isMediumType } from '../../types/medium.type';
 
 @Component({

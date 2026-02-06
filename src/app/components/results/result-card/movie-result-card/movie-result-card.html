@@ -3,7 +3,7 @@
   [style.background-image]="'url(' + getFullImageUrl(movie.poster_path) + ')'"
   [style.animation-delay]="animationDelay"
   appPopup
-  [popupComponent]="DetailPopup"
+  [popupComponent]="MovieDetailPopup"
   [popupContext]="{ movie: movie }"
 >
   <div class="hover-overlay">

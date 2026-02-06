@@ -25,9 +25,9 @@ import {
   ModelType, 
   ModelTitles, 
   ModelMetaData,
-  nullMetaData 
+  nullMetaData,
+  RecommendFn 
 } from '../../../types/model.types';
-import { RecommendFn } from '../../../types/movies.types';
 
 @Component({
   selector: 'app-compare-model-params',

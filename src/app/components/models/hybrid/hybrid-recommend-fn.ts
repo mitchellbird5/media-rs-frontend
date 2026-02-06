@@ -2,8 +2,7 @@ import { EventEmitter } from "@angular/core";
 
 import { fetchHybridRecommendations } from "../../../services/recommend/get-hybrid-recommendation";
 
-import { HybridMetaData } from "../../../types/model.types";
-import { RecommendFn } from "../../../types/movies.types";
+import { HybridMetaData, RecommendFn } from "../../../types/model.types";
 
 export function createHybridRecommendFn(
   metaData: HybridMetaData,

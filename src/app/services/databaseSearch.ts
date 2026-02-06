@@ -1,40 +1,8 @@
 import { getBaseUrl } from "./baseUrl";
+import { MovieDataSimple, MovieData, BookData } from "../types/medium.type";
 
 const BASE_URL = getBaseUrl();
 
-// ----------------------------
-// Interfaces for backend API
-// ----------------------------
-
-export interface MovieData {
-  title: string;
-  tmdb_id?: number;
-  imdb_id?: string;
-  poster_path?: string | null;
-  backdrop_path?: string | null;
-  genres?: Record<number, string>;
-  overview?: string | null;
-  runtime?: number | null;
-  popularity?: number | null;
-  release_date?: string | null;
-  tagline?: string | null;
-  vote_average?: number | null;
-}
-
-export interface BookData {
-  title: string;
-  author?: string;
-  url?: string;
-  img?: string;
-  year?: number;
-  description: string;
-}
-
-// Optional: You can also define a simplified movie result
-export interface MovieResult {
-  title: string;
-  movieId: number;
-}
 
 // ----------------------------
 // Fetch functions
@@ -44,7 +12,7 @@ export const fetchMedia = async (
   title: string,
   limit: number,
   medium: string
-): Promise<MovieResult[]> => {
+): Promise<MovieDataSimple[] | BookData[]> => {
   const query = new URLSearchParams({
     query: title,
     limit: limit.toString(),
@@ -65,7 +33,7 @@ export const fetchMedia = async (
     );
   }
 
-  const data: MovieResult[] = await response.json();
+  const data: MovieDataSimple[] = await response.json();
 
   if (!Array.isArray(data)) {
     throw new Error(`Unexpected API response: ${JSON.stringify(data)}`);
@@ -74,23 +42,16 @@ export const fetchMedia = async (
   return data;
 };
 
-export const fetchMediaTitles = async (
-  title: string,
-  medium: string,
-  limit: number = 10
-): Promise<string[]> => {
-  const media = await fetchMedia(title, limit, medium);
-  return media.map((m) => m.title);
-};
-
-export const fetchMovieData = async (
-  titles: string[]
-): Promise<MovieData[]> => {
+export const fetchMediumData = async (
+  titles: string[],
+  medium: string
+): Promise<MovieData[] | BookData[]> => {
   const params = new URLSearchParams(
     titles.map((title) => ["titles", title] as [string, string])
   );
+  params.append("medium", medium);
 
-  const url = `${BASE_URL}/movies/data?${params.toString()}`;
+  const url = `${BASE_URL}/data?${params.toString()}`;
 
   const response = await fetch(url, { headers: { Accept: "application/json" } });
 

@@ -1,20 +1,37 @@
 <ng-container *ngIf="ready()">
   <div class="result-comparison-container">
-    <div 
-      class="subtitle model-title"
-      *ngIf="title"
-    >
+
+    <div class="subtitle model-title" *ngIf="title">
       {{ title }}
     </div>
-    <div
-      *ngFor="let movie of moviesSignal(); let i = index"
-      appPopup
-      [popupComponent]="DetailPopup"
-      [popupContext]="{ movie: movie }"
-    >
-      <div class="result-comparison-cell">
-        {{ movie.title }}
+
+    <ng-container *ngFor="let item of mediaSignal()">
+
+      <!-- Movies -->
+      <div
+        *ngIf="medium === 'movies'"
+        appPopup
+        [popupComponent]="MovieDetailPopup"
+        [popupContext]="{ movie: item }"
+      >
+        <div class="result-comparison-cell">
+          {{ item.title }}
+        </div>
       </div>
-    </div>
+
+      <!-- Books -->
+      <div
+        *ngIf="medium === 'books'"
+        appPopup
+        [popupComponent]="BookDetailPopup"
+        [popupContext]="{ book: item }"
+      >
+        <div class="result-comparison-cell">
+          {{ item.title }}
+        </div>
+      </div>
+
+    </ng-container>
+
   </div>
 </ng-container>

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ResultCard } from './result-card';
+import { ResultCard } from './movie-result-card';
 
 describe('ResultCard', () => {
   let component: ResultCard;

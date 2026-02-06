@@ -20,8 +20,7 @@ import { PopupDirective } from '../../popup-card/popup-directive/popup-directive
 
 import { createHybridRecommendFn } from './hybrid-recommend-fn';
 
-import { RecommendFn } from '../../../types/movies.types';
-import { HybridMetaData } from '../../../types/model.types';
+import { HybridMetaData, RecommendFn } from '../../../types/model.types';
 
 @Component({
   selector: 'app-hybrid',
