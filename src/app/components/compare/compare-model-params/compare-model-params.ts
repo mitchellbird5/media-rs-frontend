@@ -96,6 +96,7 @@ export class CompareModelParams {
       return;
     }
 
+    console.log('Regenerating recommendFn for model:', this.model(), 'with numRecs:', numRecs, 'and metaData:', metaData, 'and medium:', this.medium());
     const recommendFn: RecommendFn = method(
       metaData,
       this.loading,
