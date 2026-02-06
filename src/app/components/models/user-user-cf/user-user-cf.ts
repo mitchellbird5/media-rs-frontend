@@ -72,7 +72,8 @@ export class UserUserCF {
         meta,
         this.loading,
         this.resultsChange,
-        n
+        n,
+        this.medium
       );
 
       this.recommendFnReady.emit(recommendFn);

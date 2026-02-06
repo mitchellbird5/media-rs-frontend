@@ -8,12 +8,14 @@ export const fetchUserUserCFRecommendations = async (
   ratings: Rating[],
   numberOfRecommendations: number,
   numberOfSimilarUsers: number,
-  embeddingMethod: EmbeddingMethod
+  embeddingMethod: EmbeddingMethod,
+  medium: string
 ): Promise<string[] | null> => {
 
   const payload = {
     ratings: ratings,
     top_n: numberOfRecommendations,
+    medium: medium,
     k_similar_users: numberOfSimilarUsers,
     embedding_method: embeddingMethod
   };

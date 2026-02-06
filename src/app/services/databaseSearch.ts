@@ -21,6 +21,15 @@ export interface MovieData {
   vote_average?: number | null;
 }
 
+export interface BookData {
+  title: string;
+  author?: string;
+  url?: string;
+  img?: string;
+  year?: number;
+  description: string;
+}
+
 // Optional: You can also define a simplified movie result
 export interface MovieResult {
   title: string;
@@ -31,16 +40,18 @@ export interface MovieResult {
 // Fetch functions
 // ----------------------------
 
-export const fetchMovies = async (
+export const fetchMedia = async (
   title: string,
-  limit: number
+  limit: number,
+  medium: string
 ): Promise<MovieResult[]> => {
   const query = new URLSearchParams({
     query: title,
     limit: limit.toString(),
+    medium: medium
   });
   
-  const response = await fetch(`${BASE_URL}/movies/search?${query.toString()}`, {
+  const response = await fetch(`${BASE_URL}/medium/search?${query.toString()}`, {
     method: "GET",
     headers: {
       "Accept": "application/json",
@@ -63,12 +74,13 @@ export const fetchMovies = async (
   return data;
 };
 
-export const fetchMovieTitles = async (
+export const fetchMediaTitles = async (
   title: string,
+  medium: string,
   limit: number = 10
 ): Promise<string[]> => {
-  const movies = await fetchMovies(title, limit);
-  return movies.map((movie) => movie.title);
+  const media = await fetchMedia(title, limit, medium);
+  return media.map((m) => m.title);
 };
 
 export const fetchMovieData = async (

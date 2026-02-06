@@ -3,7 +3,7 @@
     [autocompleteSearch]="autocompleteSearch"
     [popupSearch]="popupSearch"
     [placeholder]="placeholder"
-    [popupTitle]="`Searching ${medium}s...`"
+    [popupTitle]="`Searching ${medium}...`"
     [autocompleteZIndex]="autocompleteZIndex"
     [searchResultPopupZIndex]="searchResultPopupZIndex"
     (selectedItemChange)="onItemSelected($event)"
@@ -19,7 +19,7 @@
       medium: medium,
       autocompleteSearch: autocompleteSearch,
       popupSearch: popupSearch,
-      placeholder: `Search ${medium}s...`,
+      placeholder: `Search ${medium}...`,
       onItemSelected: onSearchSelect,
       autocompleteZIndex: ratingSummaryZIndex+5,
       searchResultPopupZIndex: ratingSummaryZIndex+20

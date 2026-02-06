@@ -49,8 +49,7 @@ import { MediumType, isMediumType } from '../../types/medium.type';
   ]
 })
 export class Compare {
-  routeMedium!: MediumType;
-  medium: InputSignal<MediumType | null> = input<MediumType | null>(null);
+  medium!: MediumType;
   numRecommendations: WritableSignal<number> = signal(10);
   width: string = '600px';
 
@@ -118,12 +117,8 @@ export class Compare {
       throw new Error(`Invalid medium ${mediumParam}`);
     }
 
-    this.routeMedium = mediumParam;
+    this.medium = mediumParam;
   }
-
-  resolvedMedium = computed<MediumType>(() => {
-    return this.medium() ?? this.routeMedium;
-  });
 
 
   trackByModelType(index: number, entry: [ModelType, ModelParameters]): ModelType {

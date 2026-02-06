@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MovieData } from '../../../services/movieSearch';
+import { MovieData } from '../../../services/databaseSearch';
 import { DetailPopup } from '../detail-popup/detail-popup';
 import { PopupDirective } from '../../popup-card/popup-directive/popup-directive';
 

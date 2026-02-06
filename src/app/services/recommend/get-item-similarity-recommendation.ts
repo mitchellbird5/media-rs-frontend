@@ -6,11 +6,13 @@ const BASE_URL = getBaseUrl();
 export const fetchItemSimilarityRecommendations = async (
   title: string,
   numberOfRecommendations: number,
-  embeddingMethod: EmbeddingMethod
+  embeddingMethod: EmbeddingMethod,
+  medium: string
 ): Promise<string[] | null> => {
 
   const query = new URLSearchParams({
-    movie_title: title,
+    title: title,
+    medium: medium,
     top_n:numberOfRecommendations.toString(),
     embedding_method: embeddingMethod
   });
@@ -39,13 +41,15 @@ export const fetchItemSimilarityRecommendations = async (
 export const fetchItemSimilarityDescriptionRecommendations = async (
   description: string,
   numberOfRecommendations: number,
-  embeddingMethod: 'SBERT' | 'TFIDF'
+  embeddingMethod: 'SBERT' | 'TFIDF',
+  medium: string
 ): Promise<string[] | null> => {
 
   const query = new URLSearchParams({
     description: description,
     top_n: numberOfRecommendations.toString(),
-    embedding_method: embeddingMethod
+    embedding_method: embeddingMethod,
+    medium: medium
   });
 
   const response = await fetch(`${BASE_URL}/recommend/content-description?${query.toString()}`, {

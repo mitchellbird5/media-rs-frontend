@@ -9,7 +9,8 @@ export function createUserUserCFRecommendFn(
   metaData: UserUserCFMetaData,
   loading: EventEmitter<boolean>,
   resultsChange: EventEmitter<string[]>,
-  numRecommendations: number
+  numRecommendations: number,
+  medium: string
 ): RecommendFn {
   return async () => {
     if (!metaData?.ratings) {
@@ -23,7 +24,8 @@ export function createUserUserCFRecommendFn(
         metaData.ratings(), 
         numRecommendations,
         metaData.numSimilarUsers,
-        metaData.embeddingMethod
+        metaData.embeddingMethod,
+        medium
       );
 
       resultsChange.emit(results ?? []);

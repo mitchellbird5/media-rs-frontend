@@ -1,6 +1,6 @@
 import { Component, Input, TemplateRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MovieData } from '../../../services/movieSearch';
+import { MovieData } from '../../../services/databaseSearch';
 
 @Component({
   selector: 'app-detail-popup',

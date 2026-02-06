@@ -9,7 +9,8 @@ export function createHybridRecommendFn(
   metaData: HybridMetaData,
   loading: EventEmitter<boolean>,
   resultsChange: EventEmitter<string[]>,
-  numRecommendations: number
+  numRecommendations: number,
+  medium: string
 ): RecommendFn {
   return async () => {
     if (!metaData?.userUserCFMetaData.ratings) {
@@ -26,7 +27,8 @@ export function createHybridRecommendFn(
         metaData.beta,
         numRecommendations,
         metaData.userUserCFMetaData.numSimilarUsers,
-        metaData.userUserCFMetaData.embeddingMethod
+        metaData.userUserCFMetaData.embeddingMethod,
+        medium
       );
 
       resultsChange.emit(results ?? []);

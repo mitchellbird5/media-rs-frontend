@@ -11,15 +11,17 @@ export const fetchHybridRecommendations = async (
   beta: number,
   numberOfRecommendations: number,
   numberOfSimilarUsers: number,
-  embeddingMethod: EmbeddingMethod
+  embeddingMethod: EmbeddingMethod,
+  medium: string,
 ): Promise<string[] | null> => {
   if (!title) return null;
 
   const payload = {
-    movie_title: title,
+    title: title,
     alpha: alpha,
     beta: beta,
     ratings: ratings,
+    medium: medium,
     top_n: numberOfRecommendations,
     k_similar_users: numberOfSimilarUsers,
     embedding_method: embeddingMethod

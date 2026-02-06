@@ -35,7 +35,6 @@ import { HybridMetaData } from '../../../types/model.types';
   ],
   templateUrl: './hybrid.html',
   styleUrls: [
-    './hybrid.css',
     '../../../styles/model.css'
   ],
 })
@@ -73,7 +72,8 @@ export class Hybrid {
         meta,
         this.loading,
         this.resultsChange,
-        n
+        n,
+        this.medium
       );
 
       this.recommendFnReady.emit(recommendFn);

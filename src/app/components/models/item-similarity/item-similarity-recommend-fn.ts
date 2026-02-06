@@ -12,7 +12,8 @@ export function createItemSimilarityRecommendFn(
   metaData: ItemSimilarityMetaData,
   loading: EventEmitter<boolean>,
   resultsChange: EventEmitter<string[]>,
-  numRecommendations: number
+  numRecommendations: number,
+  medium: string
 ): RecommendFn {
   return async () => {
     loading.emit(true);
@@ -31,7 +32,8 @@ export function createItemSimilarityRecommendFn(
       const results = await method(
         query, 
         numRecommendations, 
-        metaData.embeddingMethod
+        metaData.embeddingMethod,
+        medium
       );
       resultsChange.emit(results ?? []);
     } catch (error) {

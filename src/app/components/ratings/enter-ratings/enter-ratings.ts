@@ -15,7 +15,7 @@ import { RatingPopup } from '../rating-popup/rating-popup';
 import { PopupDirective } from '../../popup-card/popup-directive/popup-directive';
 import { AutocompleteComponent } from '../../autocomplete/autocomplete';
 
-import { fetchMovieTitles } from '../../../services/movieSearch';
+import { fetchMediaTitles } from '../../../services/databaseSearch';
 
 import { Rating } from '../../../types/model.types';
 
@@ -63,11 +63,11 @@ export class EnterRatings {
   searchAutocomplete!: AutocompleteComponent;
 
   autocompleteSearch = async (query: string): Promise<string[]> => {
-    return await fetchMovieTitles(query, 5);
+    return await fetchMediaTitles(query, this.medium, 5);
   };
 
   popupSearch = async (query: string): Promise<string[]> => {
-    return await fetchMovieTitles(query, 50);
+    return await fetchMediaTitles(query, this.medium, 50);
   };
 
   onItemSelected(item: string) {
