@@ -23,4 +23,8 @@ export class SelectMethod {
       { initialValue: '' }
     );
   }
+
+  singularize(word: string): string {
+    return word.replace(/s$/i, '');
+  }
 }
