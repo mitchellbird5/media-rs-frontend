@@ -66,5 +66,5 @@ export const fetchMediumData = async (
     throw new Error(`Unexpected API response: ${JSON.stringify(data)}`);
   }
 
-  return data as MovieData[];
+  return data;
 };

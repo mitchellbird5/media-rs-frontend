@@ -4,14 +4,14 @@
     class="select-method-text" 
     [routerLink]="['/recommend', medium(), 'item-similarity']"
   >
-    I want recommendations similar to a particular {{medium()}}.
+    I want recommendations similar to a particular {{singularize(medium())}}.
   </a>
 
   <a 
     class="select-method-text" 
     [routerLink]="['/recommend', medium(), 'item-item-cf']"
   >
-    I want recommendations of movies that people who liked a particular {{medium()}} also liked.
+    I want recommendations of {{medium()}} that people who liked a particular {{singularize(medium())}} also liked.
   </a>
 
   <a 
@@ -25,7 +25,7 @@
     class="select-method-text" 
     [routerLink]="['/recommend', medium(), 'hybrid']"
   >
-    I want recommendations that are similar to a particular {{medium()}} and also popular with users who have similar tastes.
+    I want recommendations that are similar to a particular {{singularize(medium())}} and also popular with users who have similar tastes.
   </a>
 
   <a 

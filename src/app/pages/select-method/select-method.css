@@ -9,7 +9,7 @@
   margin: 0 auto; /* horizontal centering */
   /* min-height: calc(100vh - var(--header-height)); fill remaining viewport */
   justify-content: center; /* vertical centering */
-  padding-top: 2em;
+  padding-top: 1em;
   box-sizing: border-box;
 }
 
