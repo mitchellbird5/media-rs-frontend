@@ -1,5 +1,7 @@
-import { Component, Input } from '@angular/core';
-import { RouterModule, ActivatedRoute  } from '@angular/router';
+import { Component, signal } from '@angular/core';
+import { RouterModule, ActivatedRoute } from '@angular/router';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-select-method',
@@ -11,11 +13,14 @@ import { RouterModule, ActivatedRoute  } from '@angular/router';
   styleUrl: './select-method.css',
 })
 export class SelectMethod {
-  medium!: string;
+  medium;
 
-  constructor(private route: ActivatedRoute) {}
-
-  ngOnInit() {
-    this.medium = this.route.snapshot.paramMap.get('medium')!;
+  constructor(private route: ActivatedRoute) {
+    this.medium = toSignal(
+      this.route.paramMap.pipe(
+        map(params => params.get('medium') || '')
+      ),
+      { initialValue: '' }
+    );
   }
 }
