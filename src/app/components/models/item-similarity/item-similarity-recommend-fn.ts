@@ -5,8 +5,7 @@ import {
   fetchItemSimilarityDescriptionRecommendations 
 } from "../../../services/recommend/get-item-similarity-recommendation";
 
-import { ItemSimilarityMetaData } from "../../../types/model.types";
-import { RecommendFn } from "../../../types/movies.types";
+import { ItemSimilarityMetaData, RecommendFn } from "../../../types/model.types";
 
 export function createItemSimilarityRecommendFn(
   metaData: ItemSimilarityMetaData,

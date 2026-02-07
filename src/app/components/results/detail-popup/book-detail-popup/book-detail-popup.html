@@ -1,0 +1,13 @@
+<div class="detail-popup-content">
+  <div class="detail-popup-title">{{ book.title }}</div>
+
+  <div *ngIf="book.authors"><strong>Authors:</strong> {{ book.authors }}</div>
+  <div *ngIf="book.year"><strong>Release:</strong> {{ book.year }}</div>
+  <div *ngIf="book.description"><strong>Overview:</strong> {{ book.description }}</div>
+  <div *ngIf="book.url"><strong>GoodReads: </strong> <a href="{{ book.url }}">{{ book.url }}</a></div>
+
+  <div class="attribution-label">
+    Cover image and details provided by 'GroupLens' and the University of Minnesota. This service is not endorsed, certified or otherwise approved by 'GroupLens' and the University of Minnesota. See this <a href="https://grouplens.org/datasets/book-genome/">link</a> for more details.
+  </div>
+</div>
+  

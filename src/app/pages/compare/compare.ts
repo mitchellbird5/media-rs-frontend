@@ -14,7 +14,6 @@ import {
   Loader 
 } from 'lucide-angular';
 
-import { RecommendFn } from '../../types/movies.types';
 import { CompareModelParams } from '../../components/compare/compare-model-params/compare-model-params';
 import { SearchParameters } from '../../components/models/search-parameters/search-parameters';
 import { ResultComparison } from '../../components/results/result-comparison/result-comparison';
@@ -24,7 +23,8 @@ import {
   ModelType, 
   ModelTitles,
   ModelMetaData,
-  nullMetaData 
+  nullMetaData,
+  RecommendFn 
 } from '../../types/model.types';
 import { MediumType, isMediumType } from '../../types/medium.type';
 

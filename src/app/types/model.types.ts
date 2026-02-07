@@ -1,5 +1,6 @@
 import { WritableSignal, signal } from "@angular/core";
-import { RecommendFn } from "./movies.types";
+
+export type RecommendFn = () => Promise<void>;
 
 export type EmbeddingMethod = 'SBERT' | 'TFIDF';
 

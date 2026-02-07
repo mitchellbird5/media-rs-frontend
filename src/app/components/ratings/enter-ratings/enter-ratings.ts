@@ -15,8 +15,6 @@ import { RatingPopup } from '../rating-popup/rating-popup';
 import { PopupDirective } from '../../popup-card/popup-directive/popup-directive';
 import { AutocompleteComponent } from '../../autocomplete/autocomplete';
 
-import { fetchMediaTitles } from '../../../services/databaseSearch';
-
 import { Rating } from '../../../types/model.types';
 
 @Component({
@@ -40,6 +38,8 @@ export class EnterRatings {
   @Input() ratingPopupZIndex: number = 1050;
   @Input() ratingSummaryZIndex: number = 1050;
   @Input() ratings!: WritableSignal<Rating[]>;
+  @Input() autocompleteSearch: (query: string) => Promise<string[]> = async () => [];
+  @Input() popupSearch: (query: string) => Promise<string[]> = async () => [];
 
   selectedItem: WritableSignal<string | null> = signal(null);
   searchQuery: WritableSignal<string> = signal('');
@@ -61,14 +61,6 @@ export class EnterRatings {
 
   @ViewChild(AutocompleteComponent)
   searchAutocomplete!: AutocompleteComponent;
-
-  autocompleteSearch = async (query: string): Promise<string[]> => {
-    return await fetchMediaTitles(query, this.medium, 5);
-  };
-
-  popupSearch = async (query: string): Promise<string[]> => {
-    return await fetchMediaTitles(query, this.medium, 50);
-  };
 
   onItemSelected(item: string) {
     this.processRatingPopup(item);

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DetailPopup } from './detail-popup';
+import { MovieDetailPopup } from './movie-detail-popup';
 
-describe('DetailPopup', () => {
-  let component: DetailPopup;
-  let fixture: ComponentFixture<DetailPopup>;
+describe('MovieDetailPopup', () => {
+  let component: MovieDetailPopup;
+  let fixture: ComponentFixture<MovieDetailPopup>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DetailPopup]
+      imports: [MovieDetailPopup]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(DetailPopup);
+    fixture = TestBed.createComponent(MovieDetailPopup);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

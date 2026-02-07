@@ -1,9 +1,19 @@
-<ng-container *ngIf="ready()">
+<ng-container *ngIf="ready() && medium==='movies'">
   <div class="results-grid">
-    <app-result-card
-      *ngFor="let movie of moviesSignal(); let i = index"
+    <app-movie-result-card
+      *ngFor="let movie of mediaSignal(); let i = index"
       [movie]="movie"
       [animationDelay]="i * 0.05 + 's'"
-    ></app-result-card>
+    ></app-movie-result-card>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="ready() && medium==='books'">
+  <div class="results-grid">
+    <app-book-result-card
+      *ngFor="let book of mediaSignal(); let i = index"
+      [book]="book"
+      [animationDelay]="i * 0.05 + 's'"
+    ></app-book-result-card>
   </div>
 </ng-container>

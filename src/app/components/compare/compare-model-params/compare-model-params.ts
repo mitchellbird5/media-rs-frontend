@@ -25,9 +25,9 @@ import {
   ModelType, 
   ModelTitles, 
   ModelMetaData,
-  nullMetaData 
+  nullMetaData,
+  RecommendFn 
 } from '../../../types/model.types';
-import { RecommendFn } from '../../../types/movies.types';
 
 @Component({
   selector: 'app-compare-model-params',
@@ -96,6 +96,7 @@ export class CompareModelParams {
       return;
     }
 
+    console.log('Regenerating recommendFn for model:', this.model(), 'with numRecs:', numRecs, 'and metaData:', metaData, 'and medium:', this.medium());
     const recommendFn: RecommendFn = method(
       metaData,
       this.loading,

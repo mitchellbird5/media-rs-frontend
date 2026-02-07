@@ -23,8 +23,7 @@ import { ItemSimilarityInputs } from './item-similarity-inputs/item-similarity-i
 
 import { createItemSimilarityRecommendFn } from './item-similarity-recommend-fn';
 
-import { ItemSimilarityMetaData } from '../../../types/model.types';
-import { RecommendFn } from '../../../types/movies.types';
+import { ItemSimilarityMetaData, RecommendFn } from '../../../types/model.types';
 
 @Component({
   selector: 'app-item-similarity',

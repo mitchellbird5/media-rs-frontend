@@ -2,8 +2,7 @@ import { EventEmitter } from "@angular/core";
 
 import { fetchUserUserCFRecommendations } from "../../../services/recommend/get-user-user-cf-recommendation";
 
-import { UserUserCFMetaData } from "../../../types/model.types";
-import { RecommendFn } from "../../../types/movies.types";
+import { UserUserCFMetaData, RecommendFn } from "../../../types/model.types";
 
 export function createUserUserCFRecommendFn(
   metaData: UserUserCFMetaData,

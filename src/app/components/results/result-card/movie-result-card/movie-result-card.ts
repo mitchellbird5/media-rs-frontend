@@ -1,21 +1,25 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MovieData } from '../../../services/databaseSearch';
-import { DetailPopup } from '../detail-popup/detail-popup';
-import { PopupDirective } from '../../popup-card/popup-directive/popup-directive';
+
+import { MovieDetailPopup } from '../../detail-popup/movie-detail-popup/movie-detail-popup';
+import { PopupDirective } from '../../../popup-card/popup-directive/popup-directive';
+
+import { MovieData } from '../../../../types/medium.type';
 
 @Component({
-  selector: 'app-result-card',
+  selector: 'app-movie-result-card',
   standalone: true,
   imports: [CommonModule, PopupDirective],
-  templateUrl: './result-card.html',
-  styleUrls: ['./result-card.css'],
+  templateUrl: './movie-result-card.html',
+  styleUrls: [
+    '../../../../styles/result-card.css'
+  ],
 })
-export class ResultCard {
+export class MovieResultCard {
   @Input() movie!: MovieData;
   @Input() animationDelay: string = '0s';
 
-  readonly DetailPopup = DetailPopup;
+  readonly MovieDetailPopup = MovieDetailPopup;
 
   get genresDisplay(): string {
     return this.movie?.genres ? Object.values(this.movie.genres).join(', ') : '';
