@@ -61,7 +61,7 @@
   font-size: 0.875rem;
   font-weight: 500;
   align-content: center;
-  transform: translateX(-60%);
+  transform: translateX(-60px);
 }
 
 .header-nav a {
