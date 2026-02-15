@@ -118,12 +118,16 @@ export class AutocompleteComponent {
     this.debounceTimer = setTimeout(async () => {
       this.loading.set(true);
 
+      if (value?.length>2) {
+        this.setDropDown("Loading...");
+      }
+
       try {
         const data = await this.fetchResults(value);
         this.results.set(data);
 
         if (!data.length) {
-          this.closeDropdown();
+          this.setDropDown("No results found.");
           return;
         }
 
@@ -184,13 +188,8 @@ export class AutocompleteComponent {
     this.results.set([]);
   }
       
-  private updateDropdown() {
+  private setDropDownStyle() {
     if (!this.dropdownEl) return;
-
-    if (!this.isOpen() || !this.results().length) {
-      this.dropdownEl.style.display = 'none';
-      return;
-    }
 
     const inputEl = this.host.nativeElement.querySelector('input') as HTMLInputElement;
     if (!inputEl) return;
@@ -206,6 +205,17 @@ export class AutocompleteComponent {
 
     // Clear and rebuild
     this.dropdownEl.innerHTML = '';
+  }
+
+  private updateDropdown() {
+    if (!this.dropdownEl) return;
+
+    if (!this.isOpen() || !this.results().length) {
+      this.dropdownEl.style.display = 'none';
+      return;
+    }
+
+    this.setDropDownStyle();
     
     for (const item of this.results()) {
       const div = document.createElement('div');
@@ -224,6 +234,23 @@ export class AutocompleteComponent {
       
       this.dropdownEl.appendChild(div);
     }
+  }
+
+  private setDropDown(message: string) {
+    if (!this.dropdownEl) return;
+
+    if (!this.isOpen()) {
+      this.dropdownEl.style.display = 'none';
+      return;
+    }
+
+    this.setDropDownStyle();
+
+    const div = document.createElement('div');
+    div.className = 'autocomplete-item';
+    div.innerText = message;
+    
+    this.dropdownEl.appendChild(div);
   }
 
 }
